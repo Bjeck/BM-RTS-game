@@ -15,14 +15,33 @@ public class PlaceFields : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		int TBLR = (int)Random.Range(-10, 10);
-		if(TBLR <= -5)				{	toI_Player1 = -GameFields; 	toJ_Player1 = -GameFields;	toI_Player2 = GameFields; 	toJ_Player2 = GameFields; 	};
-		if(TBLR <= 0 && TBLR > -5)	{	toI_Player1 = -GameFields; 	toJ_Player1 = GameFields;	toI_Player2 = GameFields; 	toJ_Player2 = -GameFields;	};
-		if(TBLR <= 5 && TBLR > 0)	{	toI_Player1 = GameFields; 	toJ_Player1 = -GameFields;	toI_Player2 = -GameFields; 	toJ_Player2 = GameFields;	};
-		if(TBLR <= 10 && TBLR > 5)	{	toI_Player1 = GameFields; 	toJ_Player1 = GameFields;	toI_Player2 = -GameFields; 	toJ_Player2 = -GameFields;	};
-		Debug.Log(TBLR);
-
 		int Scale = (int)Grass.transform.localScale.x;
+
+		//---------------------------------------- GENERATE CORNER POSITIONS
+		int TBLR = (int)Random.Range(-10, 10);
+
+		if(TBLR <= -5)	{	
+			toI_Player1 = (int)Random.Range(-(GameFields/Scale),0)*10; 		toI_Player2 = (int)Random.Range(0,(GameFields/Scale))*10;
+			toJ_Player1 = (int)Random.Range(-(GameFields/Scale),0)*10;		toJ_Player2 = (int)Random.Range(0,(GameFields/Scale))*10;
+		};
+
+		if(TBLR <= 0 && TBLR > -5)	{	
+			toI_Player1 = (int)Random.Range(-(GameFields/Scale),0)*10; 		toI_Player2 = (int)Random.Range(0,(GameFields/Scale))*10;
+			toJ_Player1 = (int)Random.Range((GameFields/Scale),0)*10;		toJ_Player2 = (int)Random.Range(0,-(GameFields/Scale))*10;
+		};
+
+		if(TBLR <= 5 && TBLR > 0)	{	
+			toI_Player1 = (int)Random.Range((GameFields/Scale),0)*10; 		toI_Player2 = (int)Random.Range(0,-(GameFields/Scale))*10;
+			toJ_Player1 = (int)Random.Range(-(GameFields/Scale),0)*10;		toJ_Player2 = (int)Random.Range(0,(GameFields/Scale))*10;
+		};
+
+		if(TBLR <= 10 && TBLR > 5)	{	
+			toI_Player1 = (int)Random.Range((GameFields/Scale),0)*10; 		toI_Player2 = (int)Random.Range(0,-(GameFields/Scale))*10;
+			toJ_Player1 = (int)Random.Range((GameFields/Scale),0)*10;		toJ_Player2 = (int)Random.Range(0,-(GameFields/Scale))*10;
+		};
+
+		Debug.Log(toI_Player1);
+		Debug.Log(toJ_Player1);
 
 		for(int i = -GameFields; i <= GameFields; i += Scale){
 			for(int j = -GameFields; j <= GameFields; j += Scale){
