@@ -4,29 +4,34 @@ using System.Collections;
 public class PlaceFields : MonoBehaviour {
 	
 	public GameObject StdFields;
-	public GameObject Player1;
-	public GameObject Player2;
+	public GameObject[] player;
 	public Vector2 FieldDimensions;
 	public Vector3 fieldPosition;
 
-	private int toI_Player1;
-	private int toJ_Player1;
-	private int toI_Player2;
-	private int toJ_Player2;
-	
+
+
 	// Use this for initialization
 	void Start () {
+	
+		int[,] PlayerArray = new int[player.Length, 3];
 
-		Debug.Log(FieldDimensions[1]);
+		for (int RunTimes = 0; RunTimes < player.Length; RunTimes++){
 
-		for (int i = 0; i <= (int)FieldDimensions[0]; i += 1){
+			PlayerArray[RunTimes,0] = RunTimes;
+			PlayerArray[RunTimes,1] = 1+(int)Random.Range(0, FieldDimensions[0]-2);
+			PlayerArray[RunTimes,2] = 1+(int)Random.Range(0, FieldDimensions[1]-2);
 
-			for (int j = 0; j <= (int)FieldDimensions[1]; j += 1){
+			Debug.Log (PlayerArray[RunTimes,1]);
+			Debug.Log (PlayerArray[RunTimes,2]);
+		}
+
+		for (int i = 0; i < (int)FieldDimensions[0]; i += 1){
+			for (int j = 0; j < (int)FieldDimensions[1]; j += 1){
 
 				float setXPosArr = (StdFields.transform.lossyScale.x*i);
 				float setYPosArr = (StdFields.transform.lossyScale.y*j);
-				float setPosMiddleX = ((-StdFields.transform.lossyScale.x*FieldDimensions[0])/2);
-				float setPosMiddleY = ((-StdFields.transform.lossyScale.y*FieldDimensions[1])/2);
+				float setPosMiddleX = ((-StdFields.transform.lossyScale.x*(FieldDimensions[0]-1))/2);
+				float setPosMiddleY = ((-StdFields.transform.lossyScale.y*(FieldDimensions[1]-1))/2);
 				float setOriginX = fieldPosition[0];
 				float setOriginY = fieldPosition[1];
 				float setOriginZ = fieldPosition[2];
@@ -35,9 +40,16 @@ public class PlaceFields : MonoBehaviour {
 				float setYPos = setYPosArr + setPosMiddleY + setOriginY;
 				float setZPos = setOriginZ;
 
-				Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+				for (int CheckIfPlayerPos = 0; CheckIfPlayerPos < player.Length; CheckIfPlayerPos++){
 
+					if (i == PlayerArray[CheckIfPlayerPos,1] && j == PlayerArray[CheckIfPlayerPos,2]) {
 
+					}
+
+					else{
+						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+					}
+				}
 			}
 		}
 	}
