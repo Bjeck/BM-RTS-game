@@ -54,12 +54,12 @@ public class Pathfindinger : MonoBehaviour {
 			return;		
 		}
 		if (currentWaypoint >= path.vectorPath.Count) {
-			Debug.Log("End of Path Reached");
+			//Debug.Log("End of Path Reached");
 			return;
 		}
 
 		Vector3 dir = (path.vectorPath [currentWaypoint] - transform.position).normalized;
-		Debug.Log (dir);
+		//Debug.Log (dir);
 		//controller.SimpleMove (dir);
 		transform.position += dir * otherSpeed * Time.fixedDeltaTime;
 		//transform.rigidbody.velocity += dir * otherSpeed * Time.fixedDeltaTime;
