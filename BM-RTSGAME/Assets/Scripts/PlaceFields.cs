@@ -6,6 +6,8 @@ using System.Linq;
 public class PlaceFields : MonoBehaviour {
 	
 	public GameObject StdFields;
+	public GameObject CornerFields;
+	public GameObject SideFields;
 	public GameObject[] player;
 	public Vector2 FieldDimensions;
 	public Vector3 fieldPosition;
@@ -17,8 +19,6 @@ public class PlaceFields : MonoBehaviour {
 
 		//------------------ Random location but not outer field. 
 		for (int AllPlayersGetCoordinates = 0; AllPlayersGetCoordinates < player.Length; AllPlayersGetCoordinates++){
-
-
 
 			//--------------------------------------- Create lists
 			List<int> checklistX = new List<int>();
@@ -64,7 +64,7 @@ public class PlaceFields : MonoBehaviour {
 				float setYPos = setYPosArr + setPosMiddleY + setOriginY;
 				float setZPos = setOriginZ;
 
-				//------------------------- CHECK IF PLAYER
+				//------------------------- CHECK IF PLAYER: : Instantiate player field
 				bool itsAPlayer = false;
 				int runTimes = 0;
 				int runThroughPlayers = 0;
@@ -77,9 +77,59 @@ public class PlaceFields : MonoBehaviour {
 					runThroughPlayers+=2;
 					runTimes++;
 				}
+			
+				//------------------------- IF CORNER: Instantiate corner field and turn it
+				bool isACorner = false;
+				if (i == 0 && j == 0){
+					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+					isACorner = true;
+				}
 
-				//------------------------- IF NO PLAYER IS PLACED
-				if (itsAPlayer == false){
+				if (i == ((int)FieldDimensions[0]-1) && j == 0){
+					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
+					isACorner = true;
+				}
+
+				if (i == 0 && j == ((int)FieldDimensions[1]-1)){
+					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
+					isACorner = true;
+				}
+
+				if (i == ((int)FieldDimensions[0]-1) && j == ((int)FieldDimensions[1]-1)){
+					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
+					isACorner = true;
+				}
+
+				//------------------------- IF A SIDE: 
+				bool isASide = false;
+				if (i == 0 && j != 0 && j != ((int)FieldDimensions[1]-1)){
+					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+					isASide = true;
+				}
+
+				if (i == ((int)FieldDimensions[0]-1) && j != 0 && j != ((int)FieldDimensions[1]-1)){
+					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
+					isASide = true;
+				}
+
+				if (j == 0 && i != 0 && i != ((int)FieldDimensions[0]-1)){
+					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
+					isASide = true;
+				}
+
+				if (j == ((int)FieldDimensions[1]-1) && i != 0 && i != ((int)FieldDimensions[0]-1)){
+					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
+					isASide = true;
+				}
+
+
+
+
+
+
+
+				//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
+				if (itsAPlayer == false && isACorner == false && isASide == false){
 					Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);	
 				}
 
