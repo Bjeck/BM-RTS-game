@@ -6,15 +6,22 @@ public class Building : MonoBehaviour {
 
 	GameObject buildMan;
 	BuildingManager bManScript;
+	public bool isSelected = false;
+	bool isBuilding = false;
+	bool isConstructing = false;
+	SpriteRenderer sprtR;
 
 	// Use this for initialization
 	void Start () {
 		buildMan = GameObject.Find ("BuildingManager");
 		bManScript = buildMan.GetComponent<BuildingManager> ();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
 	
 	}
 
@@ -30,6 +37,17 @@ public class Building : MonoBehaviour {
 	void OnTriggerExit(Collider c){
 		if (c.tag == "Building" || c.tag == "Obstacle") {
 			bManScript.colliders.Remove(c);		
+		}
+	}
+
+	public void SetSelection(bool s){
+		isSelected = s;
+		Debug.Log ("Selected: "+isSelected);
+		sprtR = GetComponent<SpriteRenderer> ();
+		if (isSelected) {
+			sprtR.color = Color.cyan;
+		} else {
+			sprtR.color = Color.white;
 		}
 	}
 }

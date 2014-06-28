@@ -69,30 +69,6 @@ public class BuildingManager : MonoBehaviour {
 
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
-		LayerMask layermask = (1<<10);
-		RaycastHit hit2;
-		Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		mPos.z = -1;
-		mPos.x = Mathf.Ceil(mPos.x);
-		mPos.y = Mathf.Ceil(mPos.y);
-
-		/*if (Physics.Raycast (mPos, new Vector3 (0, 0, 1), 100f, layermask)) {
-			Debug.Log ("HIT BUILDING! Can't Place!");
-			StartCoroutine(Cantplace());
-			return;		
-		}
-		*/
-		/*Collider[] bCols = Physics.OverlapSphere (mPos, instance.transform.localScale.x/2);
-		int i = 0;
-		while (i < bCols.Length) {
-			Debug.Log(bCols[i]);
-			if(bCols[i].gameObject == building){
-				Debug.Log ("HIT BUILDING! Can't Place!");
-				StartCoroutine(Cantplace());
-				return;		
-			}
-			i++;
-		}*/
 
 		if (!IsLegalPosition ()) {
 			return;		
