@@ -7,9 +7,10 @@ public class Building : MonoBehaviour {
 	GameObject buildMan;
 	BuildingManager bManScript;
 	public bool isSelected = false;
-	bool isBuilding = false;
-	bool isConstructing = false;
-	SpriteRenderer sprtR;
+	public bool isBuilding = false;
+	public bool isConstructing = false;
+	public SpriteRenderer sprtR;
+	public Light buildingLight;
 
 	// Use this for initialization
 	void Start () {
@@ -20,9 +21,6 @@ public class Building : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-
-	
 	}
 
 
