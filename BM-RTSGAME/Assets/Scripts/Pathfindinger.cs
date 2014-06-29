@@ -5,6 +5,7 @@ using Pathfinding;
 public class Pathfindinger : MonoBehaviour {
 	public Vector3 targetPosition;
 	private CharacterController controller;
+	Unit unitScript;
 
 	Seeker seeker;
 	public Path path;
@@ -18,6 +19,7 @@ public class Pathfindinger : MonoBehaviour {
 	void Start () {
 		seeker = GetComponent<Seeker> ();
 		controller = GetComponent<CharacterController> ();
+		unitScript = GetComponent<Unit> ();
 
 		seeker.StartPath (transform.position, targetPosition, OnPathComplete);
 
@@ -41,7 +43,7 @@ public class Pathfindinger : MonoBehaviour {
 			//float hitdist = 0.0f;
 			RaycastHit hit;
 
-			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f)){
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f) && unitScript.GetSelection()){
 				targetPosition = hit.point;
 				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 			}

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BuildingManager : MonoBehaviour {
 
-	bool isDragging = false;
+	public bool isDragging = false;
 	GameObject instance;
 	GameObject building;
 	SpriteRenderer sprtR;
@@ -18,6 +18,7 @@ public class BuildingManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		if (isDragging) { //dragging the placeable object with the mouse
 			//Debug.Log("DRAGS!");
 			Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

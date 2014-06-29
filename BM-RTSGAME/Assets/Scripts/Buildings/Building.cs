@@ -11,32 +11,32 @@ public class Building : MonoBehaviour {
 	public bool isConstructing = false;
 	public SpriteRenderer sprtR;
 	public Light buildingLight;
+	Mouse mouseScript;
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
+		Debug.Log ("BUILDING HERE!");
 		buildMan = GameObject.Find ("BuildingManager");
 		bManScript = buildMan.GetComponent<BuildingManager> ();
-
+		mouseScript = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	}
-
-
-	//FOR PLACEMENT
-	void OnTriggerEnter(Collider c){
-		//Debug.Log (c.tag);
-		if (c.tag == "Building" || c.tag == "Obstacle") {
-			bManScript.colliders.Add(c);		
+	public void Update () {
+	
+		if (renderer.isVisible && Input.GetMouseButton (0) && mouseScript.isDrawingBox() && !bManScript.isDragging) { //for selection box. makes itself selection if it is inside the box.
+			Vector3 camPos = Camera.main.WorldToScreenPoint (transform.position);
+			camPos.y = Mouse.InvertMouseY (camPos.y);
+			Debug.Log(mouseScript.selection.x+" "+mouseScript.selection.y);
+			if(mouseScript.selection.Contains (camPos))
+				mouseScript.AddBuildingSelection(this);
+			if(!mouseScript.selection.Contains (camPos))
+				mouseScript.RemoveBuildingSelection(this);
 		}
+		if (mouseScript.unitsSelected.Count > 0)
+			mouseScript.RemoveBuildingSelection(this);
 	}
 
-	void OnTriggerExit(Collider c){
-		if (c.tag == "Building" || c.tag == "Obstacle") {
-			bManScript.colliders.Remove(c);		
-		}
-	}
 
 	public void SetSelection(bool s){
 		isSelected = s;
@@ -48,4 +48,20 @@ public class Building : MonoBehaviour {
 			sprtR.color = Color.white;
 		}
 	}
+
+
+	//FOR PLACEMENT
+	void OnTriggerEnter(Collider c){
+		//Debug.Log (c.tag);
+		if (c.tag == "Building" || c.tag == "Obstacle") {
+			bManScript.colliders.Add(c);		
+		}
+	}
+	
+	void OnTriggerExit(Collider c){
+		if (c.tag == "Building" || c.tag == "Obstacle") {
+			bManScript.colliders.Remove(c);		
+		}
+	}
+
 }

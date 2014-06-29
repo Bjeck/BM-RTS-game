@@ -3,51 +3,126 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Mouse : MonoBehaviour {
+	
+	public List<Building> buildingsSelected = new List<Building>();
+	public List<Unit> unitsSelected = new List<Unit>();
 
-	bool isAnySelection = false;
-	List<Building> buildingsSelected = new List<Building>();
+	public Texture2D selectionHighlight = null;
+	public Rect selection = new Rect(0,0,0,0);
+	public Vector3 startClick = -Vector3.one;
+
+
 	// Use this for initialization
 	void Start () {
 	
 	}
+
+	//TO DO
+	//double click. Shift click deselection (on one unit).
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetMouseButtonDown (0)) { 
+		if (Input.GetMouseButtonDown (0)) {
+			startClick = Input.mousePosition;
+
 			if(GUIUtility.hotControl == 0){ //Check if there is a GUI Element under the mouse. If not, continue with the Raycasting.
 				Vector3 mPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 				RaycastHit hit;
 				if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f)) { //check if anything is hit.
-					Debug.Log ("YOU CLICKED ON SOMETHING!");
 
-					//find out if it is a building that was clicked on
+					LayerMask layermaskB = (1 << 10);
+					LayerMask layermaskU = (1 << 12);
+					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskB)) {	//check if it is a building that was clicked on
+						Debug.Log ("HIT BUILDING " + hit.transform.name); 
+					
+						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held. And deselects other things if shift is not held.
+							ClearBuildingSelections ();
+							ClearUnitSelections();
+						}
 
-					LayerMask layermask = (1 << 10);
-					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermask)) {
-						Debug.Log ("HIT BUILDING " + hit.transform.name); //if so, say it is selected.
+						Building buildingScript = hit.transform.GetComponent<Building> (); //if so, say it is selected.
+						AddBuildingSelection(buildingScript);
+					}
 
-						if (!ShiftKeyDown ()) //allowing multiple buildings to be selected if shift is held.
-								ClearAllSelections ();
+					else if(Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskU)){//check if it is a unit that was clicked on
+						Debug.Log ("HIT UNIT " + hit.transform.name);
 
-						Building buildingScript = hit.transform.GetComponent<Building> ();
-						buildingScript.SetSelection (true);
-						buildingsSelected.Add (buildingScript);
-						isAnySelection = true;
-						} 										//we prolly gonna add units here later?
-						else {
-						isAnySelection = false;
-						ClearAllSelections ();
+						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held.
+							ClearBuildingSelections ();
+							ClearUnitSelections();
+						}
+
+						Unit unitScript = hit.transform.GetComponent<Unit> (); //if so, say it is selected.
+						AddUnitSelection(unitScript);
+					}
+
+					else { //if nothing was clicked on. Deselect everything.
+						ClearBuildingSelections ();
+						ClearUnitSelections();
 					}
 
 				}
 			}
-			else
-				return;
 		}
+
+		else if(Input.GetMouseButtonUp(0)){ //resetting selection rectangle if mousebutton is released
+			startClick = -Vector3.one;
+		}
+
+		if (Input.GetMouseButton (0)) { //Creating selection rectangle
+			selection = new Rect(startClick.x, InvertMouseY(startClick.y),Input.mousePosition.x - startClick.x, InvertMouseY(Input.mousePosition.y) - InvertMouseY(startClick.y));	
+
+			if(selection.width < 0){
+				selection.x += selection.width;
+				selection.width = -selection.width;
+			}
+			if(selection.height < 0){
+				selection.y += selection.height;
+				selection.height = -selection.height;
+			}
+
+		}
+
 	}
 
-	public void ClearAllSelections(){
+
+
+// ---- ADDING AND REMOVING
+
+	public void AddBuildingSelection(Building buildingScript){
+		buildingScript.SetSelection (true);
+		buildingsSelected.Add (buildingScript);
+	}
+
+	public void AddUnitSelection(Unit unitScript){
+		unitScript.SetSelection (true);
+		unitsSelected.Add (unitScript);
+	}
+
+	public void RemoveUnitSelection(Unit unitScript){
+		unitScript.SetSelection (false);
+		unitsSelected.Remove (unitScript);
+	}
+
+	public void RemoveBuildingSelection(Building buildingScript){
+		buildingScript.SetSelection (false);
+		buildingsSelected.Remove (buildingScript);
+	}
+	
+
+	public bool ShiftKeyDown(){
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			return true;		
+		} else
+			return false;
+	}
+
+
+	
+//------- CLEARING
+
+	public void ClearBuildingSelections(){ //CLEAR BUILDING LIST
 		if(buildingsSelected.Count > 0)
 			Debug.Log (buildingsSelected [0]);
 
@@ -57,11 +132,35 @@ public class Mouse : MonoBehaviour {
 		buildingsSelected.Clear ();
 	}
 
+	public void ClearUnitSelections(){ //CLEAR UNIT LIST
+		if(unitsSelected.Count > 0)
+			Debug.Log (unitsSelected [0]);
+		
+		foreach (Unit u in unitsSelected) {
+			u.SetSelection(false);
+		}
+		unitsSelected.Clear ();
+	}
 
-	public bool ShiftKeyDown(){
-		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
-			return true;		
-		} else
+
+
+// -------- SELECTION BOX
+
+	private void OnGUI(){ //drawing the selection box on screen.
+		if (startClick != -Vector3.one) {
+			GUI.color = new Color(1,1,1,0.5f);
+			GUI.DrawTexture(selection,selectionHighlight);
+		}
+	}
+	
+	public bool isDrawingBox(){ //checks if a box is being drawed. Used for individual selection of things
+		if(selection.size.y < 3 && selection.size.x < 3)
 			return false;
+		else
+			return true;
+	}
+	 
+	public static float InvertMouseY(float y){ //just a dumb thing that the selection box needs.
+		return Screen.height - y;
 	}
 }

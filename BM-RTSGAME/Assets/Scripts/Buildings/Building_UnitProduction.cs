@@ -10,13 +10,13 @@ public class Building_UnitProduction : Building {
 	public string unitName;
 
 	// Use this for initialization
-	void Start () {
-
+	public void Start () {
+		base.Start ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	public void Update () {
+		base.Update ();
 	}
 
 

@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class unit_1 : Unit {
 
-	bool isSelected = false;
-	bool underConstruction = true;
 
 
 	// Use this for initialization
 	void Start () {
-	
+		base.Start();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-
-	
+		base.Update ();
 	}
-
-
 }
