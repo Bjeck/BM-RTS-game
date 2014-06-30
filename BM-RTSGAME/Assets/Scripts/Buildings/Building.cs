@@ -27,13 +27,12 @@ public class Building : MonoBehaviour {
 		if (renderer.isVisible && Input.GetMouseButton (0) && mouseScript.isDrawingBox() && !bManScript.isDragging) { //for selection box. makes itself selection if it is inside the box.
 			Vector3 camPos = Camera.main.WorldToScreenPoint (transform.position);
 			camPos.y = Mouse.InvertMouseY (camPos.y);
-			Debug.Log(mouseScript.selection.x+" "+mouseScript.selection.y);
 			if(mouseScript.selection.Contains (camPos))
 				mouseScript.AddBuildingSelection(this);
-			if(!mouseScript.selection.Contains (camPos))
+			if(!mouseScript.selection.Contains (camPos) && !mouseScript.ShiftKeyDown())
 				mouseScript.RemoveBuildingSelection(this);
-		}
-		if (mouseScript.unitsSelected.Count > 0)
+		} 
+		if (mouseScript.unitsSelected.Count > 0) //if any unit in selection box, don't select buildings.
 			mouseScript.RemoveBuildingSelection(this);
 	}
 

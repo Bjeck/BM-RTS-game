@@ -18,7 +18,7 @@ public class Mouse : MonoBehaviour {
 	}
 
 	//TO DO
-	//double click. Shift click deselection (on one unit).
+	//double click/control click for selection of all units of same type.
 	
 	// Update is called once per frame
 	void Update () {
@@ -41,8 +41,17 @@ public class Mouse : MonoBehaviour {
 							ClearUnitSelections();
 						}
 
-						Building buildingScript = hit.transform.GetComponent<Building> (); //if so, say it is selected.
-						AddBuildingSelection(buildingScript);
+						Building buildingScript = hit.transform.GetComponent<Building> ();
+
+						if(ShiftKeyDown() && buildingsSelected.Count > 0 && buildingScript.isSelected){ //if shift, and the building is already selected, deselect it
+							RemoveBuildingSelection(buildingScript);
+						}
+						else{
+							AddBuildingSelection(buildingScript); //otherwise, select it
+						}
+
+						
+
 					}
 
 					else if(Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskU)){//check if it is a unit that was clicked on
@@ -54,12 +63,22 @@ public class Mouse : MonoBehaviour {
 						}
 
 						Unit unitScript = hit.transform.GetComponent<Unit> (); //if so, say it is selected.
-						AddUnitSelection(unitScript);
+
+						if(ShiftKeyDown() && unitsSelected.Count > 0 && unitScript.isSelected){ //if shift, and the building is already selected, deselect it
+							RemoveUnitSelection(unitScript);
+						}
+						else{
+							AddUnitSelection(unitScript); //otherwise, select it
+						}
+
+
 					}
 
 					else { //if nothing was clicked on. Deselect everything.
-						ClearBuildingSelections ();
-						ClearUnitSelections();
+						if(!ShiftKeyDown()) {
+							ClearBuildingSelections ();
+							ClearUnitSelections();
+						}
 					}
 
 				}
