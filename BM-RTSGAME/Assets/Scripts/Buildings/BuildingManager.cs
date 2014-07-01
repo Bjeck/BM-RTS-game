@@ -96,7 +96,8 @@ public class BuildingManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Cantplace(){
+	//NOT USED
+/*	IEnumerator Cantplace(){
 		sprtR = instance.GetComponent<SpriteRenderer>();
 		sprtR.color = Color.red;
 		float t = 0;
@@ -106,7 +107,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 		sprtR.color = Color.white;
 		yield return 0;
-	}
+	}*/
 
 
 
