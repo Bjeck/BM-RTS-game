@@ -35,8 +35,6 @@ public class PlaceFields : MonoBehaviour {
 
 			//--------------------------------------- If they are, add it to the playerCoordinates list
 			if (!XisClear && !YisClear){
-				Debug.Log (checklistX[0]);
-				Debug.Log (checklistY[0]);
 				playerCoordinates.Add(checklistX[0]);
 				playerCoordinates.Add(checklistY[0]);
 			}
@@ -121,12 +119,6 @@ public class PlaceFields : MonoBehaviour {
 					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
 					isASide = true;
 				}
-
-
-
-
-
-
 
 				//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
 				if (itsAPlayer == false && isACorner == false && isASide == false){
