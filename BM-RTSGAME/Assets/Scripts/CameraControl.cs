@@ -58,25 +58,25 @@ public class CameraControl : MonoBehaviour {
 			ZoomStartPosition += ZoomSpeed;
 		}
 
-//		//-------------------------------------------------------- GO RIGHT
-//		if (mousePos.x > (right_screen_side-marginForPan)){ 	
-//			transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (tiltSensitivity * accR), Time.deltaTime); 
-//		}
-//		
-//		//-------------------------------------------------------- GO LEFT
-//		if (mousePos.x < (left_screen_side+marginForPan)){		
-//			transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (tiltSensitivity * accL), Time.deltaTime); 
-//		}
-//		
-//		//-------------------------------------------------------- GO UP
-//		if (mousePos.y > (top_screen_side-marginForTilt)){ 		
-//			transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
-//		}
-//		
-//		//-------------------------------------------------------- GO DOWN
-//		if (mousePos.y < (bottom_screen_side+marginForTilt)){	
-//			transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
-//		}
+		//-------------------------------------------------------- GO RIGHT
+		if (mousePos.x > (right_screen_side-marginForPan)){ 	
+			transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (tiltSensitivity * accR), Time.deltaTime); 
+		}
+		
+		//-------------------------------------------------------- GO LEFT
+		if (mousePos.x < (left_screen_side+marginForPan)){		
+			transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (tiltSensitivity * accL), Time.deltaTime); 
+		}
+		
+		//-------------------------------------------------------- GO UP
+		if (mousePos.y > (top_screen_side-marginForTilt)){ 		
+			transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
+		}
+		
+		//-------------------------------------------------------- GO DOWN
+		if (mousePos.y < (bottom_screen_side+marginForTilt)){	
+			transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
+		}
 
 
 	}
