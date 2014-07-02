@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TopBar : MonoBehaviour {
+public class UserInterfaceGUI : MonoBehaviour {
 
 	public int ResourceVoltage = 0; 
 	public int ResourceAmpere = 0; 
