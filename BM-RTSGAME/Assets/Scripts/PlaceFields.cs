@@ -6,6 +6,7 @@ using System.Linq;
 public class PlaceFields : MonoBehaviour {
 	
 	public GameObject StdFields;
+	public GameObject[] MoreStdFields;
 	public GameObject CornerFields;
 	public GameObject SideFields;
 	public GameObject[] player;
@@ -122,9 +123,21 @@ public class PlaceFields : MonoBehaviour {
 
 				//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
 				if (itsAPlayer == false && isACorner == false && isASide == false){
-					Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);	
-				}
 
+					if(MoreStdFields.Length==0){
+						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);	
+					}else{
+						int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
+						if(randomStdField == 1){
+							Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+						}else{
+							for (int checkAll = 0; checkAll<MoreStdFields.Length;checkAll++){
+								Instantiate (MoreStdFields[checkAll], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+							}
+						}
+
+					}
+				}
 			}
 		}
 	}
