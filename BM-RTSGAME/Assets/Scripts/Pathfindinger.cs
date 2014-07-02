@@ -26,7 +26,7 @@ public class Pathfindinger : MonoBehaviour {
 	}
 
 	void OnPathComplete(Path p) {
-		Debug.Log ("YAY! COmpleted the Path! Error? " + p.error);
+		//Debug.Log ("YAY! COmpleted the Path! Error? " + p.error);
 		if (!p.error) {
 			path = p;
 			currentWaypoint = 0;

@@ -14,4 +14,9 @@ public class unit_1 : Unit {
 	void Update () {
 		base.Update ();
 	}
+
+	//void OnCollisionEnter(Collision c){
+	//	Debug.Log ("UNIT COLLUSION");
+	//	base.OnCollisionEnter (c);
+	//}
 }

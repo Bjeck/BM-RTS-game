@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour {
 	bool underConstruction = true;
 	public SpriteRenderer sprtR;
 	Mouse mouseScript;
+	Vector3 diff;
 
 	// Use this for initialization
 	public void Start () {
@@ -39,4 +40,15 @@ public class Unit : MonoBehaviour {
 	public bool GetSelection(){
 		return isSelected;
 	}
+
+/*	public void OnTriggerEnter(Collider c){
+		Debug.Log("COLLUSIOn");		
+		if (c.gameObject.name == gameObject.name) {
+			Debug.Log("YO! WATCH WHERE YOU'RE GOING!");		
+			diff = transform.position - c.transform.position;
+			if(diff.x < 1 && diff.y < 1){
+				transform.position += new Vector3(diff.x,diff.x,0);
+			}
+		}
+	}*/
 }
