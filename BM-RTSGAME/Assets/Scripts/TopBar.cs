@@ -7,44 +7,60 @@ public class TopBar : MonoBehaviour {
 	public int ResourceAmpere = 0; 
 	public GUIStyle TextSkin;
 	public GUIStyle ResourceTextSkin;
+	public GUIStyle BottomBarGuiStyle;
+	public Texture BottomBarTexture;
+	public Texture TopBarTexture;
 
-	public Texture aTexture;
-
-	private int pushVoltage = 171;
-	private int pushAmpere = 372;
+	private float ProportionWidth;
+	private float ProportionHeight;
+	private Vector3 scale;
 
 	void OnGUI() {
 
-		// NON dynamic 
-		if (!aTexture) {
+		//------------------------------------------------------------------------ IF NOT TEXTURE IS ADDED
+		if (!TopBarTexture) {
 			Debug.LogError("Assign a Texture in the inspector.");
 			return;
 		}
 
-		GUI.DrawTexture(new Rect(0, 0, Screen.width, 50), aTexture);
+		//------------------------------------------------------------------------ Setting Aspect Ratio
+		ProportionWidth = Screen.width/16;
+		ProportionHeight = Screen.height/9;
 
-		GUI.TextField(new Rect(33, 3, 80, 30), "V", TextSkin);
-		GUI.TextField(new Rect(231, 3, 80, 30), "A", TextSkin);
+		//------------------------------------------------------------------------ Draw Top GUI Controls
+		// Setting fontsize in proportion to resolution
+		TextSkin.fontSize = (int)(0.2f*ProportionHeight); 
+		ResourceTextSkin.fontSize = (int)(0.2f*ProportionHeight); 
 
-		//-------------------- Easy fit of numbers in GUI
-		if 		(	ResourceVoltage >= 1000	) 	{ GUI.Box(new Rect(pushVoltage-20, 	3, 22, 15), ""+ResourceVoltage, ResourceTextSkin);	}
-		else if (	ResourceVoltage >= 100	) 	{ GUI.Box(new Rect(pushVoltage-10, 	3, 22, 15), ""+ResourceVoltage, ResourceTextSkin);	}
-		else if (	ResourceVoltage >= 10	)	{ GUI.Box(new Rect(pushVoltage, 	3, 22, 15), ""+ResourceVoltage, ResourceTextSkin); 	}
-		else 									{ GUI.Box(new Rect(pushVoltage+10, 	3, 22, 15), ""+ResourceVoltage, ResourceTextSkin); 	}
+		// DRAWING: Background top bar image
+		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height/9), TopBarTexture);
 
-		if 		(	ResourceAmpere >= 1000	) 	{ GUI.Box(new Rect(pushAmpere-20, 	3, 22, 15), ""+ResourceAmpere, ResourceTextSkin);	}
-		else if (	ResourceAmpere >= 100	) 	{ GUI.Box(new Rect(pushAmpere-10, 	3, 22, 15), ""+ResourceAmpere, ResourceTextSkin);	}
-		else if (	ResourceAmpere >= 10	)	{ GUI.Box(new Rect(pushAmpere, 		3, 22, 15), ""+ResourceAmpere, ResourceTextSkin); 	}
-		else 									{ GUI.Box(new Rect(pushAmpere+10, 	3, 22, 15), ""+ResourceAmpere, ResourceTextSkin); 	}
+		// DRAWING: Resource Symbols
+		GUI.Box(new Rect(0.28f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "V", TextSkin);
+		GUI.Box(new Rect(2.18f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "A", TextSkin);
 
-	}
+		// DRAWING: Resource Amount
+		GUI.Box(new Rect(1.7f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceVoltage, ResourceTextSkin);
+		GUI.Box(new Rect(3.6f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceAmpere, ResourceTextSkin);
 
-	void Update(){
+		//----------------------------------------------------------------------------------------------------------------
 
-		if (Input.GetKeyDown(KeyCode.Space)){
-			ResourceVoltage+= 10;
-			ResourceAmpere+= 10;
+		//------------------------------------------------------------------------ Draw Bottom GUI Controls
+		// DRAWING: Background top bar image
+		GUI.DrawTexture(new Rect(0, Screen.height-Screen.height/2.5f, Screen.width, Screen.height/2.5f), BottomBarTexture);
+
+		// DRAWING: MiniMap
+		GUI.Button (new Rect(0.28f*ProportionWidth, 7.0f*ProportionHeight, 2.5f*ProportionWidth, 1.80f*ProportionHeight), "MINI-MAP");
+
+		// DRAWING: Array of Abilities
+		for(int i = 0; i<3; i++){
+			for(int j = 0; j<3; j++){
+				if(GUI.Button (new Rect((12.8f+(1.03f*i))*ProportionWidth, (6.95f+(0.65f*j))*ProportionHeight, 0.95f*ProportionWidth, 0.6f*ProportionHeight), ""+i+":"+j)) {		
+					print (""+i+":"+j);	
+				}
+			}
 		}
+
 	}
 
 }
