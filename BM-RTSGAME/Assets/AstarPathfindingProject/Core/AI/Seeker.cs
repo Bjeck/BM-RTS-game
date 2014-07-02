@@ -5,13 +5,15 @@ using Pathfinding;
 using System.Diagnostics;
 
 [AddComponentMenu ("Pathfinding/Seeker")]
-/** Handles path calls for a single unit.
+/** Handles path calls for a single unit
  * \ingroup relevant
  * This is a component which is meant to be attached to a single unit (AI, Robot, Player, whatever) to handle it's pathfinding calls.
  * It also handles post-processing of paths using modifiers.
  * \see \ref calling-pathfinding
  */
 public class Seeker : MonoBehaviour {
+
+	public bool isPathBeingDrawn = false;
 
 	//====== SETTINGS ======
 	
@@ -314,6 +316,7 @@ public class Seeker : MonoBehaviour {
 		}
 		
 		AstarProfiler.EndProfile ();
+		isPathBeingDrawn = false;
 	}
 	
 	
@@ -375,6 +378,7 @@ public class Seeker : MonoBehaviour {
 	 * \param end		The end point of the path
 	 */
 	public Path StartPath (Vector3 start, Vector3 end) {
+
 		return StartPath (start,end,null,-1);
 	}
 	
@@ -386,6 +390,7 @@ public class Seeker : MonoBehaviour {
 	 * \a callback will be called when the path has completed.
 	 * \a Callback will not be called if the path is canceled (e.g when a new path is requested before the previous one has completed) */
 	public Path StartPath (Vector3 start, Vector3 end, OnPathDelegate callback) {
+		isPathBeingDrawn = true;
 		return StartPath (start,end,callback,-1);
 	}
 	

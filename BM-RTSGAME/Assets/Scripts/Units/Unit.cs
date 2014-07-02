@@ -16,6 +16,9 @@ public class Unit : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update () {
+
+		transform.position = new Vector3 (transform.position.x, transform.position.y, 0);
+
 		if (renderer.isVisible && Input.GetMouseButton (0) && mouseScript.isDrawingBox()) { //for selection box. makes itself selection if it is inside the box.
 			Vector3 camPos = Camera.main.WorldToScreenPoint (transform.position);
 			camPos.y = Mouse.InvertMouseY (camPos.y);

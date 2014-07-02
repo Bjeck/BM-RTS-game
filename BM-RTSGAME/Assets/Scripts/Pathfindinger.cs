@@ -37,6 +37,8 @@ public class Pathfindinger : MonoBehaviour {
 
 	void Update(){
 
+		Debug.Log ("IS PATH BEING DRAWN: "+seeker.isPathBeingDrawn);
+
 		if(Input.GetMouseButtonDown(1)){
 			//Plane playerPlane = new Plane(Vector3.up, transform.position);
 			//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,6 +47,9 @@ public class Pathfindinger : MonoBehaviour {
 
 			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f) && unitScript.GetSelection()){
 				targetPosition = hit.point;
+				//if(seeker.isPathBeingDrawn)
+				//	return;
+
 				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 			}
 		}
