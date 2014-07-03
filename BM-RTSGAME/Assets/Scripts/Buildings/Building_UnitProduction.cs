@@ -19,7 +19,6 @@ public class Building_UnitProduction : Building {
 		base.Update ();
 	}
 
-
 	public IEnumerator ConstructUnit(float time, string uName){
 		isConstructing = true;
 		buildingLight = GetComponent<Light> ();

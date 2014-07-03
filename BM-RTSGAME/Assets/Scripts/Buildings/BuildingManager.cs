@@ -26,12 +26,10 @@ public class BuildingManager : MonoBehaviour {
 			mPos.x = Mathf.Ceil(mPos.x);
 			mPos.y = Mathf.Ceil(mPos.y);
 			instance.transform.position = mPos;
-
 		}
 
 		if (Input.GetMouseButtonUp (0) && isDragging) 
 			PlaceBuilding ();
-
 
 		if(Input.anyKeyDown && !isDragging){
 
@@ -41,6 +39,9 @@ public class BuildingManager : MonoBehaviour {
 			}
 			else if(Input.GetKey(KeyCode.T)){
 				name = "building_2";
+			}
+			else if(Input.GetKey(KeyCode.R)){
+				name = "resource_1";
 			}
 			else{
 				name = null;
@@ -65,8 +66,6 @@ public class BuildingManager : MonoBehaviour {
 			sprtR.color = Color.gray;
 		}
 	}
-	
-
 
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
@@ -109,8 +108,6 @@ public class BuildingManager : MonoBehaviour {
 		yield return 0;
 	}*/
 
-
-
 	bool IsLegalPosition(){
 		if (colliders.Count > 0) {
 			//StartCoroutine(Cantplace());
@@ -118,9 +115,4 @@ public class BuildingManager : MonoBehaviour {
 		}
 		return true;
 	}
-
-
-
-
-	
 }
