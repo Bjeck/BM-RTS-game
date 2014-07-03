@@ -14,6 +14,10 @@ public class Pathfindinger : MonoBehaviour {
 	public float otherSpeed = 10f;
 	public float nextWaypointDistance = 3;
 	private int currentWaypoint = 0;
+	bool AlmostendofPath = false;
+	bool endPath = false;
+	float timer = 0;
+	float tester;
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +41,7 @@ public class Pathfindinger : MonoBehaviour {
 
 	void Update(){
 
-		Debug.Log ("IS PATH BEING DRAWN: "+seeker.isPathBeingDrawn);
+		//Debug.Log ("IS PATH BEING DRAWN: "+seeker.isPathBeingDrawn);
 
 		if(Input.GetMouseButtonDown(1)){
 			//Plane playerPlane = new Plane(Vector3.up, transform.position);
@@ -57,13 +61,28 @@ public class Pathfindinger : MonoBehaviour {
 	
 
 	void FixedUpdate () {
+		tester = currentWaypoint + 1;
 		if (path == null) {
 			return;		
 		}
+		//Debug.Log((currentWaypoint)+" "+path.vectorPath.Count);
+		if (tester == path.vectorPath.Count ) {
+			AlmostendofPath = true;
+			//Debug.Log("ALMOST AT END OF PATH");
+			if(timer < 1){
+				timer += Time.deltaTime;
+			}
+			else{
+				AlmostendofPath = false;
+				timer = 0;
+			}
+		}
+
 		if (currentWaypoint >= path.vectorPath.Count) {
 			//Debug.Log("End of Path Reached");
 			return;
 		}
+
 
 		Vector3 dir = (path.vectorPath [currentWaypoint] - transform.position).normalized;
 		//Debug.Log (dir);
@@ -73,10 +92,21 @@ public class Pathfindinger : MonoBehaviour {
 		//transform.rigidbody.AddForce (dir * otherSpeed * Time.fixedDeltaTime);
 		//transform.Translate (dir * otherSpeed * Time.fixedDeltaTime);
 
-		if (Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) < nextWaypointDistance) {
+
+		if (Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) < nextWaypointDistance) { 
+			//Debug.Log("INCREMENTINGPATH!");
+
+		if(tester == path.vectorPath.Count && AlmostendofPath && Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) >= 0.1f){
+				//Debug.Log("RETURNING!");
+				return;
+			}
+
 			currentWaypoint++;
+			//endPath = false;
 			return;
 		}
+
+
 
 
 	}
