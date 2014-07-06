@@ -26,45 +26,29 @@ public class unit_1 : Unit {
 			isAttacking = true;
 		else if(isMoving)
 			isAttacking = false;
-
-
-		//if(isSelected)
-			//Debug.Log ("START PATH: ATTACKING: "+isAttacking+". MOVING: "+isMoving);
-
 	}
 
 
-	//void OnCollisionEnter(Collision c){
-	//	Debug.Log ("UNIT COLLUSION");
-	//	base.OnCollisionEnter (c);
-	//}
-
-
-	public override void Attack(GameObject obj){
-		if(isAttacking){
-			//pathfinder.EndPath();
+	public override void Attack(GameObject obj){ //The Attack function. The parameter is the target unit/gameobject
+		if(isAttacking){ 				
 			Vector3 direction = obj.transform.position - transform.position;
-			float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg+90;
-			//Debug.Log(attackTimer);
-			if(attackTimer == 0){
+			float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg+90; 						//The direction and angle of the shot is calculated.
+
+			if(attackTimer == 0){ 																		//Since the attack is dependent on a timer, it will only shoot a projetile when this is 0.
 				bulletObject = (GameObject)Instantiate(Resources.Load("bullet_1",typeof(GameObject)));
 				bulletScript = bulletObject.GetComponent<Projectile>();
-				bulletScript.damage = attackDamage;
+				bulletScript.damage = attackDamage; 													//Creates, intantiates and sets the damage of the bullet.
 				bulletObject.transform.position = transform.position+direction.normalized;
-				bulletObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //Rotation is set to be the direction it is flying in.
-				bulletObject.GetComponent<Rigidbody> ().velocity = direction.normalized*projectileSpeed;
-				attackTimer+=0.01f;
+				bulletObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 		//Rotation is set to be the direction it is flying in.
+				bulletObject.GetComponent<Rigidbody> ().velocity = direction.normalized*projectileSpeed;//Rotation and speed of the bullet.
+				attackTimer+=0.01f; 																	//so the attackTimer is not forever 0.
 			}
-			else if(attackTimer < attackSpeed && attackTimer > 0){
-				attackTimer += Time.fixedDeltaTime;
+			else if(attackTimer < attackSpeed && attackTimer > 0){ 
+				attackTimer += Time.fixedDeltaTime; 													//attackTimer will count itself up to a threshold, decided by attackSpeed. 
 			}
-			else if(attackTimer > attackSpeed)
+			else if(attackTimer > attackSpeed) 															//When it goes above this, the unit will attack.
 				attackTimer = 0;
 			//base.Attack (obj);
-			if (isSelected) {
-				//Debug.Log ("individual attack");
-				//Debug.Log ("I'M ATTACKING " + obj.name);
-			}
 		}
 	}
 

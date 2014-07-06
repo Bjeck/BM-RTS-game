@@ -15,16 +15,16 @@ public class Unit : MonoBehaviour {
 	float distanceToEnemy = Mathf.Infinity;
 	GameObject closestEnemy = null;
 	public bool isMoving = false;
-	public bool isAttackMoving = false;														 //ADD LOGIC FOR THIS LATER
+	public bool isAttackMoving = false;
 
 	public bool isAttacking = false;
 	public int health = 10;
 	public float visionRange = 10;
 	public int attackDamage = 10;
-	public float attackRange = 10; //just some default values so they ain't 0.
+	public float attackRange = 10; 
 	public float attackSpeed = 1;
-	public float attackTimer = 0;
-	public float projectileSpeed = 30;
+	protected float attackTimer = 0;
+	public float projectileSpeed = 30; //just some default values so they ain't 0.
 	public GameObject bulletObject;
 	public Projectile bulletScript;
 
@@ -56,26 +56,18 @@ public class Unit : MonoBehaviour {
 		}
 
 		unitsAroundMe = Physics.OverlapSphere (transform.position, visionRange, layerMask); //creates a sphere around unit and checks if any collisions with units happen inside it.
-		//if (Physics.SphereCast (transform.position, 10,transform.forward, out hit,Mathf.Infinity,layerMask)) {
 		int i = 0;
 		foreach(Collider c in unitsAroundMe){
 			if(c.transform.gameObject == transform.gameObject) //it can hit itself, but it shouldn't do anything when it does that.
 			{} 
 			else{
-				//Debug.Log("DISTANCE TO "+c.gameObject.name+": "+Vector3.Distance(c.transform.position,transform.position));
 				if(distanceToEnemy > Vector3.Distance(c.transform.position,transform.position)){ //checks which of the enemies in range is the closest. This one it will attack
 					closestEnemy = c.gameObject;
 					distanceToEnemy = Vector3.Distance(closestEnemy.transform.position,transform.position);
-					//Debug.Log(distanceToEnemy+" "+Vector3.Distance(c.transform.position,transform.position));
-					//Debug.Log("CLOSEST ENEMY IS: "+c.gameObject.name);
 				}
-
-				GameObject unitToAttack = c.transform.gameObject;
 				i++;
 			}
 		}
-
-
 
 		if (closestEnemy != null)
 			if(isAttackMoving){
@@ -97,7 +89,6 @@ public class Unit : MonoBehaviour {
 
 	public void SetSelection(bool s){
 		isSelected = s;
-		//Debug.Log ("Selected: "+isSelected);
 		sprtR = GetComponent<SpriteRenderer> ();
 		if (isSelected) {
 			sprtR.color = Color.black;
@@ -111,14 +102,13 @@ public class Unit : MonoBehaviour {
 	}
 
 	public virtual void Attack(GameObject obj){
-		//if (isSelected)
-			//Debug.Log ("UNIT SCRIPT HAS RECEIVED ORDER!");
+			//MAYBE WILL PUT SOMETHING HERE? Otherwise, it's specific for the individual units.
 	}
 
 	public virtual void StopAttack(){}
 
 
-	public void Die(){
+	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
 		mouseScript.RemoveUnitSelection(this);
 		Destroy (this.gameObject);
 

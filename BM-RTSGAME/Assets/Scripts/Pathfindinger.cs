@@ -42,37 +42,30 @@ public class Pathfindinger : MonoBehaviour {
 
 	void Update(){
 
-		//Debug.Log ("IS PATH BEING DRAWN: "+seeker.isPathBeingDrawn);
-		if (Input.GetKeyDown (KeyCode.A))
+		if (Input.GetKeyDown (KeyCode.A)) //Input for A. This is used for AttackMoving.
 			wasAPressed = true;
 
-		if (Input.GetKeyDown (KeyCode.H))
+		if (Input.GetKeyDown (KeyCode.H)) //Used for holding Position.
 				EndPath ();
 
 
 		if(Input.GetMouseButtonDown(1)){
 			RaycastHit hit;
 
-			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f) && unitScript.GetSelection()){
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f) && unitScript.GetSelection()){ //When you click on a spot, raycast and set the place as the target position.
 				targetPosition = hit.point;
-				//if(seeker.isPathBeingDrawn)
-				//	return;
-
-				Debug.Log(wasAPressed);
 
 				if(wasAPressed){
-					Debug.Log("SHOULD ATTACK MOVE");
+					//Debug.Log("SHOULD ATTACK MOVE");
 					unitScript.isAttackMoving = true;
-					//EndPath();
 					wasAPressed = false;
 				}
 				else{
-					Debug.Log("WONT ATTACK MOVE");
+					//Debug.Log("WONT ATTACK MOVE");
 					unitScript.isAttackMoving = false;
 				}
 
 				SetPath(targetPosition);
-			//	unitScript.isMoving = true;
 			}
 		}
 
@@ -82,16 +75,13 @@ public class Pathfindinger : MonoBehaviour {
 
 	void FixedUpdate () {
 
-		tester = currentWaypoint + 1;
-		if (path == null) {
-			//unitScript.isMoving = false;
+
+		if (path == null) { //if there is no path, don't do anything.
 			return;	
 		}
+		tester = currentWaypoint + 1;
 
-		//Debug.Log (path);
-
-		//Debug.Log((currentWaypoint)+" "+path.vectorPath.Count);
-		if (tester == path.vectorPath.Count ) {
+		if (tester == path.vectorPath.Count ) { //if we're almost at the end of path, wait a little longer before ending the path.
 			AlmostendofPath = true;
 			//Debug.Log("ALMOST AT END OF PATH");
 			if(timer < 1){
@@ -103,20 +93,17 @@ public class Pathfindinger : MonoBehaviour {
 			}
 		}
 
-		if (currentWaypoint >= path.vectorPath.Count) {
-			//Debug.Log("End of Path Reached"+path.vectorPath.Count+" "+currentWaypoint);
+		if (currentWaypoint >= path.vectorPath.Count) { //when we reach the end of the path.
 			path = null;
 			unitScript.isMoving = false;
 			return;
 		}
-		//Debug.Log ("IS MOVING");
-		//unitScript.isMoving = true;
 
 		Vector3 dir = (path.vectorPath [currentWaypoint] - transform.position).normalized;
 		//Debug.Log (dir);
 		//controller.SimpleMove (dir);
 		if(unitScript.isMoving)
-			transform.position += dir * otherSpeed * Time.fixedDeltaTime; //The actual movement of the character.
+			transform.position += dir * otherSpeed * Time.fixedDeltaTime; 	//The actual movement of the character.
 		//transform.rigidbody.velocity = dir * otherSpeed * Time.fixedDeltaTime;
 		//transform.rigidbody.AddForce (dir * otherSpeed * Time.fixedDeltaTime);
 		//transform.Translate (dir * otherSpeed * Time.fixedDeltaTime);
