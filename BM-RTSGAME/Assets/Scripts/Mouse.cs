@@ -128,6 +128,16 @@ public class Mouse : MonoBehaviour {
 		buildingScript.SetSelection (false);
 		buildingsSelected.Remove (buildingScript);
 	}
+
+
+	public bool CheckUnitInList(Unit unit){ //Checks if parameter unit is already in the unitList. NEED TO ADD ONE FOR BUILDINGS LATER
+		foreach (Unit u in unitsSelected) {
+			if(u == unit){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 	public bool ShiftKeyDown(){
