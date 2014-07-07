@@ -23,7 +23,6 @@ public class Pathfindinger : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		seeker = GetComponent<Seeker> ();
-		controller = GetComponent<CharacterController> ();
 		unitScript = GetComponent<Unit> ();
 
 		//seeker.StartPath (transform.position, targetPosition, OnPathComplete);
@@ -42,18 +41,32 @@ public class Pathfindinger : MonoBehaviour {
 
 	void Update(){
 
-		if (Input.GetKeyDown (KeyCode.A)) //Input for A. This is used for AttackMoving.
+		if (Input.GetKeyDown (KeyCode.A)) //This is used for AttackMoving.
 			wasAPressed = true;
 
-		if (Input.GetKeyDown (KeyCode.H)) //Used for holding Position.
-				EndPath ();
-
+		if (Input.GetKeyDown (KeyCode.H)){ //Used for holding Position.
+			unitScript.isHoldingPosition = true;
+			EndPath ();
+		}
 
 		if(Input.GetMouseButtonDown(1)){
-			RaycastHit hit;
 
-			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f) && unitScript.GetSelection()){ //When you click on a spot, raycast and set the place as the target position.
-				targetPosition = hit.point;
+
+			if (unitScript.isSelected) {
+				LayerMask layermaskU = (1 << 12);
+				RaycastHit hit;
+				if(Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskU)){ //If, when you have a unit selected, you right click on another unit, set that unit as target (and attack)
+					Debug.Log("SHOULD ATTACK THIS UNIT");
+					unitScript.isTargetDirectTarget = true;
+					unitScript.target = hit.transform.gameObject;
+					return;
+				}
+			}
+
+			RaycastHit Rayhit;
+
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out Rayhit, 100f) && unitScript.GetSelection()){ //When you click on a spot, raycast and set the place as the target position.
+				targetPosition = Rayhit.point;
 
 				if(wasAPressed){
 					//Debug.Log("SHOULD ATTACK MOVE");
@@ -64,7 +77,8 @@ public class Pathfindinger : MonoBehaviour {
 					//Debug.Log("WONT ATTACK MOVE");
 					unitScript.isAttackMoving = false;
 				}
-
+				EndPath();
+				unitScript.isTargetDirectTarget = false;
 				SetPath(targetPosition);
 			}
 		}
@@ -80,6 +94,15 @@ public class Pathfindinger : MonoBehaviour {
 			return;	
 		}
 		tester = currentWaypoint + 1;
+
+		if (unitScript.checkDistanceToTarget) { //if we're targetting a unit, check if we're in range, and when we are, stop walking.
+			//Debug.Log("IS CHECKING DISTANCE TO TARGET "+unitScript.distanceToEnemy+" "+unitScript.attackRange);
+			if(unitScript.distanceToEnemy <= unitScript.attackRange){
+				//Debug.Log("IS NOW WITHIN RANGE");
+				EndPath();
+				return;
+			}
+		}
 
 		if (tester == path.vectorPath.Count ) { //if we're almost at the end of path, wait a little longer before ending the path.
 			AlmostendofPath = true;
@@ -124,9 +147,10 @@ public class Pathfindinger : MonoBehaviour {
 	}
 
 	public void SetPath(Vector3 target){ //Setting the path (from the mouseclick) and starts to walk it.
-		//Debug.Log ("SETTING PATH");
+		//Debug.Log ("SETTING PATH "+unitScript.checkDistanceToTarget);
 		seeker.StartPath(transform.position, target, OnPathComplete);
 		unitScript.isMoving = true;
+		unitScript.isHoldingPosition = false;
 		//Debug.Log ("START PATH: ATTACKING: "+unitScript.isAttacking+". MOVING: "+unitScript.isMoving);
 		currentWaypoint = 0;
 	}
@@ -134,6 +158,7 @@ public class Pathfindinger : MonoBehaviour {
 	public void EndPath(){ //ends the path (used for attacking)
 		path = null;
 		unitScript.isMoving = false;
+		unitScript.checkDistanceToTarget = false;
 		//if(unitScript.isSelected)
 			//sDebug.Log ("END PATH: ATTACKING: "+unitScript.isAttacking+". MOVING: "+unitScript.isMoving);
 	}

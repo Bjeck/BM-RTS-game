@@ -10,8 +10,8 @@ public class unit_1 : Unit {
 		base.Start();
 
 		health = 100;
-		attackSpeed = 0.8f;
-		attackRange = 10f;
+		attackSpeed = 0.6f;
+		attackRange = 5f;
 		visionRange = 10;
 		projectileSpeed = 30;
 
@@ -30,7 +30,9 @@ public class unit_1 : Unit {
 
 
 	public override void Attack(GameObject obj){ //The Attack function. The parameter is the target unit/gameobject
-		if(isAttacking){ 				
+		if(isAttacking){ 
+			//if(isSelected)
+				//Debug.Log("ATTACKING: "+obj);
 			Vector3 direction = obj.transform.position - transform.position;
 			float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg+90; 						//The direction and angle of the shot is calculated.
 

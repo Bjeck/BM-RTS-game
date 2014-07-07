@@ -34,7 +34,7 @@ public class Mouse : MonoBehaviour {
 					LayerMask layermaskB = (1 << 10);
 					LayerMask layermaskU = (1 << 12);
 					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskB)) {	//check if it is a building that was clicked on
-						Debug.Log ("HIT BUILDING " + hit.transform.name); 
+						Debug.Log ("CLICKED ON BUILDING " + hit.transform.name); 
 					
 						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held. And deselects other things if shift is not held.
 							ClearBuildingSelections ();
@@ -50,12 +50,10 @@ public class Mouse : MonoBehaviour {
 							AddBuildingSelection(buildingScript); //otherwise, select it
 						}
 
-						
-
 					}
 
 					else if(Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskU)){//check if it is a unit that was clicked on
-						Debug.Log ("HIT UNIT " + hit.transform.name);
+						Debug.Log ("CLICKED ON UNIT " + hit.transform.name);
 
 						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held.
 							ClearBuildingSelections ();
