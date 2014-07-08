@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BuildingManager : MonoBehaviour {
 
@@ -10,8 +11,10 @@ public class BuildingManager : MonoBehaviour {
 	SpriteRenderer sprtR;
 	string name = null;
 	public List<Collider> colliders = new List<Collider>();
+	public List<Collider> resources = new List<Collider>();
 	GameObject Astar;
 	AstarPath astarpath;
+	private bool ResourceDetected = false;
 
 
 	// Use this for initialization
@@ -24,18 +27,9 @@ public class BuildingManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
-
-
-		if (colliders.Count > 0){
-			if (colliders[0].material.name == "Resources (Instance)"){
-				Debug.Log ("Resource detected");
-			}else{
-				Debug.Log ("No resource");
-			}
-
+		if(resources.Count == 4){
+			Debug.Log ("Resource registered!");
 		}
-
 
 		if (isDragging) { //dragging the placeable object with the mouse
 			//Debug.Log("DRAGS!");
@@ -47,7 +41,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonUp (0) && isDragging) {
-				PlaceBuilding (name);
+				PlaceBuilding ();
 		}
 
 		if(Input.anyKeyDown && !isDragging){
@@ -86,21 +80,23 @@ public class BuildingManager : MonoBehaviour {
 		}
 	}
 
-	void PlaceBuilding(string buildingName){
+	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
 
-		if (!IsLegalPosition ()) {
+		print (resources.Count);
+		if (resources.Count == 4 && name == "resource_1"){
+			Debug.Log ("Passed!");
+		}
+		if (!IsLegalPosition()) {
+			Debug.Log ("Cant place there!");
 			return;		
 		}
 
-		if (buildingName == "resource_1"){
-
-		}else{
-		//ACTUALLY PLACING BUILDING
+			//ACTUALLY PLACING BUILDING
 			building = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
 			//Debug.Log (building.transform.localScale.x / 2);
 			building.layer = 10;
-			Debug.Log("PLACE OBJECT!"+building.name);
+			//Debug.Log("PLACE OBJECT!"+building.name);
 			sprtR = building.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.white;
 			Destroy (instance);
@@ -115,8 +111,7 @@ public class BuildingManager : MonoBehaviour {
 
 				isDragging = false;
 				name = null;
-			}
-		}
+				}
 	}
 
 	//NOT USED
@@ -134,8 +129,12 @@ public class BuildingManager : MonoBehaviour {
 
 	bool IsLegalPosition(){
 		if (colliders.Count > 0) {
-
 			//StartCoroutine(Cantplace());
+			return false;
+		}else if(resources.Count > 0 && name != "resource_1"){
+			return false;
+		}
+		if(name == "resource_1" && resources.Count < 4){
 			return false;
 		}
 

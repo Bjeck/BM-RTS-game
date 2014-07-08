@@ -53,13 +53,18 @@ public class Building : MonoBehaviour {
 	void OnTriggerEnter(Collider c){
 		//Debug.Log (c.tag);
 		if (c.tag == "Building" || c.tag == "Obstacle") {
-			bManScript.colliders.Add(c);		
+			bManScript.colliders.Add(c);
+		}else if(c.tag == "Resource"){
+			bManScript.resources.Add(c);
 		}
+
 	}
 	
 	void OnTriggerExit(Collider c){
 		if (c.tag == "Building" || c.tag == "Obstacle") {
 			bManScript.colliders.Remove(c);		
+		}else if(c.tag == "Resource"){
+			bManScript.resources.Remove(c);
 		}
 	}
 
