@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour {
 	public bool checkDistanceToTarget = false; //Only used for direct attacking.
 	public bool isHoldingPosition = false;
 	public bool isTargetDirectTarget = false; //used when right-clicking directly on a unit.
+	public bool checkLineOfSight = false;
 
 	public bool isAttacking = false;
 	public int health = 10;
@@ -65,10 +66,8 @@ public class Unit : MonoBehaviour {
 
 
 	//FOR ATTACKING
-		//if (isSelected)
-			//Debug.Log (target+" "+isTargetDirectTarget);
 
-		if(target == null){ 	
+		if(target == null){ //check if there are units around me.
 			unitsAroundMe = Physics.OverlapSphere (transform.position, visionRange, layerMask); //creates a sphere around unit and checks if any collisions with units happen inside it.
 			int i = 0;
 			foreach(Collider c in unitsAroundMe){
@@ -85,7 +84,7 @@ public class Unit : MonoBehaviour {
 			target = closestEnemy;
 		}
 
-		if (target != null){
+		if (target != null){ //if we already have a target, check if we're still within range.
 			distanceToEnemy = Vector3.Distance(target.transform.position,transform.position);
 			if(distanceToEnemy > visionRange && !isTargetDirectTarget) { //if target is out of visionRange, top targeting it. Except if it's a direct target.
 				target = null;
@@ -99,7 +98,19 @@ public class Unit : MonoBehaviour {
 					pathfinder.EndPath();
 				}
 
-			if(!isMoving) {
+			if(!isMoving) {;
+				//check if the target is in direct line of sight for the unit.
+				RaycastHit hit;
+				if (Physics.Raycast (transform.position,(target.transform.position-transform.position), out hit, attackRange)) {
+					Debug.DrawRay(transform.position,(target.transform.position-transform.position));
+					if(hit.transform.gameObject.tag == "Obstacle" || hit.transform.gameObject.tag == "Building"){
+						//Debug.Log("THERE'S A SOMETHING THERE");
+						checkLineOfSight=true;
+						pathfinder.SetPath(target.transform.position);
+						return;
+					}
+				}
+
 				Attack (target); //attacks closest enemy
 			}
 		}
@@ -109,9 +120,9 @@ public class Unit : MonoBehaviour {
 			pathfinder.SetPath(target.transform.position);
 		}
 
+	} //end update
 
 
-	}
 
 	public void SetSelection(bool s){
 		isSelected = s;

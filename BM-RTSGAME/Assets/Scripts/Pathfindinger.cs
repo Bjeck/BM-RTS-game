@@ -95,8 +95,9 @@ public class Pathfindinger : MonoBehaviour {
 		}
 		tester = currentWaypoint + 1;
 
+
+
 		if (unitScript.checkDistanceToTarget) { //if we're targetting a unit, check if we're in range, and when we are, stop walking.
-			//Debug.Log("IS CHECKING DISTANCE TO TARGET "+unitScript.distanceToEnemy+" "+unitScript.attackRange);
 			if(unitScript.distanceToEnemy <= unitScript.attackRange){
 				//Debug.Log("IS NOW WITHIN RANGE");
 				EndPath();
@@ -140,6 +141,19 @@ public class Pathfindinger : MonoBehaviour {
 			}
 
 			currentWaypoint++;
+
+			if (unitScript.checkLineOfSight && unitScript.target != null) { //if we are checking line of sight (there was a wall), check line of sight again at each waypoint.
+				RaycastHit hit;
+				if (Physics.Raycast (transform.position,(unitScript.target.transform.position-transform.position), out hit, unitScript.attackRange)) {
+					Debug.DrawRay(transform.position,(unitScript.target.transform.position-transform.position));
+					if(hit.transform.gameObject.tag == "Obstacle" || hit.transform.gameObject.tag == "Building"){
+						//Debug.Log("THERE'S A SOMETHING THERE");
+					}else{
+						unitScript.checkLineOfSight = false;
+						EndPath();
+					}
+				}
+			}
 			//endPath = false;
 			return;
 		}
