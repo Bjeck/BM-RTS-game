@@ -19,6 +19,9 @@ public class BuildingManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Debug.Log (colliders.Count);
+
+
 		if (isDragging) { //dragging the placeable object with the mouse
 			//Debug.Log("DRAGS!");
 			Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -61,7 +64,7 @@ public class BuildingManager : MonoBehaviour {
 		if (!IsLegalPosition () && isDragging) {
 			sprtR = instance.GetComponent<SpriteRenderer> ();
 			sprtR.color = Color.red;
-		} else if(isDragging){
+		} 	else if(isDragging){
 			sprtR = instance.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.gray;
 		}
