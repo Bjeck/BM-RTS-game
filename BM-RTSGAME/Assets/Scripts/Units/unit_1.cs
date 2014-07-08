@@ -15,7 +15,6 @@ public class unit_1 : Unit {
 		visionRange = 10;
 		projectileSpeed = 30;
 
-
 	}
 	
 	// Update is called once per frame
@@ -31,8 +30,8 @@ public class unit_1 : Unit {
 
 	public override void Attack(GameObject obj){ //The Attack function. The parameter is the target unit/gameobject
 		if(isAttacking){ 
-			//if(isSelected)
-				//Debug.Log("ATTACKING: "+obj);
+			if(isSelected)
+				Debug.Log("ATTACKING: "+obj);
 			Vector3 direction = obj.transform.position - transform.position;
 			float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg+90; 						//The direction and angle of the shot is calculated.
 
