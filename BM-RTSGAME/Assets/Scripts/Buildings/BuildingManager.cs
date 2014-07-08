@@ -10,10 +10,15 @@ public class BuildingManager : MonoBehaviour {
 	SpriteRenderer sprtR;
 	string name = null;
 	public List<Collider> colliders = new List<Collider>();
+	GameObject Astar;
+	AstarPath astarpath;
 
 
 	// Use this for initialization
 	void Start () {
+		Astar = GameObject.Find ("A*");
+		astarpath = Astar.GetComponent<AstarPath> ();
+
 	}
 	
 	// Update is called once per frame
@@ -90,6 +95,7 @@ public class BuildingManager : MonoBehaviour {
 			temp.y = Mathf.Ceil(temp.y);
 
 			building.transform.position = temp;
+
 			isDragging = false;
 			name = null;
 		}
