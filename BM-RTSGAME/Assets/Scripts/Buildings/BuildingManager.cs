@@ -24,7 +24,17 @@ public class BuildingManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Debug.Log (colliders.Count);
+
+
+
+		if (colliders.Count > 0){
+			if (colliders[0].material.name == "Resources (Instance)"){
+				Debug.Log ("Resource detected");
+			}else{
+				Debug.Log ("No resource");
+			}
+
+		}
 
 
 		if (isDragging) { //dragging the placeable object with the mouse
@@ -36,8 +46,9 @@ public class BuildingManager : MonoBehaviour {
 			instance.transform.position = mPos;
 		}
 
-		if (Input.GetMouseButtonUp (0) && isDragging) 
-			PlaceBuilding ();
+		if (Input.GetMouseButtonUp (0) && isDragging) {
+				PlaceBuilding (name);
+		}
 
 		if(Input.anyKeyDown && !isDragging){
 
@@ -75,32 +86,36 @@ public class BuildingManager : MonoBehaviour {
 		}
 	}
 
-	void PlaceBuilding(){
+	void PlaceBuilding(string buildingName){
 	//CHECKING IF BUILDING CAN BE PLACED
 
 		if (!IsLegalPosition ()) {
 			return;		
 		}
 
-	//ACTUALLY PLACING BUILDING
-		building = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
-		//Debug.Log (building.transform.localScale.x / 2);
-		building.layer = 10;
-		Debug.Log("PLACE OBJECT!"+building.name);
-		sprtR = building.GetComponent<SpriteRenderer>();
-		sprtR.color = Color.white;
-		Destroy (instance);
-		RaycastHit hit;
-		if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f)){
-			Vector3 temp = hit.point;
-			temp.z = -1;
-			temp.x = Mathf.Ceil(temp.x);
-			temp.y = Mathf.Ceil(temp.y);
+		if (buildingName == "resource_1"){
 
-			building.transform.position = temp;
+		}else{
+		//ACTUALLY PLACING BUILDING
+			building = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
+			//Debug.Log (building.transform.localScale.x / 2);
+			building.layer = 10;
+			Debug.Log("PLACE OBJECT!"+building.name);
+			sprtR = building.GetComponent<SpriteRenderer>();
+			sprtR.color = Color.white;
+			Destroy (instance);
+			RaycastHit hit;
+			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f)){
+				Vector3 temp = hit.point;
+				temp.z = -1;
+				temp.x = Mathf.Ceil(temp.x);
+				temp.y = Mathf.Ceil(temp.y);
 
-			isDragging = false;
-			name = null;
+				building.transform.position = temp;
+
+				isDragging = false;
+				name = null;
+			}
 		}
 	}
 
@@ -119,9 +134,11 @@ public class BuildingManager : MonoBehaviour {
 
 	bool IsLegalPosition(){
 		if (colliders.Count > 0) {
+
 			//StartCoroutine(Cantplace());
 			return false;
 		}
+
 		return true;
 	}
 }
