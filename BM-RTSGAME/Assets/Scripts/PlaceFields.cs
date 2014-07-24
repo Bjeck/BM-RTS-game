@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PlaceFields : MonoBehaviour {
-	
+
 	public GameObject StdFields;
 	public GameObject[] MoreStdFields;
 	public GameObject CornerFields;
