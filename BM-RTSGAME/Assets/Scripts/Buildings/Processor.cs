@@ -21,7 +21,7 @@ public class Processor : Building_UnitProduction {
 
 	void OnGUI(){
 		if(isSelected)
-		if(GUI.Button (new Rect (0, Screen.height - 50, 100, 50), "Build Unit 1")){
+		if(GUI.Button (new Rect (0, Screen.height - 300, 100, 50), "Build Unit 1")){
 			if(!isConstructing){
 				unitName = "unit_1";
 				StartCoroutine(ConstructUnit(buildTime, unitName));

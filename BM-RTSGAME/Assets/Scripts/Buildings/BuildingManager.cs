@@ -16,11 +16,17 @@ public class BuildingManager : MonoBehaviour {
 	AstarPath astarpath;
 	private bool ResourceDetected = false;
 
+	public bool player1 = false;
 
 	// Use this for initialization
 	void Start () {
 		Astar = GameObject.Find ("A*");
 		astarpath = Astar.GetComponent<AstarPath> ();
+
+		GameObject mouse = GameObject.Find ("Main Camera");
+		Mouse mouseS = mouse.GetComponent<Mouse> ();
+		player1 = mouseS.player1;
+
 
 	}
 	
@@ -28,7 +34,7 @@ public class BuildingManager : MonoBehaviour {
 	void Update () {
 
 		if(resources.Count == 4){
-			Debug.Log ("Resource registered!");
+			//Debug.Log ("Resource registered!");
 		}
 
 		if (isDragging) { //dragging the placeable object with the mouse
@@ -42,6 +48,10 @@ public class BuildingManager : MonoBehaviour {
 
 		if (Input.GetMouseButtonUp (0) && isDragging) {
 				PlaceBuilding ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.Escape) && isDragging) {
+			CancelPlacement();		
 		}
 
 		if(Input.anyKeyDown && !isDragging){
@@ -72,6 +82,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 
 		if (!IsLegalPosition () && isDragging) {
+			//Debug.Log("THIS ONE!");
 			sprtR = instance.GetComponent<SpriteRenderer> ();
 			sprtR.color = Color.red;
 		} 	else if(isDragging){
@@ -83,7 +94,7 @@ public class BuildingManager : MonoBehaviour {
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
 
-		print (resources.Count);
+		//print (resources.Count);
 		if (resources.Count == 4 && name == "resource_1"){
 			Debug.Log ("Passed!");
 		}
@@ -108,36 +119,48 @@ public class BuildingManager : MonoBehaviour {
 				temp.y = Mathf.Ceil(temp.y);
 
 				building.transform.position = temp;
-
+				building.GetComponent<Building>().isPlaced = true;
+				building.GetComponent<Building>().player1 = player1;
+				//Debug.Log ("PLACED!");
 				isDragging = false;
 				name = null;
 				}
+		StartCoroutine (scanLevel ());
+		resources.Clear();
+		//print (resources.Count);
 	}
-
-	//NOT USED
-/*	IEnumerator Cantplace(){
-		sprtR = instance.GetComponent<SpriteRenderer>();
-		sprtR.color = Color.red;
+	
+	IEnumerator scanLevel(){
 		float t = 0;
-		while(t<1){
+		while(t<0.01f){
 			t+=Time.deltaTime;
 			yield return 0;
 		}
-		sprtR.color = Color.white;
+		astarpath.Scan();
 		yield return 0;
-	}*/
+	}
+
 
 	bool IsLegalPosition(){
 		if (colliders.Count > 0) {
-			//StartCoroutine(Cantplace());
+			//Debug.Log ("ELSE IF 1");
 			return false;
 		}else if(resources.Count > 0 && name != "resource_1"){
+			//Debug.Log ("ELSE IF 2");
 			return false;
 		}
 		if(name == "resource_1" && resources.Count < 4){
+			//Debug.Log ("ELSE IF 3");
 			return false;
 		}
 
 		return true;
 	}
+
+	void CancelPlacement(){
+		isDragging = false;
+		Destroy (instance);
+	}
+
+
 }

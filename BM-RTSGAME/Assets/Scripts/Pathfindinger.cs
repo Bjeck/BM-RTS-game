@@ -120,6 +120,7 @@ public class Pathfindinger : MonoBehaviour {
 		if (currentWaypoint >= path.vectorPath.Count) { //when we reach the end of the path.
 			path = null;
 			unitScript.isMoving = false;
+			unitScript.isAttackMoving = false;
 			return;
 		}
 
@@ -146,7 +147,7 @@ public class Pathfindinger : MonoBehaviour {
 				RaycastHit hit;
 				if (Physics.Raycast (transform.position,(unitScript.target.transform.position-transform.position), out hit, unitScript.attackRange)) {
 					Debug.DrawRay(transform.position,(unitScript.target.transform.position-transform.position));
-					if(hit.transform.gameObject.tag == "Obstacle" || hit.transform.gameObject.tag == "Building"){
+					if(hit.transform.gameObject.tag == "Obstacle" ||  (hit.transform.gameObject.tag == "Building" && unitScript.isTargetAUnit == true)){
 						//Debug.Log("THERE'S A SOMETHING THERE");
 					}else{
 						unitScript.checkLineOfSight = false;
@@ -161,7 +162,7 @@ public class Pathfindinger : MonoBehaviour {
 	}
 
 	public void SetPath(Vector3 target){ //Setting the path (from the mouseclick) and starts to walk it.
-		//Debug.Log ("SETTING PATH "+unitScript.checkDistanceToTarget);
+		//Debug.Log ("SETTING PATH "+target);
 		seeker.StartPath(transform.position, target, OnPathComplete);
 		unitScript.isMoving = true;
 		unitScript.isHoldingPosition = false;

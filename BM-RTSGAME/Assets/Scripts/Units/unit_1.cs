@@ -11,10 +11,9 @@ public class unit_1 : Unit {
 
 		health = 100;
 		attackSpeed = 0.6f;
-		attackRange = 5f;
-		visionRange = 10;
+		attackRange = 2f;
+		visionRange = 5f;
 		projectileSpeed = 30;
-
 	}
 	
 	// Update is called once per frame
@@ -30,8 +29,8 @@ public class unit_1 : Unit {
 
 	public override void Attack(GameObject obj){ //The Attack function. The parameter is the target unit/gameobject
 		if(isAttacking){ 
-			if(isSelected)
-				Debug.Log("ATTACKING: "+obj);
+			//if(isSelected)
+				//Debug.Log("ATTACKING: "+obj);
 			Vector3 direction = obj.transform.position - transform.position;
 			float angle = Mathf.Atan2(direction.y,direction.x) * Mathf.Rad2Deg+90; 						//The direction and angle of the shot is calculated.
 
@@ -39,6 +38,8 @@ public class unit_1 : Unit {
 				bulletObject = (GameObject)Instantiate(Resources.Load("bullet_1",typeof(GameObject)));
 				bulletScript = bulletObject.GetComponent<Projectile>();
 				bulletScript.damage = attackDamage; 													//Creates, intantiates and sets the damage of the bullet.
+				bulletScript.range = attackRange+1f;
+				bulletScript.unitThatFiredMe = this.gameObject;
 				bulletObject.transform.position = transform.position+direction.normalized;
 				bulletObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 		//Rotation is set to be the direction it is flying in.
 				bulletObject.GetComponent<Rigidbody> ().velocity = direction.normalized*projectileSpeed;//Rotation and speed of the bullet.

@@ -11,10 +11,18 @@ public class Mouse : MonoBehaviour {
 	public Rect selection = new Rect(0,0,0,0);
 	public Vector3 startClick = -Vector3.one;
 
+	public bool player1 = false;
+
 
 	// Use this for initialization
 	void Start () {
-	
+		player1 = true; //THIS IS THE ONE THAT DECIDES EVERYTHING FOR THE REST OF THE SCRIPTS
+
+		if (player1)
+			Debug.Log ("YOU ARE PLAYER 1");
+		else
+			Debug.Log ("YOU ARE PLAYER 2");
+
 	}
 
 	//TO DO
@@ -34,7 +42,7 @@ public class Mouse : MonoBehaviour {
 					LayerMask layermaskB = (1 << 10);
 					LayerMask layermaskU = (1 << 12);
 					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskB)) {	//check if it is a building that was clicked on
-						Debug.Log ("CLICKED ON BUILDING " + hit.transform.name); 
+						//Debug.Log ("CLICKED ON BUILDING " + hit.transform.name); 
 					
 						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held. And deselects other things if shift is not held.
 							ClearBuildingSelections ();
@@ -49,11 +57,10 @@ public class Mouse : MonoBehaviour {
 						else{
 							AddBuildingSelection(buildingScript); //otherwise, select it
 						}
-
 					}
 
 					else if(Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layermaskU)){//check if it is a unit that was clicked on
-						Debug.Log ("CLICKED ON UNIT " + hit.transform.name);
+						//Debug.Log ("CLICKED ON UNIT " + hit.transform.name);
 
 						if (!ShiftKeyDown ()){ //allowing multiple units and buildings to be selected if shift is held.
 							ClearBuildingSelections ();
@@ -108,13 +115,17 @@ public class Mouse : MonoBehaviour {
 // ---- ADDING AND REMOVING
 
 	public void AddBuildingSelection(Building buildingScript){
-		buildingScript.SetSelection (true);
-		buildingsSelected.Add (buildingScript);
+		if(buildingScript.player1 == player1){
+			buildingScript.SetSelection (true);
+			buildingsSelected.Add (buildingScript);
+		}
 	}
 
 	public void AddUnitSelection(Unit unitScript){
-		unitScript.SetSelection (true);
-		unitsSelected.Add (unitScript);
+		if(unitScript.player1 == player1){
+			unitScript.SetSelection (true);
+			unitsSelected.Add (unitScript);
+		}
 	}
 
 	public void RemoveUnitSelection(Unit unitScript){
@@ -151,7 +162,7 @@ public class Mouse : MonoBehaviour {
 
 	public void ClearBuildingSelections(){ //CLEAR BUILDING LIST
 		if(buildingsSelected.Count > 0)
-			Debug.Log (buildingsSelected [0]);
+			//Debug.Log (buildingsSelected [0]);
 
 		foreach (Building b in buildingsSelected) {
 			b.SetSelection(false);
@@ -161,7 +172,7 @@ public class Mouse : MonoBehaviour {
 
 	public void ClearUnitSelections(){ //CLEAR UNIT LIST
 		if(unitsSelected.Count > 0)
-			Debug.Log (unitsSelected [0]);
+			//Debug.Log (unitsSelected [0]);
 		
 		foreach (Unit u in unitsSelected) {
 			u.SetSelection(false);

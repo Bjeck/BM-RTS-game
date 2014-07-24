@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8fb0fa5c2040c47428afa6afb8bcd0fc
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - caster: {instanceID: 0}
+  - targetCursor: {fileID: 100000, guid: a69dc2336dcd4fe4c858d1a598039c92, type: 2}
+  - targetCursorGreen: {fileID: 21300000, guid: 827bb73fb33ffb449b72db169a37296a,
+      type: 3}
+  - targetCursorRed: {fileID: 21300002, guid: 827bb73fb33ffb449b72db169a37296a, type: 3}
+  - target: {instanceID: 0}
+  - zapEffect: {fileID: 19800000, guid: 43edf83c18fa4c74a8e776644a040800, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

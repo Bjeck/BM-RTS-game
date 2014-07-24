@@ -13,6 +13,9 @@ public class PlaceFields : MonoBehaviour {
 	public Vector2 FieldDimensions;
 	public Vector3 fieldPosition;
 
+	GameObject aStar;
+	AstarPath aStarScript;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -71,6 +74,10 @@ public class PlaceFields : MonoBehaviour {
 					if(i == playerCoordinates[runThroughPlayers] && j == playerCoordinates[runThroughPlayers+1]){
 						itsAPlayer = true; 
 						Instantiate (player[runTimes], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+
+						//if(runTimes==0){														//THIS IS for setting the starting position of the camera at the player's starting point. Disabled for now.
+						//	Camera.main.transform.position = new Vector3(setXPos,setYPos, -10);
+						//}
 					}
 
 					runThroughPlayers+=2;
@@ -140,6 +147,11 @@ public class PlaceFields : MonoBehaviour {
 				}
 			}
 		}
+
+		aStar = GameObject.Find ("A*");
+		aStarScript = aStar.GetComponent<AstarPath> ();
+		aStarScript.Scan (); //Scan the level, for pathfinding. For obvious reasons, this needs to be done after the level has been generated.
+
 	}
 	
 	// Update is called once per frame

@@ -3,8 +3,15 @@ using System.Collections;
 
 public class UserInterfaceGUI : MonoBehaviour {
 
-	public int ResourceVoltage = 0; 
+	int ResourceVoltage = 5; 
 	public int ResourceAmpere = 0; 
+	public int ResourceWatt = 0;
+	int wattAddition = 0;
+	float refreshUI = 0;
+	float temp = 0;
+	float voltageRate = 5;
+	float voltageDecreaseRate = 20;
+	bool shouldDecreaseVolt = true;
 	public GUIStyle TextSkin;
 	public GUIStyle ResourceTextSkin;
 	public GUIStyle BottomBarGuiStyle;
@@ -38,10 +45,13 @@ public class UserInterfaceGUI : MonoBehaviour {
 		// DRAWING: Resource Symbols
 		GUI.Box(new Rect(0.28f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "V", TextSkin);
 		GUI.Box(new Rect(2.18f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "A", TextSkin);
+		GUI.Box(new Rect(4.18f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "W", TextSkin);
+
 
 		// DRAWING: Resource Amount
 		GUI.Box(new Rect(1.7f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceVoltage, ResourceTextSkin);
 		GUI.Box(new Rect(3.6f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceAmpere, ResourceTextSkin);
+		GUI.Box(new Rect(5.6f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceWatt, ResourceTextSkin);
 
 		//----------------------------------------------------------------------------------------------------------------
 
@@ -62,5 +72,43 @@ public class UserInterfaceGUI : MonoBehaviour {
 		}
 
 	}
+
+
+	void Update () { 
+		if (shouldDecreaseVolt) {
+			StartCoroutine(voltageCounterDecrease());
+			shouldDecreaseVolt = false;
+		}
+
+		//Calculating and updating Watts
+		refreshUI += Time.deltaTime;
+		if(refreshUI > 1f){
+			wattAddition = ResourceAmpere * ResourceVoltage;
+			Debug.Log(wattAddition);
+			ResourceWatt = wattAddition;
+			refreshUI = 0;
+		}
+
+
+	}
+
+	
+	IEnumerator voltageCounterDecrease(){
+		float t = 0;
+		while(t<voltageDecreaseRate){
+			t+=Time.deltaTime;
+			yield return 0;
+		}
+		ResourceVoltage--;
+		shouldDecreaseVolt = true;
+
+		if(ResourceVoltage == 1){
+			shouldDecreaseVolt = false;
+		}
+
+		yield return 0;
+	}
+
+
 
 }
