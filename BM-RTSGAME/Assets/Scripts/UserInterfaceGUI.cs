@@ -84,8 +84,8 @@ public class UserInterfaceGUI : MonoBehaviour {
 		refreshUI += Time.deltaTime;
 		if(refreshUI > 1f){
 			wattAddition = ResourceAmpere * ResourceVoltage;
-			Debug.Log(wattAddition);
-			ResourceWatt = wattAddition;
+			//Debug.Log(wattAddition);
+			ResourceWatt += wattAddition;
 			refreshUI = 0;
 		}
 
