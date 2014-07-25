@@ -11,7 +11,6 @@ public class UserControlSwitches : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-
 		//----------------------------------------------------------------- DISABLE TILT / PETER
 		GameObject disableThis = GameObject.Find ("Main Camera"); 
 		DisableChoice = DisableSideControl.ToString();
