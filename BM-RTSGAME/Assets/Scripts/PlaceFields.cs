@@ -132,7 +132,6 @@ public class PlaceFields : MonoBehaviour {
 				if (itsAPlayer == false && isACorner == false && isASide == false){
 
 					int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
-					print ("RANDOM NUMBER IS: "+randomStdField);
 
 					if (randomStdField==0){
 						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);

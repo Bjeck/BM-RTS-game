@@ -10,7 +10,7 @@ public class Zap : DirectTarget {
 	public void Start () {
 		base.Start ();
 
-		Debug.Log ("START FROM ZAP");
+		//Debug.Log ("START FROM ZAP");
 		keyToUse = KeyCode.Z;
 		damage = 100;
 		range = 10f;
@@ -28,7 +28,7 @@ public class Zap : DirectTarget {
 			if (Input.GetMouseButtonDown (0)) {
 
 				if(dist > range){
-					Debug.Log("OUT OF RANGE!");
+					//Debug.Log("OUT OF RANGE!");
 					return;
 				}
 				if (GUIUtility.hotControl == 0) { //Check if there is a GUI Element under the mouse. If not, continue with the Raycasting.
@@ -45,7 +45,7 @@ public class Zap : DirectTarget {
 
 	public override void Do(){
 		base.Do ();
-		Debug.Log ("I'M READY TO ZAP");
+		//Debug.Log ("I'M READY TO ZAP");
 		if (isTargeting) {
 			return;		
 		}
@@ -53,14 +53,14 @@ public class Zap : DirectTarget {
 	}
 
 	public void zap(GameObject t){
-		Debug.Log ("YOU GOT ZAPPED!");
+		//Debug.Log ("YOU GOT ZAPPED!");
 		target = t;
 		t.GetComponent<Unit>().health -= damage;
 		zapEffect = (ParticleSystem)Instantiate (zapEffect);
 		zapEffect.transform.position = targetCursor.transform.position;
 		zapEffect.Play ();
 		//if (zapEffect.isPlaying)
-		Debug.Log ("IS PLAYING PARTICLES");
+		//Debug.Log ("IS PLAYING PARTICLES");
 
 		StopTargeting ();
 	}

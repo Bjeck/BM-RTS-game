@@ -15,23 +15,23 @@ public class Ability : MonoBehaviour {
 
 	// Use this for initialization
 	public void Start () {
-		Debug.Log ("START FROM ABILITY");
+		//Debug.Log ("START FROM ABILITY");
 		caster = this.gameObject;
-		Debug.Log (caster);
+		//Debug.Log (caster);
 	}
 	
 	// Update is called once per frame
 	public void Update () {
 
 		if (Input.GetKeyDown (keyToUse) && caster.GetComponent<Unit>().isSelected) {
-			Debug.Log("ABILITY KEY WAS PRESSED");
+			//Debug.Log("ABILITY KEY WAS PRESSED");
 			Do ();		
 		}
 	}
 
 
 	public virtual void Do(){
-		Debug.Log ("I'M DOING AN ABILITY");
+		//Debug.Log ("I'M DOING AN ABILITY");
 
 	}
 }

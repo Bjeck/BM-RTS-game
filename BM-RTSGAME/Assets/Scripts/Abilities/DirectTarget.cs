@@ -40,7 +40,7 @@ public class DirectTarget : Ability {
 
 	public override void Do(){
 		base.Do ();
-		Debug.Log ("DIRECTTARGET DO");
+		//Debug.Log ("DIRECTTARGET DO");
 		targetCursor = (GameObject)Instantiate(Resources.Load("Effects/targetCursor",typeof(GameObject)));
 		targetCursor.GetComponent<SpriteRenderer> ().sprite = targetCursorGreen;
 		Vector3 temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);

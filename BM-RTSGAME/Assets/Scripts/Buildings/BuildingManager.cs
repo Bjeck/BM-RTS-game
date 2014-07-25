@@ -96,10 +96,10 @@ public class BuildingManager : MonoBehaviour {
 
 		//print (resources.Count);
 		if (resources.Count == 4 && name == "resource_1"){
-			Debug.Log ("Passed!");
+			//Debug.Log ("Passed!");
 		}
 		if (!IsLegalPosition()) {
-			Debug.Log ("Cant place there!");
+			//Debug.Log ("Cant place there!");
 			return;		
 		}
 

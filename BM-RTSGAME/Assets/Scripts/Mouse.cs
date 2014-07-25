@@ -18,11 +18,11 @@ public class Mouse : MonoBehaviour {
 	void Start () {
 		player1 = true; //THIS IS THE ONE THAT DECIDES EVERYTHING FOR THE REST OF THE SCRIPTS
 
-		if (player1)
-			Debug.Log ("YOU ARE PLAYER 1");
-		else
-			Debug.Log ("YOU ARE PLAYER 2");
-
+		if (player1){
+			//Debug.Log ("YOU ARE PLAYER 1");
+		}else{
+			//Debug.Log ("YOU ARE PLAYER 2");
+		}
 	}
 
 	//TO DO
