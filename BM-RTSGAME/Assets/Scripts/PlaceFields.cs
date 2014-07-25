@@ -131,19 +131,16 @@ public class PlaceFields : MonoBehaviour {
 				//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
 				if (itsAPlayer == false && isACorner == false && isASide == false){
 
-					if(MoreStdFields.Length==0){
-						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);	
-					}else{
-						int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
-						if(randomStdField == 1){
-							Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-						}else{
-							for (int checkAll = 0; checkAll<MoreStdFields.Length;checkAll++){
-								Instantiate (MoreStdFields[checkAll], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-							}
-						}
+					int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
+					print ("RANDOM NUMBER IS: "+randomStdField);
 
+					if (randomStdField==0){
+						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
 					}
+					if (randomStdField>0){
+						Instantiate (MoreStdFields[randomStdField-1], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+					}
+				
 				}
 			}
 		}

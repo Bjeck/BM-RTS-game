@@ -60,6 +60,18 @@ public class CameraControl : MonoBehaviour {
 			ZoomStartPosition += ZoomSpeed;
 		}
 
+		if (Input.GetKey(KeyCode.UpArrow)){
+			transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
+		}
+		if (Input.GetKey(KeyCode.DownArrow)){
+			transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime);
+		}
+		if (Input.GetKey(KeyCode.LeftArrow)){
+			transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime);
+		}
+		if (Input.GetKey(KeyCode.RightArrow)){
+			transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
+		}
 
 		if (TiltPanDisable == 'N' || TiltPanDisable == 'P'){
 			//-------------------------------------------------------- GO RIGHT
