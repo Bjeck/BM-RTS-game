@@ -51,7 +51,6 @@ public class UserInterfaceGUI : MonoBehaviour {
 		GUI.Box(new Rect(2.18f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "A", TextSkin);
 		GUI.Box(new Rect(4.18f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), "W", TextSkin);
 
-
 		// DRAWING: Resource Amount
 		GUI.Box(new Rect(1.7f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceVoltage, ResourceTextSkin);
 		GUI.Box(new Rect(3.6f*ProportionWidth, 0.06f*ProportionHeight, 22, 15), ""+ResourceAmpere, ResourceTextSkin);

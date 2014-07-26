@@ -11,10 +11,11 @@ public class BuildingManager : MonoBehaviour {
 	public List<Collider> resources = new List<Collider>();
 	public bool player1 = false;
 	public int PopulationPlayer1 = 0;
+	public int PopulationLimit = 10;
 
 	///////////////////////// PRIVATE ///////////////////////
 	private bool ResourceDetected = false;
-	private int PopulationLimit = 10;
+
 	private int PopulationPlayer1Tmp;
 
 	///////////////////////// OTHER ////////////////////////
@@ -69,10 +70,10 @@ public class BuildingManager : MonoBehaviour {
 		if(Input.anyKeyDown && !isDragging){
 
 			//Debug.Log("KEY GOT!");
-			if(Input.GetKey(KeyCode.W)){		//HERE IS WHERE WE ADD MORE BUILDINGS!
+			if(Input.GetKey(KeyCode.W) && PopulationPlayer1<PopulationLimit){		//HERE IS WHERE WE ADD MORE BUILDINGS!
 				name = "building_1";
 			}
-			else if(Input.GetKey(KeyCode.T)){
+			else if(Input.GetKey(KeyCode.T) && PopulationPlayer1<PopulationLimit){
 				name = "building_2";
 			}
 			else if(Input.GetKey(KeyCode.R)){
