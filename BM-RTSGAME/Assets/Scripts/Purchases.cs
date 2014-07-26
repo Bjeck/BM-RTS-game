@@ -8,12 +8,8 @@ public class Purchases : MonoBehaviour {
 	[System.Serializable]
 	public class UnitClass 
 	{
-		public string Name;
-		public string Description;
-		public float Speed;
+		public GameObject UnitPrefab;
 		public int Costs_Watt;
-		public Color SkinColor;
-		public Color ArmorColor; 
 		[HideInInspector]
 		public bool bUsed;
 	}
@@ -23,11 +19,8 @@ public class Purchases : MonoBehaviour {
 	[System.Serializable]
 	public class BuildingClass 
 	{
-		public string Name;
-		public string Description;
+		public GameObject BuildingPrefab;
 		public int Costs_Watt;
-		public Color InnerColor;
-		public Color OuterColor; 
 		[HideInInspector]
 		public bool bUsed;
 	}
