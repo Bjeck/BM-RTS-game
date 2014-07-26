@@ -13,10 +13,10 @@ public class Building : MonoBehaviour {
 	public SpriteRenderer sprtR;
 	public Light buildingLight;
 	Mouse mouseScript;
-
 	public bool player1 = false;
-
 	public int health = 100;
+
+	private string nameOfCollision;
 
 	// Use this for initialization
 	public void Start () {
@@ -70,13 +70,12 @@ public class Building : MonoBehaviour {
 				bManScript.resources.Add(c);
 			}
 		}
-
 	}
 	
 	void OnTriggerExit(Collider c){
 		if(!isPlaced){
 			if (c.tag == "Building" || c.tag == "Obstacle") {
-				bManScript.colliders.Remove(c);		
+				bManScript.colliders.Remove(c);	
 			}else if(c.tag == "Resource"){
 				//Debug.Log("REMOVED A RESOURCE");
 				bManScript.resources.Remove(c);
@@ -84,11 +83,9 @@ public class Building : MonoBehaviour {
 		}
 	}
 
-
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
+		GameObject.Find ("BuildingManager").GetComponent<BuildingManager> ().PopulationPlayer1 -= 1;
 		mouseScript.RemoveBuildingSelection(this);
 		Destroy (this.gameObject);
-		
 	}
-
 }

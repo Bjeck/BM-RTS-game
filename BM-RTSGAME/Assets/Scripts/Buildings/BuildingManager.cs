@@ -5,18 +5,25 @@ using System.Linq;
 
 public class BuildingManager : MonoBehaviour {
 
+	///////////////////////// PUBLIC ////////////////////////
 	public bool isDragging = false;
-	GameObject instance;
-	GameObject building;
-	SpriteRenderer sprtR;
-	string name = null;
 	public List<Collider> colliders = new List<Collider>();
 	public List<Collider> resources = new List<Collider>();
-	GameObject Astar;
-	AstarPath astarpath;
-	private bool ResourceDetected = false;
-
 	public bool player1 = false;
+	public int PopulationPlayer1 = 0;
+
+	///////////////////////// PRIVATE ///////////////////////
+	private bool ResourceDetected = false;
+	private int PopulationLimit = 10;
+	private int PopulationPlayer1Tmp;
+
+	///////////////////////// OTHER ////////////////////////
+	GameObject instance;
+	public GameObject building;
+	GameObject Astar;
+	SpriteRenderer sprtR;
+	string name = null;
+	AstarPath astarpath;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +39,11 @@ public class BuildingManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (PopulationPlayer1 != PopulationPlayer1Tmp){
+			print (PopulationPlayer1);
+			PopulationPlayer1Tmp = PopulationPlayer1;
+		}
 
 		if(resources.Count == 4){
 			//Debug.Log ("Resource registered!");

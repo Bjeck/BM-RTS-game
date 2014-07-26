@@ -3,24 +3,28 @@ using System.Collections;
 
 public class UserInterfaceGUI : MonoBehaviour {
 
-	int ResourceVoltage = 5; 
+	//------------------------------- PUBLIC
 	public int ResourceAmpere = 0; 
 	public int ResourceWatt = 0;
-	int wattAddition = 0;
-	float refreshUI = 0;
-	float temp = 0;
-	float voltageRate = 5;
-	float voltageDecreaseRate = 20;
-	bool shouldDecreaseVolt = true;
 	public GUIStyle TextSkin;
 	public GUIStyle ResourceTextSkin;
 	public GUIStyle BottomBarGuiStyle;
 	public Texture BottomBarTexture;
 	public Texture TopBarTexture;
 
+	//------------------------------- PRIVATE
 	private float ProportionWidth;
 	private float ProportionHeight;
 	private Vector3 scale;
+
+	//------------------------------- OTHER
+	int ResourceVoltage = 5; 
+	int wattAddition = 0;
+	float refreshUI = 0;
+	float temp = 0;
+	float voltageRate = 5;
+	float voltageDecreaseRate = 20;
+	bool shouldDecreaseVolt = true;
 
 	void OnGUI() {
 
