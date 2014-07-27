@@ -12,12 +12,14 @@ public class Unit : MonoBehaviour {
 	Vector3 targetKeeper;
 	LayerMask unitlayerMask = (1 << 12); //unit layermask
 	LayerMask buildinglayerMask = (1 << 10); //unit layermask
-
+	
 	RaycastHit hit;
 	Collider[] unitsAroundMe;
 	public float distanceToEnemy = Mathf.Infinity;
 	GameObject closestEnemy = null;
 	public GameObject target = null;
+	public GameObject bulletObject;
+	public Projectile bulletScript;
 
 
 	//BOOLEANS
@@ -40,8 +42,6 @@ public class Unit : MonoBehaviour {
 	public float attackSpeed = 1;
 	protected float attackTimer = 0;
 	public float projectileSpeed = 30; //just some default values so they ain't 0.
-	public GameObject bulletObject;
-	public Projectile bulletScript;
 
 	public bool player1 = false;
 
@@ -87,6 +87,7 @@ public class Unit : MonoBehaviour {
 			unitsAroundMe = Physics.OverlapSphere (transform.position, visionRange, unitlayerMask); //creates a sphere around unit and checks if any collisions with units happen inside it.
 			int i = 0;
 			foreach(Collider c in unitsAroundMe){
+				//Debug.Log("UNITS "+unitsAroundMe[i]);
 				if(c.transform.gameObject == transform.gameObject || c.transform.gameObject.GetComponent<Unit>().player1 == this.player1) //it can hit itself, but it shouldn't do anything when it does that.
 				{
 					//Debug.Log("MYSELF AND/OR OTHER UNITS ON MY TEAM AROUND ME");
@@ -106,11 +107,12 @@ public class Unit : MonoBehaviour {
 		//BUILDINGS
 		if (target == null) { //check if there are any buildings around me.
 			unitsAroundMe = Physics.OverlapSphere (transform.position, visionRange, buildinglayerMask); //creates a sphere around unit and checks if any collisions with buildings happen inside it.
+
 			int i = 0;
 			foreach(Collider c in unitsAroundMe){
 				if(c.transform.gameObject == transform.gameObject || c.transform.gameObject.GetComponent<Building>().player1 == this.player1)
 				{
-					//Debug.Log("MYSELF AND/OR OTHER UNITS ON MY TEAM AROUND ME. I WONT ATTACK THEM. "+c.transform.gameObject.GetComponent<Building>().player1+" "+this.player1);
+				//	Debug.Log("MYSELF AND/OR OTHER UNITS ON MY TEAM AROUND ME. I WONT ATTACK THEM. "+c.transform.gameObject.GetComponent<Building>().player1+" "+this.player1);
 				}
 				else{
 					if(distanceToEnemy > Vector3.Distance(c.transform.position,transform.position)){ //checks which of the enemies in range is the closest. This one it will attack
