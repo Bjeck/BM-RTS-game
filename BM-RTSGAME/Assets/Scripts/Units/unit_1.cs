@@ -40,7 +40,7 @@ public class unit_1 : Unit {
 				bulletScript.damage = attackDamage; 													//Creates, intantiates and sets the damage of the bullet.
 				bulletScript.range = attackRange+1f;
 				bulletScript.unitThatFiredMe = this.gameObject;
-				bulletObject.transform.position = transform.position+direction.normalized;
+				bulletObject.transform.position = transform.position;
 				bulletObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 		//Rotation is set to be the direction it is flying in.
 				bulletObject.GetComponent<Rigidbody> ().velocity = direction.normalized*projectileSpeed;//Rotation and speed of the bullet.
 				attackTimer+=0.01f; 																	//so the attackTimer is not forever 0.
