@@ -18,6 +18,8 @@ public class BuildingManager : MonoBehaviour {
 
 	private int PopulationPlayer1Tmp;
 
+	private List<Building_UnitProduction> currentlySelectedUnitBuildings = new List<Building_UnitProduction>();
+
 	///////////////////////// OTHER ////////////////////////
 	GameObject instance;
 	public GameObject building;
@@ -25,6 +27,7 @@ public class BuildingManager : MonoBehaviour {
 	SpriteRenderer sprtR;
 	string name = null;
 	AstarPath astarpath;
+	Mouse mouseS;
 
 	// Use this for initialization
 	void Start () {
@@ -32,10 +35,8 @@ public class BuildingManager : MonoBehaviour {
 		astarpath = Astar.GetComponent<AstarPath> ();
 
 		GameObject mouse = GameObject.Find ("Main Camera");
-		Mouse mouseS = mouse.GetComponent<Mouse> ();
+		mouseS = mouse.GetComponent<Mouse> ();
 		player1 = mouseS.player1;
-
-
 	}
 	
 	// Update is called once per frame
@@ -49,6 +50,9 @@ public class BuildingManager : MonoBehaviour {
 		if(resources.Count == 4){
 			//Debug.Log ("Resource registered!");
 		}
+
+
+//------------------------ DRAGGING AND PLACEMENT
 
 		if (isDragging) { //dragging the placeable object with the mouse
 			//Debug.Log("DRAGS!");
@@ -68,6 +72,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 
 		if(Input.anyKeyDown && !isDragging){
+
 
 			//Debug.Log("KEY GOT!");
 			if(Input.GetKey(KeyCode.W) && PopulationPlayer1<PopulationLimit){		//HERE IS WHERE WE ADD MORE BUILDINGS!
@@ -102,11 +107,25 @@ public class BuildingManager : MonoBehaviour {
 			sprtR = instance.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.gray;
 		}
+
+
+
+
+// ---------------------------- UNIT PRODUCTION MANAGEMENT
+
+//		Debug.Log(mouseS.unitsSelected.Count);
+
+
+
+
+
+
+
+
 	}
 
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
-
 		//print (resources.Count);
 		if (resources.Count == 4 && name == "resource_1"){
 			//Debug.Log ("Passed!");
@@ -155,6 +174,8 @@ public class BuildingManager : MonoBehaviour {
 
 
 	bool IsLegalPosition(){
+
+
 		if (colliders.Count > 0) {
 			//Debug.Log ("ELSE IF 1");
 			return false;
@@ -174,6 +195,52 @@ public class BuildingManager : MonoBehaviour {
 		isDragging = false;
 		Destroy (instance);
 	}
+
+
+
+
+
+	public void ExecuteOrder(float time, string name){ //Right now, only used for building units in unit production buildings. Maybe more later??
+
+		if (mouseS.buildingsSelected.Count > 0) { //first, how many buildings are selected?
+			foreach(Building b in mouseS.buildingsSelected){
+				if(b.isUnitBuilding == true){
+					currentlySelectedUnitBuildings.Add(b.gameObject.GetComponent<Building_UnitProduction>());
+					//Debug.Log(currentlySelectedUnitBuildings.Count);
+				}
+			}
+		}
+
+
+		if (currentlySelectedUnitBuildings.Count == 0) { //if there, for some reason, aren't any unit buildings selected, abort.
+			Debug.Log("This shouldn't happen");
+			return;		
+		}
+		else if(currentlySelectedUnitBuildings.Count == 1){ //only one building, easy. Build unit if possible.
+//			Debug.Log("CHECKIN FOR AVAILABILITY TO CONSTRUCT UNIT: "+currentlySelectedUnitBuildings[0].isConstructing);
+			if(!currentlySelectedUnitBuildings[0].isConstructing)
+				StartCoroutine(currentlySelectedUnitBuildings[0].ConstructUnit(time, name));
+		}
+		else if(currentlySelectedUnitBuildings.Count > 1){
+//			Debug.Log("MORE THAN ONE: "+currentlySelectedUnitBuildings.Count);
+			int i = 0;
+			foreach(Building_UnitProduction bu in currentlySelectedUnitBuildings){ //if more buildings, go through each and check if they are free to build. If so, build and stop checking.
+//				Debug.Log("CHECKING "+bu+" FOR AVAILABILITY TO CONSTRUCT UNIT: "+currentlySelectedUnitBuildings[i].isConstructing);
+				if(!currentlySelectedUnitBuildings[i].isConstructing){
+					StartCoroutine(currentlySelectedUnitBuildings[i].ConstructUnit(time, name));
+					currentlySelectedUnitBuildings.Clear ();
+					return;
+				}
+				i++;
+			}
+
+
+		}
+
+		currentlySelectedUnitBuildings.Clear ();
+	}
+
+
 
 
 }

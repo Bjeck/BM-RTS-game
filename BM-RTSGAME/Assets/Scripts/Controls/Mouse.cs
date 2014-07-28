@@ -147,6 +147,15 @@ public class Mouse : MonoBehaviour {
 		}
 		return false;
 	}
+
+	public bool CheckBuildingInList(Building building){ //Checks if parameter unit is already in the unitList. NEED TO ADD ONE FOR BUILDINGS LATER
+		foreach (Building u in buildingsSelected) {
+			if(u == building){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 	public bool ShiftKeyDown(){

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Building : MonoBehaviour {
 
 	GameObject buildMan;
-	BuildingManager bManScript;
+	public BuildingManager bManScript;
 	public bool isSelected = false;
 	public bool isPlaced = false;
 	public bool isBuilding = false;
@@ -15,6 +15,7 @@ public class Building : MonoBehaviour {
 	Mouse mouseScript;
 	public bool player1 = false;
 	public int health = 100;
+	public bool isUnitBuilding = false;
 
 	private string nameOfCollision;
 
@@ -38,7 +39,7 @@ public class Building : MonoBehaviour {
 		if (renderer.isVisible && Input.GetMouseButton (0) && mouseScript.isDrawingBox() && !bManScript.isDragging) { //for selection box. makes itself selection if it is inside the box.
 			Vector3 camPos = Camera.main.WorldToScreenPoint (transform.position);
 			camPos.y = Mouse.InvertMouseY (camPos.y);
-			if(mouseScript.selection.Contains (camPos))
+			if(mouseScript.selection.Contains (camPos) && !mouseScript.CheckBuildingInList(this))
 				mouseScript.AddBuildingSelection(this);
 			if(!mouseScript.selection.Contains (camPos) && !mouseScript.ShiftKeyDown())
 				mouseScript.RemoveBuildingSelection(this);

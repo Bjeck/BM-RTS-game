@@ -12,6 +12,8 @@ public class Building_UnitProduction : Building {
 	// Use this for initialization
 	public void Start () {
 		base.Start ();
+		isUnitBuilding = true;
+
 	}
 	
 	// Update is called once per frame

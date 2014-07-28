@@ -28,7 +28,9 @@ public class unit_1 : Unit {
 
 
 	public override void Attack(GameObject obj){ //The Attack function. The parameter is the target unit/gameobject
-		if(isAttacking){ 
+		if(isAttacking){
+			if(obj == this.gameObject)
+				return;
 			//if(isSelected)
 				//Debug.Log("ATTACKING: "+obj);
 			Vector3 direction = obj.transform.position - transform.position;
