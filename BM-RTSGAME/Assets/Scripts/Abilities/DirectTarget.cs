@@ -55,6 +55,7 @@ public class DirectTarget : Ability {
 		target = null;
 		isTargeting = false;
 		Destroy (targetCursor);
+		aMan.listOfAbilities.Clear ();
 	}
 
 }

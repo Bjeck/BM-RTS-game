@@ -11,6 +11,8 @@ public class Ability : MonoBehaviour {
 	public GameObject targetCursor;
 	public Sprite targetCursorGreen;
 	public Sprite targetCursorRed;
+	Mouse mouseS;
+	protected AbilityManager aMan;
 
 
 	// Use this for initialization
@@ -18,8 +20,10 @@ public class Ability : MonoBehaviour {
 		//Debug.Log ("START FROM ABILITY");
 		caster = this.gameObject;
 		//Debug.Log (caster);
+		mouseS = GameObject.Find("Main Camera").GetComponent<Mouse> ();
+		aMan = GameObject.Find("AbilityManager").GetComponent<AbilityManager> ();
 	}
-	
+
 	// Update is called once per frame
 	public void Update () {
 
@@ -30,7 +34,14 @@ public class Ability : MonoBehaviour {
 	}
 
 
+
 	public virtual void Do(){
+		//Here we check cost and current energy available etc.
+
+		if (aMan.listOfAbilities.Count > 0)
+			return;
+
+		aMan.AddAbilityToList (this);
 		//Debug.Log ("I'M DOING AN ABILITY");
 
 	}

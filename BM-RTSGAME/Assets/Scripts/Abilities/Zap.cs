@@ -63,5 +63,6 @@ public class Zap : DirectTarget {
 		//Debug.Log ("IS PLAYING PARTICLES");
 
 		StopTargeting ();
+		aMan.listOfAbilities.Clear ();
 	}
 }

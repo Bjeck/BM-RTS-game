@@ -69,10 +69,14 @@ public class Unit : MonoBehaviour {
 		if (renderer.isVisible && Input.GetMouseButton (0) && mouseScript.isDrawingBox()) { //for selection box. makes itself selection if it is inside the box.
 			Vector3 camPos = Camera.main.WorldToScreenPoint (transform.position);
 			camPos.y = Mouse.InvertMouseY (camPos.y);
-			if(mouseScript.selection.Contains (camPos) && !mouseScript.CheckUnitInList(this))
+			if(mouseScript.selection.Contains (camPos) && !mouseScript.CheckUnitInList(this)){
+				//Debug.Log("UNIT ADD");
 				mouseScript.AddUnitSelection(this);
-			if(!mouseScript.selection.Contains (camPos) && !mouseScript.ShiftKeyDown())
+			}
+			if(!mouseScript.selection.Contains (camPos) && !mouseScript.ShiftKeyDown()){
 				mouseScript.RemoveUnitSelection(this);
+				//Debug.Log("UNIT REMOVE");
+			}
 		}
 
 

@@ -10,6 +10,7 @@ public class Mouse : MonoBehaviour {
 	public Texture2D selectionHighlight = null;
 	public Rect selection = new Rect(0,0,0,0);
 	public Vector3 startClick = -Vector3.one;
+	AbilityManager aMan;
 
 	public bool player1 = false;
 
@@ -17,6 +18,7 @@ public class Mouse : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player1 = true; //THIS IS THE ONE THAT DECIDES EVERYTHING FOR THE REST OF THE SCRIPTS
+		aMan = GameObject.Find("AbilityManager").GetComponent<AbilityManager> ();
 
 		if (player1){
 			//Debug.Log ("YOU ARE PLAYER 1");
@@ -126,9 +128,11 @@ public class Mouse : MonoBehaviour {
 			unitScript.SetSelection (true);
 			unitsSelected.Add (unitScript);
 		}
+		Debug.Log (unitsSelected.Count);
 	}
 
 	public void RemoveUnitSelection(Unit unitScript){
+//		Debug.Log ("REMOVING UNITS "+unitsSelected.Count);
 		unitScript.SetSelection (false);
 		unitsSelected.Remove (unitScript);
 	}
