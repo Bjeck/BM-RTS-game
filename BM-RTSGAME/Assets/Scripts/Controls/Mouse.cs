@@ -128,7 +128,7 @@ public class Mouse : MonoBehaviour {
 			unitScript.SetSelection (true);
 			unitsSelected.Add (unitScript);
 		}
-		Debug.Log (unitsSelected.Count);
+		//Debug.Log (unitsSelected.Count);
 	}
 
 	public void RemoveUnitSelection(Unit unitScript){

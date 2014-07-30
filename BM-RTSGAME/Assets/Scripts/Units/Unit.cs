@@ -42,6 +42,7 @@ public class Unit : MonoBehaviour {
 	public float attackSpeed = 1;
 	protected float attackTimer = 0;
 	public float projectileSpeed = 30; //just some default values so they ain't 0.
+	public int memory = 0;
 
 	public bool player1 = false;
 
@@ -196,6 +197,13 @@ public class Unit : MonoBehaviour {
 	}
 
 	public virtual void StopAttack(){}
+
+
+	public void TakeMemory(int loss){
+		memory = memory - loss;
+		if(memory < 0)
+			memory = 0;
+	}
 
 
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D

@@ -5,7 +5,7 @@ public class Ability : MonoBehaviour {
 
 	public GameObject caster;
 	public float coolDown = 0;
-	public float cost = 0;
+	public int cost = 0;
 	public KeyCode keyToUse;
 	public int damage;
 	public GameObject targetCursor;
@@ -35,14 +35,19 @@ public class Ability : MonoBehaviour {
 
 
 
-	public virtual void Do(){
+	public virtual bool Do(){
 		//Here we check cost and current energy available etc.
+		//Debug.Log(caster.GetComponent<Unit> ().memory);
+		if (caster.GetComponent<Unit> ().memory - cost < 0) {
+			Debug.Log("NOT ENOUGH memory to cast");
+			return false;
+		}
 
 		if (aMan.listOfAbilities.Count > 0)
-			return;
+			return false;
 
 		aMan.AddAbilityToList (this);
 		//Debug.Log ("I'M DOING AN ABILITY");
-
+		return true;
 	}
 }

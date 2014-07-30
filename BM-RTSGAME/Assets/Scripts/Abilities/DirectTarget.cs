@@ -38,8 +38,11 @@ public class DirectTarget : Ability {
 		}
 	}
 
-	public override void Do(){
-		base.Do ();
+	public override bool Do(){
+		if (!base.Do ()) {
+			return false;		
+		}
+
 		//Debug.Log ("DIRECTTARGET DO");
 		targetCursor = (GameObject)Instantiate(Resources.Load("Effects/targetCursor",typeof(GameObject)));
 		targetCursor.GetComponent<SpriteRenderer> ().sprite = targetCursorGreen;
@@ -47,7 +50,8 @@ public class DirectTarget : Ability {
 		temp.z = -1f;
 		
 		targetCursor.transform.position = temp;
-		isTargeting = true;
+		//isTargeting = true;
+		return true;
 	}
 
 

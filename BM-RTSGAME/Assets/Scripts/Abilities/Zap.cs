@@ -12,6 +12,7 @@ public class Zap : DirectTarget {
 
 		//Debug.Log ("START FROM ZAP");
 		keyToUse = KeyCode.Z;
+		cost = 50;
 		damage = 100;
 		range = 10f;
 
@@ -21,11 +22,18 @@ public class Zap : DirectTarget {
 	void Update () {
 		//Debug.Log ("ZAP EFFECT: "+zapEffect);
 
+		//Debug.Log (isTargeting);
 
 		base.Update ();
 
 		if (isTargeting) {
 			if (Input.GetMouseButtonDown (0)) {
+				//Debug.Log("MOUSE CLICK!");
+
+				if (caster.GetComponent<Unit> ().memory - cost < 0) {
+					Debug.Log("NOT ENOUGH memory to cast");
+					return;
+				}
 
 				if(dist > range){
 					//Debug.Log("OUT OF RANGE!");
@@ -43,18 +51,24 @@ public class Zap : DirectTarget {
 		}
 	}
 
-	public override void Do(){
-		base.Do ();
+	public override bool Do(){
+		if (!base.Do ()) {
+			//Debug.Log(base.Do ());
+			return false;		
+		}
+
 		//Debug.Log ("I'M READY TO ZAP");
 		if (isTargeting) {
-			return;		
+			return false;		
 		}
 		isTargeting = true;
+		return true;
 	}
 
 	public void zap(GameObject t){
 		//Debug.Log ("YOU GOT ZAPPED!");
 		target = t;
+		caster.GetComponent<Unit>().TakeMemory (cost);
 		t.GetComponent<Unit>().health -= damage;
 		zapEffect = (ParticleSystem)Instantiate (zapEffect);
 		zapEffect.transform.position = targetCursor.transform.position;

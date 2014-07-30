@@ -14,6 +14,7 @@ public class unit_1 : Unit {
 		attackRange = 2f;
 		visionRange = 5f;
 		projectileSpeed = 30;
+		memory = 100;
 	}
 	
 	// Update is called once per frame
