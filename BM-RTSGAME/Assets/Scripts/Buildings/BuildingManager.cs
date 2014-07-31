@@ -73,19 +73,20 @@ public class BuildingManager : MonoBehaviour {
 
 		if(Input.anyKeyDown && !isDragging){
 
-
-			//Debug.Log("KEY GOT!");
-			if(Input.GetKey(KeyCode.W) && PopulationPlayer1<PopulationLimit){		//HERE IS WHERE WE ADD MORE BUILDINGS!
-				name = "building_1";
-			}
-			else if(Input.GetKey(KeyCode.T) && PopulationPlayer1<PopulationLimit){
-				name = "building_2";
-			}
-			else if(Input.GetKey(KeyCode.R)){
-				name = "resource_1";
-			}
-			else{
-				name = null;
+			if (transform.parent.networkView.isMine){
+				//Debug.Log("KEY GOT!");
+				if(Input.GetKey(KeyCode.W) && PopulationPlayer1<PopulationLimit){		//HERE IS WHERE WE ADD MORE BUILDINGS!
+					name = "building_1";
+				}
+				else if(Input.GetKey(KeyCode.T) && PopulationPlayer1<PopulationLimit){
+					name = "building_2";
+				}
+				else if(Input.GetKey(KeyCode.R)){
+					name = "resource_1";
+				}
+				else{
+					name = null;
+				}
 			}
 			
 			if(name != null){
