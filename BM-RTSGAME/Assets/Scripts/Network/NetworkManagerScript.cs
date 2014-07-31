@@ -6,7 +6,11 @@ public class NetworkManagerScript : MonoBehaviour {
 	private const string typeName = "Electro";
 	private const string gameName = "TestGame";
 
+	public Vector2 SpawnPlayerAt = new Vector3 (0.0f, 0.0f, 0.0f);
 	public GameObject playerPrefab;
+
+	[HideInInspector] 
+	public bool ServerStarted = false;
 
 	private void StartServer()
 	{
@@ -55,7 +59,7 @@ public class NetworkManagerScript : MonoBehaviour {
 	
 	private void SpawnPlayer()
 	{
-		Network.Instantiate(playerPrefab, new Vector3(0.0f, 5.0f, 0.0f), Quaternion.identity, 0);
+		Network.Instantiate(playerPrefab, SpawnPlayerAt, Quaternion.identity, 0);
 	}
 	
 	void OnGUI()
@@ -66,6 +70,8 @@ public class NetworkManagerScript : MonoBehaviour {
 		{
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
 				StartServer();
+					ServerStarted = true;
+				
 			
 			if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts"))
 				RefreshHostList();

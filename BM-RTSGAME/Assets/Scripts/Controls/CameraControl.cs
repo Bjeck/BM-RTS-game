@@ -38,64 +38,58 @@ public class CameraControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		
-		//-------------------------------------------------------- Mouse Position
-		mousePos = Input.mousePosition;
-		camera.orthographicSize = ZoomStartPosition;
-		
-//		//-------------------------------------------------------- Acceleration in margins
-//		accR = AccelerationSpeed 	* 	1.0f/marginForPan*(mousePos.x-(Screen.width-marginForPan));
-//		accL = AccelerationSpeed 	* 	1.0f/marginForPan*(-mousePos.x+marginForPan);
-//		
-//		accT = AccelerationSpeed 	* 	1.0f/marginForTilt*(mousePos.y-(Screen.height-marginForTilt));
-//		accB = AccelerationSpeed 	* 	1.0f/marginForTilt*(-mousePos.y+marginForTilt);
-//		
-		if (Input.GetAxis("Mouse ScrollWheel") > 0 && ZoomStartPosition > MinZoomDistance) // forward
-		{
-			ZoomStartPosition -= ZoomSpeed;
-		}
-		if (Input.GetAxis("Mouse ScrollWheel") < 0 && ZoomStartPosition < MaxZoomDistance) // back
-		{
-			ZoomStartPosition += ZoomSpeed;
-		}
 
-		if (Input.GetKey(KeyCode.UpArrow)){
-			transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
-		}
-		if (Input.GetKey(KeyCode.DownArrow)){
-			transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime);
-		}
-		if (Input.GetKey(KeyCode.LeftArrow)){
-			transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime);
-		}
-		if (Input.GetKey(KeyCode.RightArrow)){
-			transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
-		}
+		//If the parent belongs to this player - transform.parent.networkView.isMine
+		if (transform.parent.networkView.isMine){
 
-		if (TiltPanDisable == 'N' || TiltPanDisable == 'P'){
-			//-------------------------------------------------------- GO RIGHT
-			if (mousePos.x > (right_screen_side-marginForPan)){ 	
+			mousePos = Input.mousePosition;
+			camera.orthographicSize = ZoomStartPosition;
+
+			if (Input.GetAxis("Mouse ScrollWheel") > 0 && ZoomStartPosition > MinZoomDistance) // forward
+			{
+				ZoomStartPosition -= ZoomSpeed;
+			}
+			if (Input.GetAxis("Mouse ScrollWheel") < 0 && ZoomStartPosition < MaxZoomDistance) // back
+			{
+				ZoomStartPosition += ZoomSpeed;
+			}
+
+			if (Input.GetKey(KeyCode.UpArrow)){
+				transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
+			}
+			if (Input.GetKey(KeyCode.DownArrow)){
+				transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime);
+			}
+			if (Input.GetKey(KeyCode.LeftArrow)){
+				transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime);
+			}
+			if (Input.GetKey(KeyCode.RightArrow)){
 				transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
 			}
 
-			//-------------------------------------------------------- GO LEFT
-			if (mousePos.x < (left_screen_side+marginForPan)){		
-				transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime); 
+			if (TiltPanDisable == 'N' || TiltPanDisable == 'P'){
+				//-------------------------------------------------------- GO RIGHT
+				if (mousePos.x > (right_screen_side-marginForPan)){ 	
+					transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
+				}
+
+				//-------------------------------------------------------- GO LEFT
+				if (mousePos.x < (left_screen_side+marginForPan)){		
+					transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime); 
+				}
+			}
+
+			if (TiltPanDisable == 'N' || TiltPanDisable == 'T'){
+				//-------------------------------------------------------- GO UP
+				if (mousePos.y > (top_screen_side-marginForTilt)){ 		
+					transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
+				}
+
+				//-------------------------------------------------------- GO DOWN
+				if (mousePos.y < (bottom_screen_side+marginForTilt)){	
+					transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
+				}
 			}
 		}
-
-		if (TiltPanDisable == 'N' || TiltPanDisable == 'T'){
-			//-------------------------------------------------------- GO UP
-			if (mousePos.y > (top_screen_side-marginForTilt)){ 		
-				transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
-			}
-
-			//-------------------------------------------------------- GO DOWN
-			if (mousePos.y < (bottom_screen_side+marginForTilt)){	
-				transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
-			}
-		}
-
 	}
 }
