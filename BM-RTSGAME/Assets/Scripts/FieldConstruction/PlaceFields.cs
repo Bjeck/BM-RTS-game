@@ -5,6 +5,7 @@ using System.Linq;
 
 public class PlaceFields : MonoBehaviour {
 
+	//====================================== Public
 	public GameObject StdFields;
 	public GameObject[] MoreStdFields;
 	public GameObject CornerFields;
@@ -14,21 +15,54 @@ public class PlaceFields : MonoBehaviour {
 	public Vector3 fieldPosition;
 	static public int sizeOfPP = 2;
 
+	//====================================== Hidden Public
 	[HideInInspector]
+	public int amountOfPlayers;
 	public Vector2[] PlayerPositions = new Vector2[sizeOfPP];
 
-	GameObject NetworkM;
-	GameObject aStar;
-	AstarPath aStarScript;
-
+	//====================================== Private
+	private List<int> playerCoordinates;
+	private float setXPos;
+	private float setYPos;
+	private float setZPos;
+	private bool itsAPlayer;
+	private bool isASide;
+	private bool isACorner;
+	private GameObject NetworkM;
+	private GameObject aStar;
+	private AstarPath aStarScript;
+	
 	void Awake(){
+		// Asks for the amount of players. 
 		NetworkM = GameObject.Find ("NetworkManager");
-		PlayerPositions = new Vector2[NetworkM.GetComponent<NetworkManagerScript> ().players];
+		amountOfPlayers = NetworkM.GetComponent<NetworkManagerScript> ().players;
+		PlayerPositions = new Vector2[amountOfPlayers];
+
+		SetPlayerPositions ();
+		GenerateMapFields ();
+	}
 		
-		List<int> playerCoordinates = new List<int>();
+	void Start () {
+
+		aStar = GameObject.Find ("A*");
+		aStarScript = aStar.GetComponent<AstarPath> ();
+		aStarScript.Scan (); //Scan the level, for pathfinding. For obvious reasons, this needs to be done after the level has been generated.
+
+	}
+
+	void SetPlayerPositions(){
+		//========================================================================= Player Positions
+		// This section basically sets the player positions randomly, however, none
+		// of them can be in the same row or coloumn. 
+		//   NOT POSSIBLE      Possible
+		//		OOO#OO 			O#OOOO
+		// 		OOOOOO			OOOO#O
+		//  	O#O#OO			OOO#OO
+		
+		playerCoordinates = new List<int>();
 		
 		//------------------ Random location but not outer field. 
-		for (int AllPlayersGetCoordinates = 0; AllPlayersGetCoordinates < player.Length; AllPlayersGetCoordinates++){
+		for (int AllPlayersGetCoordinates = 0; AllPlayersGetCoordinates < amountOfPlayers; AllPlayersGetCoordinates++){
 			
 			//--------------------------------------- Create lists
 			List<int> checklistX = new List<int>();
@@ -41,13 +75,13 @@ public class PlaceFields : MonoBehaviour {
 			//--------------------------------------- Are numbers in the playerCoordinates?
 			bool XisClear = playerCoordinates.Any(item => checklistX.Contains(item));
 			bool YisClear = playerCoordinates.Any(item => checklistY.Contains(item));
-			
-			
+
 			//--------------------------------------- If they are, add it to the playerCoordinates list
 			if (!XisClear && !YisClear){
 				playerCoordinates.Add(checklistX[0]);
 				playerCoordinates.Add(checklistY[0]);
 			}
+			//--------------------------------------- Else check it all again.
 			else{
 				AllPlayersGetCoordinates--;
 			}
@@ -56,115 +90,130 @@ public class PlaceFields : MonoBehaviour {
 			checklistX.Clear();
 			checklistY.Clear();
 		}
-		
+	}
+
+	void GenerateMapFields(){
+	
+		//========================================================================= CALCULATE DIMENSIONS
+		float sizeOfFieldX = StdFields.transform.lossyScale.x;
+		float sizeOfFieldY = StdFields.transform.lossyScale.y;
+
+		float setPosMiddleX = ((-StdFields.transform.lossyScale.x*(FieldDimensions[0]-1))/2);
+		float setPosMiddleY = ((-StdFields.transform.lossyScale.y*(FieldDimensions[1]-1))/2);
+	
+		float setOriginX = fieldPosition[0];
+		float setOriginY = fieldPosition[1];
+		float setOriginZ = fieldPosition[2];
+
+		//========================================================================= GENERATE MAP
 		for (int i = 0; i < (int)FieldDimensions[0]; i += 1){
 			for (int j = 0; j < (int)FieldDimensions[1]; j += 1){
-				
-				float setXPosArr = (StdFields.transform.lossyScale.x*i);
-				float setYPosArr = (StdFields.transform.lossyScale.y*j);
-				float setPosMiddleX = ((-StdFields.transform.lossyScale.x*(FieldDimensions[0]-1))/2);
-				float setPosMiddleY = ((-StdFields.transform.lossyScale.y*(FieldDimensions[1]-1))/2);
-				float setOriginX = fieldPosition[0];
-				float setOriginY = fieldPosition[1];
-				float setOriginZ = fieldPosition[2];
-				
-				float setXPos = setXPosArr + setPosMiddleX + setOriginX;
-				float setYPos = setYPosArr + setPosMiddleY + setOriginY;
-				float setZPos = setOriginZ;
-				
-				//------------------------- CHECK IF PLAYER: : Instantiate player field
-				bool itsAPlayer = false;
-				int runTimes = 0;
-				int runThroughPlayers = 0;
-				while (runTimes < player.Length){
-					if(i == playerCoordinates[runThroughPlayers] && j == playerCoordinates[runThroughPlayers+1]){
-						itsAPlayer = true; 
-						Instantiate (player[runTimes], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-						
-						PlayerPositions[runTimes] = new Vector2(setXPos, setYPos);
-					}
-					
-					runThroughPlayers+=2;
-					runTimes++;
-				}
-				
-				//------------------------- IF CORNER: Instantiate corner field and turn it
-				bool isACorner = false;
-				if (i == 0 && j == 0){
-					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-					isACorner = true;
-				}
-				
-				if (i == ((int)FieldDimensions[0]-1) && j == 0){
-					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
-					isACorner = true;
-				}
-				
-				if (i == 0 && j == ((int)FieldDimensions[1]-1)){
-					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
-					isACorner = true;
-				}
-				
-				if (i == ((int)FieldDimensions[0]-1) && j == ((int)FieldDimensions[1]-1)){
-					Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
-					isACorner = true;
-				}
-				
-				//------------------------- IF A SIDE: 
-				bool isASide = false;
-				if (i == 0 && j != 0 && j != ((int)FieldDimensions[1]-1)){
-					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-					isASide = true;
-				}
-				
-				if (i == ((int)FieldDimensions[0]-1) && j != 0 && j != ((int)FieldDimensions[1]-1)){
-					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
-					isASide = true;
-				}
-				
-				if (j == 0 && i != 0 && i != ((int)FieldDimensions[0]-1)){
-					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
-					isASide = true;
-				}
-				
-				if (j == ((int)FieldDimensions[1]-1) && i != 0 && i != ((int)FieldDimensions[0]-1)){
-					Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
-					isASide = true;
-				}
-				
-				//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
-				if (itsAPlayer == false && isACorner == false && isASide == false){
-					
-					int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
-					
-					if (randomStdField==0){
-						Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-					}
-					if (randomStdField>0){
-						Instantiate (MoreStdFields[randomStdField-1], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
-					}
-					
-				}
+
+				// Basically puts the fields where they need to be, depending on
+				// both row/coloum number, its center and if it needs to be pushed. 
+				// |Field|Field|Field|Field|Field|Field
+				// |-----------|-----------| (sizeOfFieldX*i)
+				// 					 |-----------| setPosMiddleX
+				// 				    |-----------| setOriginX (normally not used)
+
+				setXPos = (sizeOfFieldX*i) + setPosMiddleX + setOriginX;
+				setYPos = (sizeOfFieldY*j) + setPosMiddleY + setOriginY;
+				setZPos = setOriginZ;
+				itsAPlayer = false;
+
+				CheckForPlayerField(i,j);
+
+				CheckForCornerField(i,j);
+
+				CheckForSideField(i,j);
+
+				CheckForStdField(i,j);
+
 			}
 		}
 	}
 
-
-	// Use this for initialization
-	void Start () {
-
-		aStar = GameObject.Find ("A*");
-		aStarScript = aStar.GetComponent<AstarPath> ();
-		aStarScript.Scan (); //Scan the level, for pathfinding. For obvious reasons, this needs to be done after the level has been generated.
-
+	//========================================================================= CHECK IF PLAYER
+	void CheckForPlayerField(int i, int j){
+		//------------------------- CHECK IF PLAYER: : Instantiate player field
+		int runThroughPlayers = 0;
+		while (runThroughPlayers < (player.Length*2)){
+			if(i == playerCoordinates[runThroughPlayers] && j == playerCoordinates[runThroughPlayers+1]){
+				itsAPlayer = true; 
+				Instantiate (player[runThroughPlayers/2], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+				PlayerPositions[runThroughPlayers/2] = new Vector2(setXPos, setYPos);
+			}
+			runThroughPlayers+=2;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-//		for(int i = 0; i<PlayerPositions.Length;i++){
-//			print(PlayerPositions[i]);
-//		}
-
+	//========================================================================= CHECK IF CORNER
+	void CheckForCornerField(int i, int j){
+		//------------------------- IF CORNER: Instantiate corner field and turn it
+		isACorner = false;
+		if (i == 0 && j == 0){
+			Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+			isACorner = true;
+		}
+		
+		if (i == ((int)FieldDimensions[0]-1) && j == 0){
+			Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
+			isACorner = true;
+		}
+		
+		if (i == 0 && j == ((int)FieldDimensions[1]-1)){
+			Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
+			isACorner = true;
+		}
+		
+		if (i == ((int)FieldDimensions[0]-1) && j == ((int)FieldDimensions[1]-1)){
+			Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
+			isACorner = true;
+		}
 	}
+
+	//========================================================================= CHECK IF SIDE
+	void CheckForSideField(int i, int j){
+		//------------------------- IF A SIDE: 
+		isASide = false;
+		if (i == 0 && j != 0 && j != ((int)FieldDimensions[1]-1)){
+			Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+			isASide = true;
+		}
+		
+		if (i == ((int)FieldDimensions[0]-1) && j != 0 && j != ((int)FieldDimensions[1]-1)){
+			Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward));
+			isASide = true;
+		}
+		
+		if (j == 0 && i != 0 && i != ((int)FieldDimensions[0]-1)){
+			Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward));
+			isASide = true;
+		}
+		
+		if (j == ((int)FieldDimensions[1]-1) && i != 0 && i != ((int)FieldDimensions[0]-1)){
+			Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward));
+			isASide = true;
+		}
+	}
+
+	//========================================================================= CHECK IF STD FIELD
+	void CheckForStdField(int i, int j){
+		//------------------------- IF NO PLAYER AND CORNER: Instantiate standard field
+		if (itsAPlayer == false && isACorner == false && isASide == false){
+			
+			int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
+			
+			if (randomStdField==0){
+				Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+			}
+			if (randomStdField>0){
+				Instantiate (MoreStdFields[randomStdField-1], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity);
+			}
+			
+		}
+	}
+
+
+
 }
