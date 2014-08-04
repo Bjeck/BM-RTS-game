@@ -11,7 +11,7 @@ public class PlaceResource : MonoBehaviour {
 	// Use this for initialization
 	void Awake()
 	{
-		Instantiate (Resource, transform.position+ResourcePosition, Quaternion.identity);
+		(Instantiate (Resource, transform.position+ResourcePosition, Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
 
 		//Astar = GameObject.Find ("A*");
 		//Astar.GetComponent<AstarPath>().Scan();

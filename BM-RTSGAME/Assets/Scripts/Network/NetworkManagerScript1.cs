@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NetworkManagerScript : MonoBehaviour {
+public class NetworkManagerScript1 : MonoBehaviour {
 
 	private const string typeName = "Electro";
 	private const string gameName = "TestGame";
 
-	public int players;
-	private int playerCount = 0;
 	public GameObject playerPrefab;
-	public GameObject Map;
 	private GameObject tmpPlaceField;
 
 	[HideInInspector]
@@ -28,7 +25,6 @@ public class NetworkManagerScript : MonoBehaviour {
 	void OnServerInitialized() {
 		Debug.Log("Server Initializied");
 		SpawnPlayer();
-		playerCount++;
 	}
 	
 	//=========================================================================== JOIN
@@ -58,46 +54,22 @@ public class NetworkManagerScript : MonoBehaviour {
 	// When connected, spawn a player.
 	void OnConnectedToServer() {
 		Debug.Log("Server Joined");
-		//SpawnPlayer();
-	}
-
-	void OnPlayerConnected(NetworkPlayer player){
-		playerCount++;
+		SpawnPlayer();
 	}
 
 	//=========================================================================== SPAWN
 
 	// Spawning a player, but only if it is below the max of players set. 
 	private void SpawnPlayer() {
-		if(playerCount<=(players)){
-
-			tmpPlaceField = GameObject.Find ("BasicsSpawn");
-			Vector2 playerPosition = tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount];
-			// playerPosition
-			Network.Instantiate(playerPrefab, playerPosition, Quaternion.identity, 0);
-			print(tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount]);
-		}
+		Network.Instantiate(playerPrefab, new Vector3(0.0f,0.0f,0.0f), Quaternion.identity, 0);
 	}
-
-	// Spawns the map. Only the creator can do this. And not god ;) or.. well, maybe he can...
-	private void SpawnMap() {
-		Instantiate(Map, new Vector2(0.0f,0.0f), Quaternion.identity);
-	}
-
-	void Start(){
-
-		SpawnMap();
-	}
-
+	
 	//=========================================================================== NETWORK MENU
 	void OnGUI() {
-
-
 
 		// If the network is neither a server or a client. 
 		if (!Network.isClient && !Network.isServer) {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
-
 				StartServer();
 				ServerStarted = true;
 			}
@@ -115,5 +87,7 @@ public class NetworkManagerScript : MonoBehaviour {
 			}
 		}
 	}
+
+
 
 }

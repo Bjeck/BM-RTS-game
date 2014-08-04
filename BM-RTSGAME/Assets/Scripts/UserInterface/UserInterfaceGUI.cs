@@ -26,6 +26,7 @@ public class UserInterfaceGUI : MonoBehaviour {
 	float voltageDecreaseRate = 20;
 	bool shouldDecreaseVolt = true;
 
+
 	void OnGUI() {
 
 		//------------------------------------------------------------------------ IF NOT TEXTURE IS ADDED
