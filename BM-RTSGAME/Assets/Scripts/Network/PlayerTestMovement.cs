@@ -10,6 +10,13 @@ public class PlayerTestMovement : MonoBehaviour {
 	private Vector2 syncStartPosition = Vector2.zero;
 	private Vector2 syncEndPosition = Vector2.zero;
 
+	void Start(){
+
+		if (!networkView.isMine) {
+			enabled = false;		
+		}
+
+	}
 
 	void OnSerializeNetworkView (BitStream stream, NetworkMessageInfo info){
 
@@ -36,6 +43,10 @@ public class PlayerTestMovement : MonoBehaviour {
 
 	void Update()
 	{
+		if (!networkView.isMine) {
+			return;		
+		}
+
 		// Makes sure that no other player can use the same controls.
 		if (networkView.isMine)
 		{

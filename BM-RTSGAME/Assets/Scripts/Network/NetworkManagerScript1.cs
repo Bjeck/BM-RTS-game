@@ -6,11 +6,20 @@ public class NetworkManagerScript1 : MonoBehaviour {
 	private const string typeName = "Electro";
 	private const string gameName = "TestGame";
 
+	public bool PlayerActivate;
 	public GameObject playerPrefab;
+	public Vector3 PlacePlayerAt;
+	public bool MapActivate;
+	public GameObject MapPrefab;
+	public Vector3 PlaceMapAt;
 	private GameObject tmpPlaceField;
 
-	[HideInInspector]
-	public bool ServerStarted = false;
+	void Update(){
+		if (Input.GetKey (KeyCode.M)) {
+			SpawnMap();		
+		}
+	}
+
 
 	//=========================================================================== CREATE
 
@@ -24,7 +33,7 @@ public class NetworkManagerScript1 : MonoBehaviour {
 	// Is initiated when the server IS created and hereafter spawns a player.
 	void OnServerInitialized() {
 		Debug.Log("Server Initializied");
-		SpawnPlayer();
+		SpawnPlayer ();
 	}
 	
 	//=========================================================================== JOIN
@@ -61,7 +70,16 @@ public class NetworkManagerScript1 : MonoBehaviour {
 
 	// Spawning a player, but only if it is below the max of players set. 
 	private void SpawnPlayer() {
-		Network.Instantiate(playerPrefab, new Vector3(0.0f,0.0f,0.0f), Quaternion.identity, 0);
+
+		if (PlayerActivate == true) {
+			Network.Instantiate (playerPrefab, PlacePlayerAt, Quaternion.identity, 0);
+		}
+	}
+
+	private void SpawnMap() {
+		if (MapActivate == true) {
+			Network.Instantiate (MapPrefab, PlaceMapAt, Quaternion.identity, 0);
+		}
 	}
 	
 	//=========================================================================== NETWORK MENU
@@ -71,7 +89,6 @@ public class NetworkManagerScript1 : MonoBehaviour {
 		if (!Network.isClient && !Network.isServer) {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
 				StartServer();
-				ServerStarted = true;
 			}
 
 			if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts")) {

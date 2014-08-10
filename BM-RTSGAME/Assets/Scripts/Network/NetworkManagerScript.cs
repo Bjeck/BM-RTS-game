@@ -10,11 +10,11 @@ public class NetworkManagerScript : MonoBehaviour {
 	private int playerCount = 0;
 	public GameObject playerPrefab;
 	public GameObject Map;
-	private GameObject tmpPlaceField;
 
 	[HideInInspector]
-	public bool ServerStarted = false;
-
+	private GameObject tmpPlaceField;
+	private bool isHost = false;
+	private bool MapIsSpawned = false;
 	//=========================================================================== CREATE
 
 	// Starts a server and registers it at unity's maters server.
@@ -28,7 +28,6 @@ public class NetworkManagerScript : MonoBehaviour {
 	void OnServerInitialized() {
 		Debug.Log("Server Initializied");
 		SpawnPlayer();
-		playerCount++;
 	}
 	
 	//=========================================================================== JOIN
@@ -67,30 +66,36 @@ public class NetworkManagerScript : MonoBehaviour {
 
 	// Spawning a player, but only if it is below the max of players set. 
 	private void SpawnPlayer() {
-		if(playerCount<(players)){
+		if(playerCount<=(players)){
 
-			Vector2 playerPosition = tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount];
-
+			//Vector2 playerPosition = tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount];
+			Vector2 playerPosition = new Vector2 (0.0f,0.0f);
 			Network.Instantiate(playerPrefab, playerPosition, Quaternion.identity, 0);
-
 			print (playerCount);
-
 			playerCount++;
 		}
+
+
+
 	}
 
 	// Spawns the map. Only the creator can do this. And not god ;) or.. well, maybe he can...
 	private void SpawnMap() {
-		Instantiate(Map, new Vector2(0.0f,0.0f), Quaternion.identity);
+		Network.Instantiate(Map, new Vector2(0.0f,0.0f), Quaternion.identity, 0);
 	}
 
 	void Start(){
-
-		SpawnMap();
 		tmpPlaceField = GameObject.Find ("BasicsSpawn");
 
-		//print(tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount]);
+	}
 
+	void Update(){
+		if (Input.GetKey (KeyCode.L)) {
+			if(isHost && !MapIsSpawned){
+				SpawnMap ();
+				MapIsSpawned = true;
+			}
+		}
 	}
 
 	//=========================================================================== NETWORK MENU
@@ -102,7 +107,7 @@ public class NetworkManagerScript : MonoBehaviour {
 		if (!Network.isClient && !Network.isServer) {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
 				StartServer();
-				ServerStarted = true;
+				isHost = true;
 			}
 
 			if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts")) {
