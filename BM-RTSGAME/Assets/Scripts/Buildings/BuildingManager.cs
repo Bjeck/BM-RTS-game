@@ -42,7 +42,6 @@ public class BuildingManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		if (PopulationPlayer1 != PopulationPlayer1Tmp){
 			print (PopulationPlayer1);
 			PopulationPlayer1Tmp = PopulationPlayer1;
@@ -133,7 +132,7 @@ public class BuildingManager : MonoBehaviour {
 			//Debug.Log ("Passed!");
 		}
 		if (!IsLegalPosition()) {
-			//Debug.Log ("Cant place there!");
+			Debug.Log ("Cant place there!");
 			return;		
 		}
 
@@ -169,6 +168,10 @@ public class BuildingManager : MonoBehaviour {
 		while(t<0.01f){
 			t+=Time.deltaTime;
 			yield return 0;
+		}
+		if(Astar == null){
+			Astar = GameObject.Find ("A*");
+			astarpath = Astar.GetComponent<AstarPath> ();
 		}
 		astarpath.Scan();
 		yield return 0;
