@@ -13,7 +13,7 @@ public class Ability : MonoBehaviour {
 	public Sprite targetCursorRed;
 	Mouse mouseS;
 	protected AbilityManager aMan;
-
+	public UserInterfaceGUI guiScript;
 
 	// Use this for initialization
 	public void Start () {
@@ -22,6 +22,7 @@ public class Ability : MonoBehaviour {
 		//Debug.Log (caster);
 		mouseS = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 		aMan = GameObject.Find("AbilityManager").GetComponent<AbilityManager> ();
+		guiScript = GameObject.Find ("SpawnGUI").GetComponent<UserInterfaceGUI> ();
 	}
 
 	// Update is called once per frame

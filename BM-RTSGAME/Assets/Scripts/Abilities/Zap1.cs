@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Zap : DirectTarget {
+public class Zap1 : DirectTarget {
 
 	public ParticleSystem zapEffect;
 
@@ -54,10 +54,10 @@ public class Zap : DirectTarget {
 	
 	void OnGUI(){
 		if(caster.GetComponent<Unit>().isSelected){
-			float[] coord = guiScript.GetButtonCoordinates (0,0);
+			float[] coord = guiScript.GetButtonCoordinates (0,1);
 			
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "ZAP")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "ZAP2")){
 				Do ();
 			}
 		}
@@ -65,7 +65,7 @@ public class Zap : DirectTarget {
 
 
 	public override bool Do(){
-		Debug.Log ("ZAP FROM UNIT 2");
+		Debug.Log ("ZAP FROM UNIT 1");
 		if (!base.Do ()) {
 			//Debug.Log(base.Do ());
 			return false;		

@@ -11,11 +11,17 @@ public class UserInterfaceGUI : MonoBehaviour {
 	public GUIStyle BottomBarGuiStyle;
 	public Texture BottomBarTexture;
 	public Texture TopBarTexture;
+	public GUIStyle guiStyle;
 
 	//------------------------------- PRIVATE
 	private float ProportionWidth;
 	private float ProportionHeight;
 	private Vector3 scale;
+	bool areButtonsDefault = true;
+	bool[] takenPlaces = new bool[9];
+	int buttonID1;
+	int buttonID2;
+
 
 	//------------------------------- OTHER
 	int ResourceVoltage = 5; 
@@ -28,6 +34,7 @@ public class UserInterfaceGUI : MonoBehaviour {
 
 
 	void OnGUI() {
+		GUI.depth = 2;
 
 		//------------------------------------------------------------------------ IF NOT TEXTURE IS ADDED
 		if (!TopBarTexture) {
@@ -67,15 +74,37 @@ public class UserInterfaceGUI : MonoBehaviour {
 		GUI.Button (new Rect(0.28f*ProportionWidth, 7.0f*ProportionHeight, 2.5f*ProportionWidth, 1.80f*ProportionHeight), "MINI-MAP");
 
 		// DRAWING: Array of Abilities
+	/*	for(int i = 0; i<3; i++){
+			for(int j = 0; j<3; j++){
+				if(GUI.Button (new Rect((12.8f+(1.03f*i))*ProportionWidth, (6.95f+(0.65f*j))*ProportionHeight, 0.95f*ProportionWidth, 0.6f*ProportionHeight), ""+i+":"+j, guiStyle)) {
+					if(areButtonsDefault)
+						print (""+i+":"+j);
+				}
+			}
+		}*/
+	}
+
+
+
+	public float[] GetButtonCoordinates(int x, int y){
+		float[] returnAr = new float[4];
 		for(int i = 0; i<3; i++){
 			for(int j = 0; j<3; j++){
-				if(GUI.Button (new Rect((12.8f+(1.03f*i))*ProportionWidth, (6.95f+(0.65f*j))*ProportionHeight, 0.95f*ProportionWidth, 0.6f*ProportionHeight), ""+i+":"+j)) {		
-					print (""+i+":"+j);	
+				if(i == x && j == y){
+					returnAr[0] = (12.8f+(1.03f*i))*ProportionWidth;
+					returnAr[1] = (6.95f+(0.65f*j))*ProportionHeight;
+					returnAr[2] = 0.95f*ProportionWidth;
+					returnAr[3] = 0.6f*ProportionHeight;
+					//Debug.Log(i+" "+j+" "+(i+j));
+					return returnAr;
 				}
 			}
 		}
-
+		return null;
 	}
+
+
+
 
 
 	void Update () { 
