@@ -13,12 +13,11 @@ public class PlaceFields : MonoBehaviour {
 	public GameObject[] player;
 	public Vector2 FieldDimensions;
 	public Vector3 fieldPosition;
-	static public int sizeOfPP = 2;
 
 	//====================================== Hidden Public
 	[HideInInspector]
 	public int amountOfPlayers;
-	public Vector2[] PlayerPositions = new Vector2[sizeOfPP];
+	public Vector2[] PlayerPositions;
 
 	//====================================== Private
 	private List<int> playerCoordinates;
@@ -136,15 +135,17 @@ public class PlaceFields : MonoBehaviour {
 	//========================================================================= CHECK IF PLAYER
 	void CheckForPlayerField(int i, int j){
 		//------------------------- CHECK IF PLAYER: : Instantiate player field
+		int timesRunThrough = 0;
 		int runThroughPlayers = 0;
 		while (runThroughPlayers < (player.Length*2)){
 			if(i == playerCoordinates[runThroughPlayers] && j == playerCoordinates[runThroughPlayers+1]){
 				itsAPlayer = true; 
 
 				(Instantiate (player[runThroughPlayers/2], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
-				PlayerPositions[runThroughPlayers/2] = new Vector2(setXPos, setYPos);
+				PlayerPositions[timesRunThrough] = new Vector2(setXPos, setYPos);
 			}
 			runThroughPlayers+=2;
+			timesRunThrough++;
 		}
 	}
 

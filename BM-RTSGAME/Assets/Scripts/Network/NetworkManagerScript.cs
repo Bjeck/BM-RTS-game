@@ -51,31 +51,31 @@ public class NetworkManagerScript : MonoBehaviour {
 	//------------------------------------------------------------------------ JOIN A GAME
 	// Asks to join a game.
 	private void JoinServer(HostData hostData) {
-		Debug.Log("Joining Server - NonHost");
 		Network.Connect(hostData);
 	}
 
 	// When connected, spawn a player.
 	void OnConnectedToServer() {
-		Debug.Log("Server Joined");
-		//SpawnPlayer();
+		SpawnPlayer ();
 	}
 
-	void OnPlayerConnected(NetworkPlayer player){
-		playerCount++;
-	}
+//	void OnPlayerConnected(NetworkPlayer player){
+//
+//	}
 
 	//=========================================================================== SPAWN
 
 	// Spawning a player, but only if it is below the max of players set. 
 	private void SpawnPlayer() {
-		if(playerCount<=(players)){
+		if(playerCount<(players)){
 
-			tmpPlaceField = GameObject.Find ("BasicsSpawn");
 			Vector2 playerPosition = tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount];
-			// playerPosition
+
 			Network.Instantiate(playerPrefab, playerPosition, Quaternion.identity, 0);
-			print(tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount]);
+
+			print (playerCount);
+
+			playerCount++;
 		}
 	}
 
@@ -87,6 +87,10 @@ public class NetworkManagerScript : MonoBehaviour {
 	void Start(){
 
 		SpawnMap();
+		tmpPlaceField = GameObject.Find ("BasicsSpawn");
+
+		//print(tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount]);
+
 	}
 
 	//=========================================================================== NETWORK MENU
@@ -97,7 +101,6 @@ public class NetworkManagerScript : MonoBehaviour {
 		// If the network is neither a server or a client. 
 		if (!Network.isClient && !Network.isServer) {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
-
 				StartServer();
 				ServerStarted = true;
 			}
