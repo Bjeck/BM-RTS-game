@@ -39,7 +39,6 @@ public class CameraControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		print (transform.parent.networkView.isMine);
 		//If the parent belongs to this player - transform.parent.networkView.isMine
 		if (transform.parent.networkView.isMine){
 
