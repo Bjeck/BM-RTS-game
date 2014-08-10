@@ -7,6 +7,7 @@ public class Building_UnitProduction : Building {
 	public List<Unit> units = new List<Unit>(); //not used
 	public Vector3 Waypoint;
 	public float buildTime = 1;
+	public float buildTime2 = 1.5f;
 	public string unitName;
 
 	// Use this for initialization

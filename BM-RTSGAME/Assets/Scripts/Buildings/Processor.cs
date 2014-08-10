@@ -16,22 +16,34 @@ public class Processor : Building_UnitProduction {
 	
 	// Update is called once per frame
 	void Update () {
-		if(isSelected)
-		if(Input.GetKeyDown(KeyCode.U)){
-			bManScript.ExecuteOrder(buildTime,"unit_1");
+		if(isSelected) {
+			if(Input.GetKeyDown(KeyCode.U)){
+				bManScript.ExecuteOrder(buildTime,"unit_1");
+			}
+			if(Input.GetKeyDown(KeyCode.Y)){
+				bManScript.ExecuteOrder(buildTime2,"unit_2");
+			}
 		}
-
 		base.Update ();
 	}
 
 	void OnGUI(){
-		if(isSelected)
-		if(GUI.Button (new Rect (0, Screen.height - 300, 100, 50), "Build Unit 1")){
-				unitName = "unit_1";
-				bManScript.ExecuteOrder(buildTime,unitName);
+		if (isSelected){
+			float[] coord = guiScript.GetButtonCoordinates (0,0);
+
+			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "Unit 1")){
+				//Debug.Log("REAL BUTTON CLICKED");
+				bManScript.ExecuteOrder(buildTime,"unit_1");
+			}
+
+			coord = guiScript.GetButtonCoordinates (1,0);
+
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "Unit 2")){
+			//	Debug.Log("REAL BUTTON CLICKED");
+				bManScript.ExecuteOrder(buildTime2,"unit_2");
+			}
 		}
 	}
 
-
-	
 }

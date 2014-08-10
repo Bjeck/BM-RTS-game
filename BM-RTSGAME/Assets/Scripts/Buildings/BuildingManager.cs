@@ -72,7 +72,6 @@ public class BuildingManager : MonoBehaviour {
 		}
 
 		if(Input.anyKeyDown && !isDragging){
-
 			if (transform.parent.networkView.isMine){
 				//Debug.Log("KEY GOT!");
 				if(Input.GetKey(KeyCode.W) && PopulationPlayer1<PopulationLimit){		//HERE IS WHERE WE ADD MORE BUILDINGS!
@@ -89,15 +88,7 @@ public class BuildingManager : MonoBehaviour {
 				}
 			}
 			
-			if(name != null){
-				isDragging = true;
-				instance = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
-				sprtR = instance.GetComponent<SpriteRenderer>();
-				sprtR.color = Color.gray;
-				Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				mPos.z = -1;
-				instance.transform.position = mPos;
-			}
+			SpecifyBuildingToPlace(name);
 		}
 
 		if (!IsLegalPosition () && isDragging) {
@@ -116,14 +107,23 @@ public class BuildingManager : MonoBehaviour {
 
 //		Debug.Log(mouseS.unitsSelected.Count);
 
-
-
-
-
-
-
-
 	}
+
+	
+	public void SpecifyBuildingToPlace(string namef){
+		if(namef != null){
+			isDragging = true;
+			instance = (GameObject)Instantiate(Resources.Load(namef,typeof(GameObject)));
+			sprtR = instance.GetComponent<SpriteRenderer>();
+			sprtR.color = Color.gray;
+			Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			mPos.z = -1;
+			instance.transform.position = mPos;
+		}
+	}
+
+
+
 
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
@@ -202,7 +202,6 @@ public class BuildingManager : MonoBehaviour {
 
 
 	public void ExecuteOrder(float time, string name){ //Right now, only used for building units in unit production buildings. Maybe more later??
-
 		if (mouseS.buildingsSelected.Count > 0) { //first, how many buildings are selected?
 			foreach(Building b in mouseS.buildingsSelected){
 				if(b.isUnitBuilding == true){
@@ -223,7 +222,7 @@ public class BuildingManager : MonoBehaviour {
 				StartCoroutine(currentlySelectedUnitBuildings[0].ConstructUnit(time, name));
 		}
 		else if(currentlySelectedUnitBuildings.Count > 1){
-//			Debug.Log("MORE THAN ONE: "+currentlySelectedUnitBuildings.Count);
+			Debug.Log("MORE THAN ONE: "+currentlySelectedUnitBuildings.Count);
 			int i = 0;
 			foreach(Building_UnitProduction bu in currentlySelectedUnitBuildings){ //if more buildings, go through each and check if they are free to build. If so, build and stop checking.
 //				Debug.Log("CHECKING "+bu+" FOR AVAILABILITY TO CONSTRUCT UNIT: "+currentlySelectedUnitBuildings[i].isConstructing);
