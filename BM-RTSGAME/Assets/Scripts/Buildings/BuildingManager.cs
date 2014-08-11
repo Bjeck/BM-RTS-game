@@ -137,7 +137,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 
 			//ACTUALLY PLACING BUILDING
-			building = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
+		building = (GameObject)Network.Instantiate(Resources.Load(name,typeof(GameObject)), transform.position, Quaternion.identity, 0);
 			//Debug.Log (building.transform.localScale.x / 2);
 			building.layer = 10;
 			//Debug.Log("PLACE OBJECT!"+building.name);

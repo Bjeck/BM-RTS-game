@@ -89,7 +89,6 @@ public class Building : MonoBehaviour {
 	}
 
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
-		GameObject.Find ("BuildingManager").GetComponent<BuildingManager> ().PopulationPlayer1 -= 1;
 		mouseScript.RemoveBuildingSelection(this);
 		Destroy (this.gameObject);
 	}

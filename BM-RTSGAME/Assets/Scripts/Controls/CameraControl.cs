@@ -40,7 +40,7 @@ public class CameraControl : MonoBehaviour {
 	void Update () {
 
 		//If the parent belongs to this player - transform.parent.networkView.isMine
-		if (transform.parent.networkView.isMine){
+		//if (transform.parent.networkView.isMine){
 
 			mousePos = Input.mousePosition;
 			camera.orthographicSize = ZoomStartPosition;
@@ -90,6 +90,6 @@ public class CameraControl : MonoBehaviour {
 					transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
 				}
 			}
-		}
+		//}
 	}
 }

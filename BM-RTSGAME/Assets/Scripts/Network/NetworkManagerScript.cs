@@ -7,7 +7,6 @@ public class NetworkManagerScript : MonoBehaviour {
 	private const string gameName = "TestGame";
 
 	public int players;
-	private int playerCount = 0;
 	public GameObject playerPrefab;
 	public GameObject Map;
 
@@ -66,27 +65,14 @@ public class NetworkManagerScript : MonoBehaviour {
 
 	// Spawning a player, but only if it is below the max of players set. 
 	private void SpawnPlayer() {
-		if(playerCount<=(players)){
-
 			//Vector2 playerPosition = tmpPlaceField.GetComponent<PlaceFields>().PlayerPositions[playerCount];
 			Vector2 playerPosition = new Vector2 (0.0f,0.0f);
 			Network.Instantiate(playerPrefab, playerPosition, Quaternion.identity, 0);
-			print (playerCount);
-			playerCount++;
-		}
-
-
-
 	}
 
 	// Spawns the map. Only the creator can do this. And not god ;) or.. well, maybe he can...
 	private void SpawnMap() {
 		Network.Instantiate(Map, new Vector2(0.0f,0.0f), Quaternion.identity, 0);
-	}
-
-	void Start(){
-		tmpPlaceField = GameObject.Find ("BasicsSpawn");
-
 	}
 
 	void Update(){
@@ -100,8 +86,6 @@ public class NetworkManagerScript : MonoBehaviour {
 
 	//=========================================================================== NETWORK MENU
 	void OnGUI() {
-
-
 
 		// If the network is neither a server or a client. 
 		if (!Network.isClient && !Network.isServer) {
