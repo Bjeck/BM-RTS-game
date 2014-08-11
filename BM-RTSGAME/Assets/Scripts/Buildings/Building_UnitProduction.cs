@@ -14,11 +14,12 @@ public class Building_UnitProduction : Building {
 	public void Start () {
 		base.Start ();
 		isUnitBuilding = true;
-
+		SetWaypoint (transform.position);
 	}
 	
 	// Update is called once per frame
 	public void Update () {
+	//	Debug.Log ("transform: " + transform.position + " waypoint: " + Waypoint);
 		base.Update ();
 	}
 
@@ -27,6 +28,7 @@ public class Building_UnitProduction : Building {
 		buildingLight = GetComponent<Light> ();
 		buildingLight.intensity = 0;
 		float t = 0;
+
 		while(t<buildTime){
 			//Debug.Log(t);
 			buildingLight.intensity += t;
@@ -44,11 +46,7 @@ public class Building_UnitProduction : Building {
 		GameObject unit = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
 		unit.GetComponent<Unit>().player1 = player1;
 		unit.transform.position = transform.position;
-		//Pathfindinger path = unit.GetComponent<Pathfindinger>();
-		Waypoint = new Vector3 (transform.position.x, transform.position.y + 2, transform.position.z);
-		//Debug.Log (Waypoint + " " + transform.position);
-		//path.SetPath (Waypoint);
-		//unit.GetComponent<Unit> ().MoveTo (Waypoint);
+
 		StartCoroutine (waitAndMoveToWayPoint (unit));
 	}
 
@@ -59,9 +57,17 @@ public class Building_UnitProduction : Building {
 			yield return 0;
 		}
 		//Debug.Log ("I WANT TO MOVE TO THE WAYPOINT!");
+		//Waypoint = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
 		Pathfindinger path = unit.GetComponent<Pathfindinger>();
 		path.SetPath (Waypoint);
 		yield return 0;
 	}
+
+
+	public void SetWaypoint(Vector3 point){
+	//	Debug.Log ("POINT: "+point);
+		Waypoint = point;
+	}
+
 
 }

@@ -154,7 +154,12 @@ public class BuildingManager : MonoBehaviour {
 				building.transform.position = temp;
 				building.GetComponent<Building>().isPlaced = true;
 				building.GetComponent<Building>().player1 = player1;
-				//Debug.Log ("PLACED!");
+				//if(building.GetComponent<Building>().isUnitBuilding){
+				//	Debug.Log("THAT'S A UNIT BUILDING!");
+				//	building.GetComponent<Building_UnitProduction>().SetWaypoint(building.transform.position);
+				//}
+				
+			//Debug.Log ("PLACED!");
 				isDragging = false;
 				name = null;
 				}
@@ -226,7 +231,7 @@ public class BuildingManager : MonoBehaviour {
 				StartCoroutine(currentlySelectedUnitBuildings[0].ConstructUnit(time, name));
 		}
 		else if(currentlySelectedUnitBuildings.Count > 1){
-			Debug.Log("MORE THAN ONE: "+currentlySelectedUnitBuildings.Count);
+		//	Debug.Log("MORE THAN ONE: "+currentlySelectedUnitBuildings.Count);
 			int i = 0;
 			foreach(Building_UnitProduction bu in currentlySelectedUnitBuildings){ //if more buildings, go through each and check if they are free to build. If so, build and stop checking.
 //				Debug.Log("CHECKING "+bu+" FOR AVAILABILITY TO CONSTRUCT UNIT: "+currentlySelectedUnitBuildings[i].isConstructing);

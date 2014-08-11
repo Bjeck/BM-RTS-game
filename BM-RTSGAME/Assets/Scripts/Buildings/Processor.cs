@@ -8,9 +8,7 @@ public class Processor : Building_UnitProduction {
 	// Use this for initialization
 	void Start () {
 		base.Start ();
-		Vector3 temp = transform.position;
-		temp.y += 5;
-		Waypoint = temp;
+
 
 	}
 	

@@ -110,6 +110,17 @@ public class Mouse : MonoBehaviour {
 
 		}
 
+		if (Input.GetMouseButtonDown (1)) { //If right click
+			if(buildingsSelected.Count > 0){
+				foreach(Building_UnitProduction b in buildingsSelected){
+					Vector3 temp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+					temp.z = -1;
+					b.SetWaypoint(temp);
+				}
+			}
+		}
+
+
 	}
 
 
