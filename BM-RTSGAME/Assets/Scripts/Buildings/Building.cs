@@ -7,6 +7,7 @@ public class Building : MonoBehaviour {
 	GameObject buildMan;
 	public BuildingManager bManScript;
 	public UserInterfaceGUI guiScript;
+	public GUIStyle guiStyle;
 	public bool isSelected = false;
 	public bool isPlaced = false;
 	public bool isBuilding = false;
@@ -28,6 +29,7 @@ public class Building : MonoBehaviour {
 		mouseScript = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 		player1 = bManScript.player1;
 		guiScript = GameObject.Find ("SpawnGUI").GetComponent<UserInterfaceGUI> ();
+		guiStyle = guiScript.guiStyle;
 	}
 	
 	// Update is called once per frame

@@ -57,7 +57,7 @@ public class Zap1 : DirectTarget {
 			float[] coord = guiScript.GetButtonCoordinates (0,1);
 			
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "ZAP2")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
 				Do ();
 			}
 		}

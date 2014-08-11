@@ -12,6 +12,7 @@ public class UserInterfaceGUI : MonoBehaviour {
 	public Texture BottomBarTexture;
 	public Texture TopBarTexture;
 	public GUIStyle guiStyle;
+	public GUISkin guiSkin;
 
 	//------------------------------- PRIVATE
 	private float ProportionWidth;
@@ -34,6 +35,8 @@ public class UserInterfaceGUI : MonoBehaviour {
 
 
 	void OnGUI() {
+		GUI.skin = guiSkin;
+
 		GUI.depth = 2;
 
 		//------------------------------------------------------------------------ IF NOT TEXTURE IS ADDED

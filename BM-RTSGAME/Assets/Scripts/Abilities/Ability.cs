@@ -14,6 +14,7 @@ public class Ability : MonoBehaviour {
 	Mouse mouseS;
 	protected AbilityManager aMan;
 	public UserInterfaceGUI guiScript;
+	public GUIStyle guiStyle;
 
 	// Use this for initialization
 	public void Start () {
@@ -33,7 +34,6 @@ public class Ability : MonoBehaviour {
 			Do ();		
 		}
 	}
-
 
 
 	public virtual bool Do(){

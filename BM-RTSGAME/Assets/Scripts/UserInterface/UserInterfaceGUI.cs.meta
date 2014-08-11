@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: 399939a6b553f43c486bb97990656109
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - BottomBarTexture: {instanceID: 0}
+  - TopBarTexture: {instanceID: 0}
+  - guiSkin: {fileID: 11400000, guid: 36a597a5e8ac28541bd12cee278d1caa, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

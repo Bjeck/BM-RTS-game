@@ -28,18 +28,20 @@ public class Processor : Building_UnitProduction {
 	}
 
 	void OnGUI(){
+		GUI.skin = guiScript.guiSkin;
+
 		if (isSelected){
 			float[] coord = guiScript.GetButtonCoordinates (0,0);
 
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "Unit 1")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "")){
 				//Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime,"unit_1");
 			}
 
 			coord = guiScript.GetButtonCoordinates (1,0);
 
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "Unit 2")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
 			//	Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime2,"unit_2");
 			}

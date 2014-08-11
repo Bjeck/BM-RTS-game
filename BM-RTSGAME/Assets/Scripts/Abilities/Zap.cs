@@ -53,11 +53,13 @@ public class Zap : DirectTarget {
 
 	
 	void OnGUI(){
+		GUI.skin = guiScript.guiSkin;
+
 		if(caster.GetComponent<Unit>().isSelected){
 			float[] coord = guiScript.GetButtonCoordinates (0,0);
 			
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "ZAP")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
 				Do ();
 			}
 		}
