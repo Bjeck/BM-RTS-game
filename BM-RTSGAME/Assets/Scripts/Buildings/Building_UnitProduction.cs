@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class Building_UnitProduction : Building {
 
 	public List<Unit> units = new List<Unit>(); //not used
-	public Vector3 Waypoint;
 	public float buildTime = 1;
 	public float buildTime2 = 1.5f;
 	public string unitName;
+
 
 	// Use this for initialization
 	public void Start () {
@@ -21,6 +21,9 @@ public class Building_UnitProduction : Building {
 	public void Update () {
 	//	Debug.Log ("transform: " + transform.position + " waypoint: " + Waypoint);
 		base.Update ();
+
+	
+
 	}
 
 	public IEnumerator ConstructUnit(float time, string uName){
@@ -67,6 +70,9 @@ public class Building_UnitProduction : Building {
 	public void SetWaypoint(Vector3 point){
 	//	Debug.Log ("POINT: "+point);
 		Waypoint = point;
+		if (wayPointMarker != null) {
+			wayPointMarker.transform.position = Waypoint;		
+		}
 	}
 
 

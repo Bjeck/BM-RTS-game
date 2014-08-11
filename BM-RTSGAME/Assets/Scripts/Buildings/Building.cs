@@ -18,6 +18,8 @@ public class Building : MonoBehaviour {
 	public bool player1 = false;
 	public int health = 100;
 	public bool isUnitBuilding = false;
+	public Vector3 Waypoint;
+	public GameObject wayPointMarker;
 
 	private string nameOfCollision;
 
@@ -59,8 +61,15 @@ public class Building : MonoBehaviour {
 		sprtR = GetComponent<SpriteRenderer> ();
 		if (isSelected) {
 			sprtR.color = Color.cyan;
+			if(isUnitBuilding){
+				//Debug.Log ("unit prod selection is selected");
+				wayPointMarker = (GameObject)Instantiate(Resources.Load("Effects/WaypointMarker",typeof(GameObject)));
+				wayPointMarker.transform.position = Waypoint;
+			}
 		} else {
 			sprtR.color = Color.white;
+			if(wayPointMarker != null)
+				Destroy(wayPointMarker);
 		}
 	}
 
