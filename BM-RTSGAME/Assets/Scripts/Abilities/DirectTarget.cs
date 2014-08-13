@@ -20,15 +20,19 @@ public class DirectTarget : Ability {
 		base.Update ();
 
 		if (isTargeting) {
+
 			Vector3 temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			temp.z = -1f;
 			targetCursor.transform.position = temp;
 
 			dist = Vector3.Distance(targetCursor.transform.position,caster.transform.position);
+			//Debug.Log(dist);
 			if(dist > range){
+				//Debug.Log("OUT OF RANGE");
 				targetCursor.GetComponent<SpriteRenderer> ().sprite = targetCursorRed;
 			}
 			else {
+				//Debug.Log("IN RANGE: "+targetCursorGreen);
 				targetCursor.GetComponent<SpriteRenderer> ().sprite = targetCursorGreen;
 			}
 
@@ -51,8 +55,23 @@ public class DirectTarget : Ability {
 		
 		targetCursor.transform.position = temp;
 		//isTargeting = true;
+
+		if (isTargeting) {
+			return false;		
+		}
+		isTargeting = true;
 		return true;
 	}
+
+
+
+
+	public void Cast(){
+		caster.GetComponent<Unit>().TakeMemory (cost);
+		StopTargeting ();
+		aMan.listOfAbilities.Clear ();
+	}
+
 
 
 	public void StopTargeting(){

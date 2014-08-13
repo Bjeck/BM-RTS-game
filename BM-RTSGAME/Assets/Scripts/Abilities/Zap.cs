@@ -66,7 +66,7 @@ public class Zap : DirectTarget {
 	}
 
 
-	public override bool Do(){
+	/*public override bool Do(){
 		Debug.Log ("ZAP FROM UNIT 2");
 		if (!base.Do ()) {
 			//Debug.Log(base.Do ());
@@ -79,20 +79,17 @@ public class Zap : DirectTarget {
 		}
 		isTargeting = true;
 		return true;
-	}
+	}*/
 
 	public void zap(GameObject t){
+		base.Cast ();
 		//Debug.Log ("YOU GOT ZAPPED!");
 		target = t;
-		caster.GetComponent<Unit>().TakeMemory (cost);
 		t.GetComponent<Unit>().health -= damage;
 		zapEffect = (ParticleSystem)Instantiate (zapEffect);
 		zapEffect.transform.position = targetCursor.transform.position;
 		zapEffect.Play ();
 		//if (zapEffect.isPlaying)
 		//Debug.Log ("IS PLAYING PARTICLES");
-
-		StopTargeting ();
-		aMan.listOfAbilities.Clear ();
 	}
 }

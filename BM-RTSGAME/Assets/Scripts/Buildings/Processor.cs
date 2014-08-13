@@ -21,6 +21,9 @@ public class Processor : Building_UnitProduction {
 			if(Input.GetKeyDown(KeyCode.Y)){
 				bManScript.ExecuteOrder(buildTime2,"unit_2");
 			}
+			if(Input.GetKeyDown(KeyCode.I)){
+				bManScript.ExecuteOrder(buildTime2,"unit_3");
+			}
 		}
 		base.Update ();
 	}
@@ -42,6 +45,13 @@ public class Processor : Building_UnitProduction {
 			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
 			//	Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime2,"unit_2");
+			}
+
+			coord = guiScript.GetButtonCoordinates (2,0);
+			
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
+				//	Debug.Log("REAL BUTTON CLICKED");
+				bManScript.ExecuteOrder(buildTime2,"unit_3");
 			}
 		}
 	}
