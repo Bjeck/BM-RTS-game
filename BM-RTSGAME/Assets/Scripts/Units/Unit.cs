@@ -174,6 +174,14 @@ public class Unit : MonoBehaviour {
 			pathfinder.SetPath(target.transform.position);
 		}
 
+
+
+		
+		if (!isMoving)
+			isAttacking = true;
+		else if(isMoving)
+			isAttacking = false;
+
 	} //end update
 
 
