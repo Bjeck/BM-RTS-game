@@ -216,7 +216,7 @@ public class Mouse : MonoBehaviour {
 	}
 	
 	public bool isDrawingBox(){ //checks if a box is being drawed. Used for individual selection of things
-		if(selection.size.y < 3 && selection.size.x < 3)
+		if(selection.size.y < 4 && selection.size.x < 4)
 			return false;
 		else
 			return true;

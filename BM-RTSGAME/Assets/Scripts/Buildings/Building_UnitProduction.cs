@@ -32,7 +32,7 @@ public class Building_UnitProduction : Building {
 		buildingLight.intensity = 0;
 		float t = 0;
 
-		while(t<buildTime){
+		while(t<time){
 			//Debug.Log(t);
 			buildingLight.intensity += t;
 			buildingLight.intensity /= 3;
@@ -59,8 +59,6 @@ public class Building_UnitProduction : Building {
 			t+=Time.deltaTime;
 			yield return 0;
 		}
-		//Debug.Log ("I WANT TO MOVE TO THE WAYPOINT!");
-		//Waypoint = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
 		Pathfindinger path = unit.GetComponent<Pathfindinger>();
 		path.SetPath (Waypoint);
 		yield return 0;

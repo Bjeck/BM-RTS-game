@@ -18,6 +18,7 @@ public class Building : MonoBehaviour {
 	public bool player1 = false;
 	public int health = 100;
 	public bool isUnitBuilding = false;
+	public bool isUpgradeBuilding = false;
 	public Vector3 Waypoint;
 	public GameObject wayPointMarker;
 

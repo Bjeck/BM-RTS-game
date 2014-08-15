@@ -35,21 +35,21 @@ public class Processor : Building_UnitProduction {
 			float[] coord = guiScript.GetButtonCoordinates (0,0);
 
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "")){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "unit 1")){
 				//Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime,"unit_1");
 			}
 
 			coord = guiScript.GetButtonCoordinates (1,0);
 
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "unit 2")){
 			//	Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime2,"unit_2");
 			}
 
 			coord = guiScript.GetButtonCoordinates (2,0);
 			
-			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "", guiStyle)){
+			if(GUI.Button (new Rect (coord[0], coord[1], coord[2], coord[3]), "unit 3")){
 				//	Debug.Log("REAL BUTTON CLICKED");
 				bManScript.ExecuteOrder(buildTime2,"unit_3");
 			}

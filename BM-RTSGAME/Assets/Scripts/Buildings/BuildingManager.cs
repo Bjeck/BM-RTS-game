@@ -19,6 +19,7 @@ public class BuildingManager : MonoBehaviour {
 	private int PopulationPlayer1Tmp;
 
 	private List<Building_UnitProduction> currentlySelectedUnitBuildings = new List<Building_UnitProduction>();
+	private List<Building_Upgrade> currentlySelectedUpgradeBuildings = new List<Building_Upgrade>();
 
 	///////////////////////// OTHER ////////////////////////
 	GameObject instance;
@@ -82,6 +83,12 @@ public class BuildingManager : MonoBehaviour {
 				}
 				else if(Input.GetKey(KeyCode.R)){
 					name = "resource_1";
+				}
+				else if(Input.GetKey(KeyCode.D)){
+					name = "building_a_1";
+				}
+				else if(Input.GetKey (KeyCode.E)){
+					name = "building_u_1";
 				}
 				else{
 					name = null;
@@ -248,6 +255,48 @@ public class BuildingManager : MonoBehaviour {
 
 		currentlySelectedUnitBuildings.Clear ();
 	}
+
+
+
+	public void UpgradeSomething(float time, string name){ //This is the same as the ExecuteOrder, but for upgrades instead.
+		if (mouseS.buildingsSelected.Count > 0) { //first, how many buildings are selected?
+			foreach(Building b in mouseS.buildingsSelected){
+				//Debug.Log("Is this an upgrade building?"+b.isUpgradeBuilding);
+				if(b.isUpgradeBuilding == true){
+					currentlySelectedUpgradeBuildings.Add(b.gameObject.GetComponent<Building_Upgrade>());
+					Debug.Log(currentlySelectedUpgradeBuildings.Count);
+				}
+			}
+		}
+
+		if (currentlySelectedUpgradeBuildings.Count == 0) {
+			Debug.Log("This shouldn't happen");
+			return;		
+		}
+		else if(currentlySelectedUpgradeBuildings.Count == 1){
+			if(!currentlySelectedUpgradeBuildings[0].isConstructing){
+				StartCoroutine(currentlySelectedUpgradeBuildings[0].ConstructUpgrade(time, name));
+
+			}
+		}
+		else if(currentlySelectedUpgradeBuildings.Count > 1){
+			int i = 0;
+			foreach(Building_Upgrade bu in currentlySelectedUpgradeBuildings){ 
+				if(!currentlySelectedUpgradeBuildings[i].isConstructing){
+					StartCoroutine(currentlySelectedUpgradeBuildings[i].ConstructUpgrade(time, name));
+					currentlySelectedUpgradeBuildings.Clear ();
+					return;
+				}
+				i++;
+			}
+			
+			
+		}
+		
+		currentlySelectedUpgradeBuildings.Clear ();
+
+	}
+
 
 
 

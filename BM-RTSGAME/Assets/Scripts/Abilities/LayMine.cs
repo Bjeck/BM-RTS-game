@@ -13,7 +13,7 @@ public class LayMine : DirectTarget {
 		//targetCursorGreen = base.targetCursorRed;
 		//targetCursorRed = base.targetCursorRed;
 
-		Debug.Log (targetCursorRed);
+	//	Debug.Log (targetCursorRed);
 
 		keyToUse = KeyCode.N;
 		cost = 80;
@@ -28,7 +28,7 @@ public class LayMine : DirectTarget {
 		
 		if (isTargeting) {
 			if (Input.GetMouseButtonDown (0)) {
-				Debug.Log("MOUSE CLICK!");
+				//Debug.Log("MOUSE CLICK!");
 				
 				if (caster.GetComponent<Unit> ().memory - cost < 0) {
 					Debug.Log("NOT ENOUGH memory to cast");
@@ -36,16 +36,16 @@ public class LayMine : DirectTarget {
 				}
 				
 				if(dist > range){
-					Debug.Log("OUT OF RANGE!");
+					//Debug.Log("OUT OF RANGE!");
 					return;
 				}
 				if (GUIUtility.hotControl == 0) { //Check if there is a GUI Element under the mouse. If not, continue with the Raycasting.
-					Debug.Log("NO UI");
+					//Debug.Log("NO UI");
 					Vector3 mPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 					RaycastHit hit;
 					//LayerMask layermaskU = (1 << 12);
 					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f)) {
-						Debug.Log("LAYING MINE");
+					//	Debug.Log("LAYING MINE");
 						laymine(mPos);
 					}
 				}
