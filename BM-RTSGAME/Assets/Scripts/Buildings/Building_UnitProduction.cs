@@ -65,7 +65,7 @@ public class Building_UnitProduction : Building {
 	}
 
 
-	public void SetWaypoint(Vector3 point){
+	public override void SetWaypoint(Vector3 point){
 	//	Debug.Log ("POINT: "+point);
 		Waypoint = point;
 		if (wayPointMarker != null) {

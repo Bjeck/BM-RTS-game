@@ -98,8 +98,14 @@ public class Building : MonoBehaviour {
 		}
 	}
 
+
+	public virtual void SetWaypoint(Vector3 point){} // DUMMY
+
+
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
+		Debug.Log ("DIIEE!");
 		mouseScript.RemoveBuildingSelection(this);
+		bManScript.scanTheLevel();
 		Destroy (this.gameObject);
 	}
 }

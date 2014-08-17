@@ -107,13 +107,6 @@ public class BuildingManager : MonoBehaviour {
 			sprtR.color = Color.gray;
 		}
 
-
-
-
-// ---------------------------- UNIT PRODUCTION MANAGEMENT
-
-//		Debug.Log(mouseS.unitsSelected.Count);
-
 	}
 
 	
@@ -152,52 +145,40 @@ public class BuildingManager : MonoBehaviour {
 			sprtR.color = Color.white;
 			Destroy (instance);
 			RaycastHit hit;
+
 			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f)){
 				Vector3 temp = hit.point;
 				temp.z = -1;
 				temp.x = Mathf.Ceil(temp.x);
 				temp.y = Mathf.Ceil(temp.y);
-
+				
 				building.transform.position = temp;
 				building.GetComponent<Building>().isPlaced = true;
 				building.GetComponent<Building>().player1 = player1;
-				//if(building.GetComponent<Building>().isUnitBuilding){
-				//	Debug.Log("THAT'S A UNIT BUILDING!");
-				//	building.GetComponent<Building_UnitProduction>().SetWaypoint(building.transform.position);
-				//}
-				
-			//Debug.Log ("PLACED!");
+				//Debug.Log ("PLACED!");
 				isDragging = false;
 				name = null;
-				}
+
 		StartCoroutine (scanLevel ());
 		resources.Clear();
 		//print (resources.Count);
-	}
-	
-	IEnumerator scanLevel(){
-		float t = 0;
-		while(t<0.01f){
-			t+=Time.deltaTime;
-			yield return 0;
-		}
-		if(Astar == null){
-			Astar = GameObject.Find ("A*");
-			astarpath = Astar.GetComponent<AstarPath> ();
-		}
-		astarpath.Scan();
-		yield return 0;
+			}
 	}
 
 
 	bool IsLegalPosition(){
 
+		LayerMask layerMask = (1 << 8);
+		RaycastHit hit;
 
 		if (colliders.Count > 0) {
 			//Debug.Log ("ELSE IF 1");
 			return false;
 		}else if(resources.Count > 0 && name != "resource_1"){
 			//Debug.Log ("ELSE IF 2");
+			return false;
+		}
+		else if(!Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit, 100f, layerMask)) {
 			return false;
 		}
 		if(name == "resource_1" && resources.Count < 4){
@@ -214,8 +195,37 @@ public class BuildingManager : MonoBehaviour {
 	}
 
 
+	
+//SCANNNING LEVEL
+	
+	public void scanTheLevel(){
+		StartCoroutine (scanLevel ());
+	}
+	
+	IEnumerator scanLevel(){
+		Debug.Log ("SCAN!");
+		float t = 0;
+		while(t<0.01f){
+			Debug.Log ("SCAN!!");
+			t+=Time.deltaTime;
+			yield return 0;
+		}
+		Debug.Log ("SCAN!!!");
+		if(Astar == null){
+			Debug.Log ("SCAN!! !!");
+			Astar = GameObject.Find ("A*");
+			astarpath = Astar.GetComponent<AstarPath> ();
+		}
+		Debug.Log ("SCAN!! !!!");
+		astarpath.Scan();
+		yield return 0;
+	}
 
 
+
+
+
+// ---------------------------- UNIT PRODUCTION MANAGEMENT
 
 	public void ExecuteOrder(float time, string name){ //Right now, only used for building units in unit production buildings. Maybe more later??
 		if (mouseS.buildingsSelected.Count > 0) { //first, how many buildings are selected?

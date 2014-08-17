@@ -18,6 +18,7 @@ public class DirectTarget : Ability {
 	// Update is called once per frame
 	public void Update () {
 		base.Update ();
+		aMan.isTargetingAbility = isTargeting;
 
 		if (isTargeting) {
 

@@ -32,6 +32,9 @@ public class Mouse : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (aMan.isTargetingAbility) {
+			return;		
+		}
 
 		if (Input.GetMouseButtonDown (0)) {
 			startClick = Input.mousePosition;
@@ -112,16 +115,18 @@ public class Mouse : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown (1)) { //If right click
 			if(buildingsSelected.Count > 0){
-				foreach(Building_UnitProduction b in buildingsSelected){
-					Vector3 temp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-					temp.z = -1;
-					b.SetWaypoint(temp);
+				foreach(Building b in buildingsSelected){
+					if(b.isUnitBuilding){
+						Vector3 temp = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+						temp.z = -1;
+						b.SetWaypoint(temp);
+					}
 				}
 			}
 		}
 
 
-	}
+	} //end Update
 
 
 
@@ -139,11 +144,11 @@ public class Mouse : MonoBehaviour {
 			unitScript.SetSelection (true);
 			unitsSelected.Add (unitScript);
 		}
-		//Debug.Log (unitsSelected.Count);
+		Debug.Log ("ADDING: "+unitsSelected.Count);
 	}
 
 	public void RemoveUnitSelection(Unit unitScript){
-//		Debug.Log ("REMOVING UNITS "+unitsSelected.Count);
+		Debug.Log ("REMOVING UNITS "+unitsSelected.Count);
 		unitScript.SetSelection (false);
 		unitsSelected.Remove (unitScript);
 	}
@@ -185,7 +190,7 @@ public class Mouse : MonoBehaviour {
 //------- CLEARING
 
 	public void ClearBuildingSelections(){ //CLEAR BUILDING LIST
-		if(buildingsSelected.Count > 0)
+		//if(buildingsSelected.Count > 0)
 			//Debug.Log (buildingsSelected [0]);
 
 		foreach (Building b in buildingsSelected) {
@@ -195,7 +200,7 @@ public class Mouse : MonoBehaviour {
 	}
 
 	public void ClearUnitSelections(){ //CLEAR UNIT LIST
-		if(unitsSelected.Count > 0)
+		//if(unitsSelected.Count > 0)
 			//Debug.Log (unitsSelected [0]);
 		
 		foreach (Unit u in unitsSelected) {

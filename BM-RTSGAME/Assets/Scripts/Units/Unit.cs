@@ -215,6 +215,7 @@ public class Unit : MonoBehaviour {
 
 
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
+		Debug.Log ("IM DEAD!");
 		mouseScript.RemoveUnitSelection(this);
 		Destroy (this.gameObject);
 

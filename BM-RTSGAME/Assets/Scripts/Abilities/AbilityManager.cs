@@ -9,6 +9,8 @@ public class AbilityManager : MonoBehaviour {
 	public List<Ability> listOfAbilities = new List<Ability>();
 	List<Unit> currentlySelectedUnits = new List<Unit>();
 
+	public bool isTargetingAbility = false;
+
 	
 	// Use this for initialization
 	void Start () {

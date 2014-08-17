@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour {
 	float distFromUnitThatFiredMe = 0;
 	// Use this for initialization
 	void Start () {
-		Debug.Log(unitThatFiredMe);
+		//Debug.Log(unitThatFiredMe);
 	}
 	
 	// Update is called once per frame
@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider c){
-		Debug.Log (c);
+		//Debug.Log (c);
 		if (c.gameObject == unitThatFiredMe) {
 			return;		
 		}
