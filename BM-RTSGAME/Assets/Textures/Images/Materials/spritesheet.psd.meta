@@ -1,6 +1,16 @@
 fileFormatVersion: 2
 guid: 827bb73fb33ffb449b72db169a37296a
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: spritesheet_0
+    21300002: spritesheet_1
+    21300004: spritesheet_2
+    21300006: spritesheet_3
+    21300008: spritesheet_4
+    21300010: spritesheet_5
+    21300012: spritesheet_6
+    21300014: spritesheet_7
+    21300016: spritesheet_8
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

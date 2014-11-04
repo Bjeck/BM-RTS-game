@@ -43,9 +43,6 @@ public class PlayerTestMovement : MonoBehaviour {
 
 	void Update()
 	{
-		if (!networkView.isMine) {
-			return;		
-		}
 
 		// Makes sure that no other player can use the same controls.
 		if (networkView.isMine)
@@ -54,6 +51,7 @@ public class PlayerTestMovement : MonoBehaviour {
 		} else {
 			SyncedMovement();
 		}
+
 	}
 	
 	private void SyncedMovement()
@@ -74,7 +72,11 @@ public class PlayerTestMovement : MonoBehaviour {
 			}
 
 			if (Input.GetKey (KeyCode.A)) {
-					transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x - speed, transform.position.y), Time.deltaTime * 5);
+				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x - speed, transform.position.y), Time.deltaTime * 5);
+			}
+
+			if (Input.GetKey (KeyCode.S)) {
+				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x, transform.position.y - speed), Time.deltaTime * 5);
 			}
 	}
 

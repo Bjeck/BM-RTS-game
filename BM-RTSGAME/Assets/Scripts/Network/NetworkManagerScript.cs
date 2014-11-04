@@ -57,10 +57,6 @@ public class NetworkManagerScript : MonoBehaviour {
 		SpawnPlayer ();
 	}
 
-//	void OnPlayerConnected(NetworkPlayer player){
-//
-//	}
-
 	//=========================================================================== SPAWN
 
 	// Spawning a player, but only if it is below the max of players set. 
