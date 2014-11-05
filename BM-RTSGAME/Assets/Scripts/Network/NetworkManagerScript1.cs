@@ -16,7 +16,6 @@ public class NetworkManagerScript1 : MonoBehaviour {
 
 			if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts")) {
 				GetComponent<JoinServerScript> ().RefreshHostList(typeName);
-
 			}
 
 			HostData[] tempHostList = GetComponent<JoinServerScript> ().hostList;
@@ -26,9 +25,10 @@ public class NetworkManagerScript1 : MonoBehaviour {
 			if (tempHostList != null){
 				for (int i = 0; i < tempHostList.Length; i++) {
 					// Spawns a button if there are any games in hostList.
-					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), tempHostList[i].gameName))
-					
-					GetComponent<JoinServerScript>().JoinServer(tempHostList[i]);
+					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), tempHostList[i].gameName)){
+					 	GetComponent<JoinServerScript>().JoinServer(tempHostList[i]);
+						print ("SDAG");
+					}
 				}
 			}
 		}

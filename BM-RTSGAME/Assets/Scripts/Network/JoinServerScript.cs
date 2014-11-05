@@ -21,13 +21,13 @@ public class JoinServerScript : MonoBehaviour {
 	//------------------------------------------------------------------------ JOIN A GAME
 	// Asks to join a game.
 	public void JoinServer(HostData hostData) {
-		//Debug.Log("Joining Server - NonHost");
-		//Network.Connect(hostData);
+		Debug.Log("Joining Server: "+hostData);
+		Network.Connect(hostData);
 	}
 	
 	// When connected, spawn a player.
 	void OnConnectedToServer() {
-		//Debug.Log("Server Joined");
-		//SpawnPlayer();
+		Debug.Log("Server Joined");
+		GetComponent<SpawnPlayerScript>().SpawnPlayer();
 	}
 }

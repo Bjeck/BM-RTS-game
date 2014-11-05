@@ -13,8 +13,7 @@ public class StartServerScript : MonoBehaviour {
 
 	// Is initiated when the server IS created and hereafter spawns a player.
 	void OnServerInitialized() {
-		
 		Debug.Log("Server Initializied");
-		//GetComponent<NetworkManagerScript1>().SpawnPlayer ();
+		GetComponent<SpawnPlayerScript> ().SpawnPlayer ();
 	}
 }
