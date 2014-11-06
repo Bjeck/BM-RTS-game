@@ -3,82 +3,52 @@ using System.Collections;
 
 public class PlayerTestMovement : MonoBehaviour {
 
-	public float speed = 10f;
-	private float lastSynchronizationTime = 0f;
-	private float syncDelay = 0f;
-	private float syncTime = 0f;
-	private Vector2 syncStartPosition = Vector2.zero;
-	private Vector2 syncEndPosition = Vector2.zero;
-
-	void Start(){
-
-		if (!networkView.isMine) {
-			enabled = false;		
-		}
-
-	}
-
-	void OnSerializeNetworkView (BitStream stream, NetworkMessageInfo info){
-
-		Vector3 syncPosition = Vector3.zero;
-
-		if (stream.isWriting) {
-
-			syncPosition = transform.position;
-			stream.Serialize(ref syncPosition);
-
-		} else {
-			stream.Serialize(ref syncPosition);
-
-			syncTime = 0.0f;
-			syncDelay = Time.time - lastSynchronizationTime;
-			lastSynchronizationTime = Time.time;
-
-			Vector2 convertTo2D = new Vector2(syncPosition.x, syncPosition.y);
-			syncStartPosition = transform.position;
-			syncEndPosition = convertTo2D;
-		}
-	}
-
-
 	void Update()
 	{
+		if (networkView.isMine) {
 
-		// Makes sure that no other player can use the same controls.
-		if (networkView.isMine)
-		{
-			InputMovement();
-		} else {
-			SyncedMovement();
+			if (Input.GetKey (KeyCode.G)) {
+					transform.position = new Vector3 (0.0f, 1.0f, 0.0f);	
+			}
+
+			if (networkView.isMine) {
+					if (Input.GetKey (KeyCode.W)) {
+							networkView.RPC ("Move_Up", RPCMode.AllBuffered, null);
+					}
+					if (Input.GetKey (KeyCode.S)) {
+							networkView.RPC ("Move_Down", RPCMode.AllBuffered, null);
+					}
+					if (Input.GetKey (KeyCode.A)) {
+							networkView.RPC ("Move_Left", RPCMode.AllBuffered, null);
+					}
+					if (Input.GetKey (KeyCode.D)) {
+							networkView.RPC ("Move_Right", RPCMode.AllBuffered, null);
+					}
+			}
 		}
-
-	}
-	
-	private void SyncedMovement()
-	{
-		syncTime += Time.deltaTime;
-		transform.position = Vector2.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
-	}
-	
-	void InputMovement()
-	{	
-			// Just simple character control
-			if (Input.GetKey (KeyCode.W)) {
-				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x, transform.position.y + speed), Time.deltaTime * 5);
-			}
-
-			if (Input.GetKey (KeyCode.D)) {
-				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x + speed, transform.position.y), Time.deltaTime * 5);
-			}
-
-			if (Input.GetKey (KeyCode.A)) {
-				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x - speed, transform.position.y), Time.deltaTime * 5);
-			}
-
-			if (Input.GetKey (KeyCode.S)) {
-				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x, transform.position.y - speed), Time.deltaTime * 5);
-			}
 	}
 
+
+
+
+	[RPC]
+	public void Move_Up(){
+		transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0.0f,1.0f,0.0f), Time.deltaTime * 5);
+	}
+
+	[RPC]
+	public void Move_Down(){
+		transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0.0f,-1.0f,0.0f), Time.deltaTime * 5);
+	}
+
+	[RPC]
+	public void Move_Left(){
+		transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(-1.0f,0.0f,0.0f), Time.deltaTime * 5);
+	}
+
+	[RPC]
+	public void Move_Right(){
+		transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(1.0f,0.0f,0.0f), Time.deltaTime * 5);
+	}
 
 }

@@ -3,24 +3,17 @@ using System.Collections;
 
 public class SpawnPlayerScript : MonoBehaviour {
 
-	//=========================================================================== SPAWN
+	public GameObject player;
 
-	public GameObject PlayerPrefab; 
-	public Vector3 PlacePlayerAt;
-	
-
-	// Spawning a player, but only if it is below the max of players set. 
-	public void SpawnPlayer() {
-
-		networkView.RPC ("PlayerInstantiation", RPCMode.All);
+	public void Update(){
+		if (Input.GetKeyDown (KeyCode.T)) {
+			SpawnPlayer();
+		}
 	}
 
-	[RPC]
-	private void PlayerInstantiation(){
-		Network.Instantiate (PlayerPrefab, PlacePlayerAt, Quaternion.identity, 0);
+	public void SpawnPlayer(){
+		Network.Instantiate(player, transform.position, Quaternion.identity,0);
 	}
-	
-	private void SpawnMap() {
-		//Network.Instantiate (MapPrefab, PlaceMapAt, Quaternion.identity, 0);
-	}
+
+
 }
