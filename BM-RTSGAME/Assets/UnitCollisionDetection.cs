@@ -17,10 +17,10 @@ public class UnitCollisionDetection : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 
-		if (GetComponentInParent<NetworkView> ().isMine) {
+		if (!GetComponentInParent<NetworkView> ().isMine) {
 			if (other.gameObject.tag == "Player") {
 
-					if (!other.gameObject.networkView.isMine) {
+					if (other.gameObject.networkView.isMine) {
 						triggerCounter++;
 						print (triggerCounter);
 
@@ -34,10 +34,10 @@ public class UnitCollisionDetection : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other){
 
-		if(GetComponentInParent<NetworkView>().isMine){
+		if(!GetComponentInParent<NetworkView>().isMine){
 			if (other.gameObject.tag == "Player") {
 
-				if (!other.gameObject.networkView.isMine){
+				if (other.gameObject.networkView.isMine){
 					triggerCounter--;
 					print (triggerCounter);
 					if(triggerCounter == 0){
