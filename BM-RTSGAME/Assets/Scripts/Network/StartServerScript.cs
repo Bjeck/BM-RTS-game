@@ -2,16 +2,31 @@
 using System.Collections;
 
 public class StartServerScript : MonoBehaviour {
+	
+	/// <summary>
+	/// The description of script.
+	/// </summary>
+	public string DescriptionOfScript = "INITIALIZES A SERVER AND REGISTERS THE HOST.";
 
-	// Starts a server and registers it at unity's maters server.
-	public void StartServer(string typeName, string gameName) {
+
+
+	/// <summary>
+	/// Starts a server and registers it at unity's maters server.
+	/// </summary>
+	/// <param name="typeName">Type name.</param>
+	/// <param name="gameName">Game name.</param>
+	public void StartServer(string typeName, string gameName, string GameDescription) {
 		
 		// Initiatlizes dependign on (max amount of players, port)
 		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
-		MasterServer.RegisterHost(typeName, gameName);
+		MasterServer.RegisterHost(typeName, gameName, GameDescription);
+		//print ("Server hosted - IP: "+MasterServer.ipAddress+" - Port: "+MasterServer.port);
+		//print (Network.sendRate);
 	}
 
-	// Is initiated when the server IS created and hereafter spawns a player.
+	/// <summary>
+	/// Is initiated when the server IS created.
+	/// </summary>
 	void OnServerInitialized() {
 		//Debug.Log("Server Initializied");
 	}

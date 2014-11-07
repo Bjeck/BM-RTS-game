@@ -3,29 +3,47 @@ using System.Collections;
 
 public class JoinServerScript : MonoBehaviour {
 
-	// List of hosts for in-game search
+	[SerializeField]
+	/// <summary>
+	/// The description of script.
+	/// </summary>
+	private string DescriptionOfScript = "REFRESHES AND JOINS A SERVER.";
+
+	/// <summary>
+	/// List of hosts for refresh.
+	/// </summary> 
 	public HostData[] hostList;
-	
-	// Requests a list of games available.
+
+	/// <summary>
+	/// Requests a list of games available.
+	/// </summary>
+	/// <param name="typeName">Type name.</param>
 	public void RefreshHostList(string typeName) {
 		MasterServer.RequestHostList(typeName);
 	}
-	
-	// Receives the list of games and stores it into hostList.
+
+	/// <summary>
+	/// Receives the list of games and stores it into hostList.
+	/// </summary>
+	/// <param name="msEvent">Ms event.</param>
 	void OnMasterServerEvent(MasterServerEvent msEvent) {
 		if (msEvent == MasterServerEvent.HostListReceived) {
 			hostList = MasterServer.PollHostList ();
 		}
 	}
-	
-	//------------------------------------------------------------------------ JOIN A GAME
-	// Asks to join a game.
+
+	/// <summary>
+	/// Asks to join a game.
+	/// </summary>
+	/// <param name="hostData">Host data.</param>
 	public void JoinServer(HostData hostData) {
 		//Debug.Log("Joining Server: "+hostData);
 		Network.Connect(hostData);
 	}
-	
-	// When connected, spawn a player.
+
+	/// <summary>
+	/// On connected to server, do something. 
+	/// </summary>
 	void OnConnectedToServer() {
 		//Debug.Log("Server Joined");
 
