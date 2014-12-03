@@ -34,7 +34,7 @@ public class PlaceFields : MonoBehaviour {
 	void Awake(){
 		// Asks for the amount of players. 
 		NetworkM = GameObject.Find ("NetworkManager");
-		amountOfPlayers = NetworkM.GetComponent<NetworkManagerScript> ().players;
+		amountOfPlayers = NetworkM.GetComponent<NetworkManager> ().NumberOfPlayers;
 		PlayerPositions = new Vector2[amountOfPlayers];
 
 		SetPlayerPositions ();

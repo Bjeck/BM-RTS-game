@@ -17,8 +17,6 @@ public class UserInterfaceBack : MonoBehaviour {
 		GUI.backgroundColor = Color.yellow;
 		GUI.Box (new Rect(0, 0, Screen.width, TopBarHeight), "ELECTRO");
 
-		CameraSettings.GetComponent<CameraControl>().ZoomStartPosition = GUI.HorizontalScrollbar (new Rect (Screen.width-(SliderWidth+CustomMargin), TopBarHeight/2, SliderWidth, 0), CameraSettings.GetComponent<CameraControl>().ZoomStartPosition, 1.0f, 1.0f, 5.0f);
-	
 	}
 
 
