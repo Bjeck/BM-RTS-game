@@ -44,7 +44,7 @@ public class BuildingManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (PopulationPlayer1 != PopulationPlayer1Tmp){
-			print (PopulationPlayer1);
+//			print (PopulationPlayer1);
 			PopulationPlayer1Tmp = PopulationPlayer1;
 		}
 
@@ -203,20 +203,20 @@ public class BuildingManager : MonoBehaviour {
 	}
 	
 	IEnumerator scanLevel(){
-		Debug.Log ("SCAN!");
+	//	Debug.Log ("SCAN!");
 		float t = 0;
 		while(t<0.01f){
-			Debug.Log ("SCAN!!");
+			//Debug.Log ("SCAN!!");
 			t+=Time.deltaTime;
 			yield return 0;
 		}
-		Debug.Log ("SCAN!!!");
+		//Debug.Log ("SCAN!!!");
 		if(Astar == null){
-			Debug.Log ("SCAN!! !!");
+		//	Debug.Log ("SCAN!! !!");
 			Astar = GameObject.Find ("A*");
 			astarpath = Astar.GetComponent<AstarPath> ();
 		}
-		Debug.Log ("SCAN!! !!!");
+		//Debug.Log ("SCAN!! !!!");
 		astarpath.Scan();
 		yield return 0;
 	}
@@ -274,7 +274,7 @@ public class BuildingManager : MonoBehaviour {
 				//Debug.Log("Is this an upgrade building?"+b.isUpgradeBuilding);
 				if(b.isUpgradeBuilding == true){
 					currentlySelectedUpgradeBuildings.Add(b.gameObject.GetComponent<Building_Upgrade>());
-					Debug.Log(currentlySelectedUpgradeBuildings.Count);
+					//Debug.Log(currentlySelectedUpgradeBuildings.Count);
 				}
 			}
 		}

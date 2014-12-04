@@ -144,11 +144,11 @@ public class Mouse : MonoBehaviour {
 			unitScript.SetSelection (true);
 			unitsSelected.Add (unitScript);
 		}
-		Debug.Log ("ADDING: "+unitsSelected.Count);
+	//	Debug.Log ("ADDING: "+unitsSelected.Count);
 	}
 
 	public void RemoveUnitSelection(Unit unitScript){
-		Debug.Log ("REMOVING UNITS "+unitsSelected.Count);
+	//	Debug.Log ("REMOVING UNITS "+unitsSelected.Count);
 		unitScript.SetSelection (false);
 		unitsSelected.Remove (unitScript);
 	}
