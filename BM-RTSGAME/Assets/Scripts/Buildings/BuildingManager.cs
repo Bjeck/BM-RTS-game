@@ -33,7 +33,8 @@ public class BuildingManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Astar = GameObject.Find ("A*");
-		if(!Astar == null)
+
+		if(Astar != null)
 			astarpath = Astar.GetComponent<AstarPath> ();
 
 		GameObject mouse = GameObject.Find ("Main Camera");
