@@ -23,17 +23,17 @@ public class NetworkManager : MonoBehaviour {
 	/// </summary>
 	public int NumberOfPlayers = 2;
 
+	private bool MapSpawned = false;
+
 	/// <summary>
 	/// Raises the GU event.
 	/// </summary>
 	void OnGUI() {
-		
+
 		// If the network is neither a server or a client.
 		if (!Network.isClient && !Network.isServer) {
-			
 			// If the user presses this button, the server function is called.
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
-				
 				// The server function is called along with the type and game name.
 				GetComponent<NetworkscriptStartServer>().StartServer(GameType,GameName, GameDescription);
 			}

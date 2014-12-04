@@ -15,13 +15,14 @@ public class NetworkscriptStartServer : MonoBehaviour {
 		MasterServer.RegisterHost(typeName, gameName, GameDescription);
 		//print ("Server hosted - IP: "+MasterServer.ipAddress+" - Port: "+MasterServer.port);
 		//print (Network.sendRate);
+
 	}
 	
 	/// <summary>
 	/// Is initiated when the server IS created.
 	/// </summary>
 	void OnServerInitialized() {
-		Debug.Log("Server Initializied");
+		//Debug.Log("Server Initializied");
 		GetComponent<NetworkscriptContentManager> ().ContentManager ();
 	}
 }

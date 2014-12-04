@@ -39,7 +39,9 @@ public class NetworkscriptJoinServer : MonoBehaviour {
 	/// On connected to server, do something. 
 	/// </summary>
 	void OnConnectedToServer() {
-		Debug.Log("Server Joined");
+		//Debug.Log("Server Joined");
+		GetComponent<NetworkscriptContentManager> ().ContentManager ();
 		
 	}
+
 }

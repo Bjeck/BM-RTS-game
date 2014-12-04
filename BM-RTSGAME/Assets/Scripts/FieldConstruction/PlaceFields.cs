@@ -141,7 +141,7 @@ public class PlaceFields : MonoBehaviour {
 			if(i == playerCoordinates[runThroughPlayers] && j == playerCoordinates[runThroughPlayers+1]){
 				itsAPlayer = true; 
 
-				(Instantiate (player[runThroughPlayers/2], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
+				(Network.Instantiate (player[runThroughPlayers/2], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity,0) as GameObject).transform.parent = gameObject.transform;
 				PlayerPositions[timesRunThrough] = new Vector2(setXPos, setYPos);
 			}
 			runThroughPlayers+=2;
@@ -154,22 +154,22 @@ public class PlaceFields : MonoBehaviour {
 		//------------------------- IF CORNER: Instantiate corner field and turn it
 		isACorner = false;
 		if (i == 0 && j == 0){
-			(Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity,0) as GameObject).transform.parent = gameObject.transform;
 			isACorner = true;
 		}
 		
 		if (i == ((int)FieldDimensions[0]-1) && j == 0){
-			(Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isACorner = true;
 		}
 		
 		if (i == 0 && j == ((int)FieldDimensions[1]-1)){
-			(Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isACorner = true;
 		}
 		
 		if (i == ((int)FieldDimensions[0]-1) && j == ((int)FieldDimensions[1]-1)){
-			(Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (CornerFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isACorner = true;
 		}
 	}
@@ -179,22 +179,22 @@ public class PlaceFields : MonoBehaviour {
 		//------------------------- IF A SIDE: 
 		isASide = false;
 		if (i == 0 && j != 0 && j != ((int)FieldDimensions[1]-1)){
-			(Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity,0) as GameObject).transform.parent = gameObject.transform;
 			isASide = true;
 		}
 		
 		if (i == ((int)FieldDimensions[0]-1) && j != 0 && j != ((int)FieldDimensions[1]-1)){
-			(Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(180, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isASide = true;
 		}
 		
 		if (j == 0 && i != 0 && i != ((int)FieldDimensions[0]-1)){
-			(Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(90, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isASide = true;
 		}
 		
 		if (j == ((int)FieldDimensions[1]-1) && i != 0 && i != ((int)FieldDimensions[0]-1)){
-			(Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward)) as GameObject).transform.parent = gameObject.transform;
+			(Network.Instantiate (SideFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.AngleAxis(270, Vector3.forward),0) as GameObject).transform.parent = gameObject.transform;
 			isASide = true;
 		}
 	}
@@ -207,10 +207,10 @@ public class PlaceFields : MonoBehaviour {
 			int randomStdField = (int)Random.Range(0, MoreStdFields.Length+1);
 			
 			if (randomStdField==0){
-				(Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
+				(Network.Instantiate (StdFields, new Vector3(setXPos, setYPos, setZPos), Quaternion.identity,0) as GameObject).transform.parent = gameObject.transform;
 			}
 			if (randomStdField>0){
-				(Instantiate (MoreStdFields[randomStdField-1], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity) as GameObject).transform.parent = gameObject.transform;
+				(Network.Instantiate (MoreStdFields[randomStdField-1], new Vector3(setXPos, setYPos, setZPos), Quaternion.identity,0) as GameObject).transform.parent = gameObject.transform;
 			}
 			
 		}

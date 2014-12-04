@@ -9,11 +9,27 @@ public class NetworkscriptContentManager : MonoBehaviour {
 	public GameObject MapPrefab;
 
 	/// <summary>
+	/// The prefab of the player.
+	/// </summary>
+	public GameObject player;
+
+	/// <summary>
+	/// Whether the map is spawned.
+	/// </summary>
+	public bool MapSpawned = false; 
+
+	/// <summary>
 	/// Manager of spawning.
 	/// </summary>
 	public void ContentManager(){
 
-		Network.Instantiate (MapPrefab, transform.position, Quaternion.identity, 1);
-		GetComponent<NetworkscriptSpawnPlayer> ().SpawnPlayer ();
+		if (Network.isServer) {
+				Instantiate (MapPrefab, transform.position, Quaternion.identity);
+				Instantiate (player, 	transform.position, Quaternion.identity);	
+		} 
+		if (Network.isClient) {
+				Instantiate (player, 	transform.position, Quaternion.identity);	
+		}
 	}
+
 }
