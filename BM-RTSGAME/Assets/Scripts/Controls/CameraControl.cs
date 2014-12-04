@@ -3,93 +3,135 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 
-	//-------------------------------------------------------- Public
-	public int marginForPan = 70;
-	public int marginForTilt = 70;
-	public int panSensitivity = 10;
-	public int tiltSensitivity = 10;
-	public float AccelerationSpeed = 3.0f;
-	public float ZoomStartPosition = 5.0f;
-	public float ZoomSpeed = 0.2f;
-	public float MinZoomDistance = 1.0f;
-	public float MaxZoomDistance = 5.0f;
+	public Vector2 NavigationMargin = new Vector2 (100.0f, 100.0f);
 
-	public char TiltPanDisable = 'N';
-	
-	//-------------------------------------------------------- Private
-	private int right_screen_side;
-	private int left_screen_side;
-	private int top_screen_side;
-	private int bottom_screen_side;
-	private float accR = 1.0f, accL = 1.0f, accT = 1.0f, accB = 1.0f;
-	private Vector3 mousePos = new Vector3(0.0f, 0.0f, 0.0f);
+	private Vector3 mousePos;
+	private bool PlayerFound = false;
 
-	// Use this for initialization
-	void Start () {
-	
-		//-------------------------------------------------------- Border Control 
-		right_screen_side = Screen.width;
-		left_screen_side = 0;
-		
-		top_screen_side = Screen.height;
-		bottom_screen_side = 0;
+	private float Add_Up, Add_Down, Add_Left, Add_Right, Add_In, Add_Out;
+	private int right_screen_side, left_screen_side, top_screen_side, bottom_screen_side;
+	private float sizeOfCamera;
 
-	}
+	public Vector2 ZoomConstraint = new Vector2(1.0f,30.0f);
 	
 	// Update is called once per frame
 	void Update () {
 
-		//If the parent belongs to this player - transform.parent.networkView.isMine
-		//if (transform.parent.networkView.isMine){
+		CheckForPlayer ();
 
-			mousePos = Input.mousePosition;
-			camera.orthographicSize = ZoomStartPosition;
+		if(PlayerFound){
 
-			if (Input.GetAxis("Mouse ScrollWheel") > 0 && ZoomStartPosition > MinZoomDistance) // forward
-			{
-				ZoomStartPosition -= ZoomSpeed;
-			}
-			if (Input.GetAxis("Mouse ScrollWheel") < 0 && ZoomStartPosition < MaxZoomDistance) // back
-			{
-				ZoomStartPosition += ZoomSpeed;
-			}
+			UpdateInfo();
 
-			if (Input.GetKey(KeyCode.UpArrow)){
-				transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
-			}
-			if (Input.GetKey(KeyCode.DownArrow)){
-				transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime);
-			}
-			if (Input.GetKey(KeyCode.LeftArrow)){
-				transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime);
-			}
-			if (Input.GetKey(KeyCode.RightArrow)){
-				transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
-			}
+			MouseNavigation();
 
-			if (TiltPanDisable == 'N' || TiltPanDisable == 'P'){
-				//-------------------------------------------------------- GO RIGHT
-				if (mousePos.x > (right_screen_side-marginForPan)){ 	
-					transform.position = Vector3.Lerp(transform.position, transform.position + transform.right * (panSensitivity * accR), Time.deltaTime); 
-				}
+			KeyboardNavigation();
 
-				//-------------------------------------------------------- GO LEFT
-				if (mousePos.x < (left_screen_side+marginForPan)){		
-					transform.position = Vector3.Lerp(transform.position, transform.position - transform.right * (panSensitivity * accL), Time.deltaTime); 
-				}
-			}
+			ApplyNavigation();
 
-			if (TiltPanDisable == 'N' || TiltPanDisable == 'T'){
-				//-------------------------------------------------------- GO UP
-				if (mousePos.y > (top_screen_side-marginForTilt)){ 		
-					transform.position = Vector3.Lerp(transform.position, transform.position + transform.up/ZoomStartPosition * (tiltSensitivity * accT), Time.deltaTime); 
-				}
-
-				//-------------------------------------------------------- GO DOWN
-				if (mousePos.y < (bottom_screen_side+marginForTilt)){	
-					transform.position = Vector3.Lerp(transform.position, transform.position - transform.up/ZoomStartPosition * (tiltSensitivity * accB), Time.deltaTime); 
-				}
-			}
-		//}
+		}
 	}
+
+	private void CheckForPlayer(){
+		// Check whether there is a playerstash object in the scene
+		if (!PlayerFound) {
+			GameObject playerStashsh = GameObject.Find ("PlayerStash(Clone)");
+			
+			if (playerStashsh != null) {
+				PlayerFound = true;
+				print("Player Connected!");
+			}
+		}
+	}
+
+	private void UpdateInfo(){
+		//////////////////////////////////////////////////////////////////////////////////////////
+		////// UPDATE INFO /////////////////////////////////////////////////////////////////////// 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		// RESET DIRECTION
+		Add_Up = 0.0f;
+		Add_Down = 0.0f;
+		Add_Left = 0.0f;
+		Add_Right = 0.0f;
+		Add_In = 0.0f;
+		Add_Out = 0.0f;
+		
+		right_screen_side = Screen.width;
+		left_screen_side = 0;
+		top_screen_side = Screen.height;
+		bottom_screen_side = 0;
+	}
+
+	private void MouseNavigation(){
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		////// MOUSE NAVIGATION ////////////////////////////////////////////////////////////////// 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		// FIND MOUSE POSITION
+		
+		mousePos = Input.mousePosition;
+		bool mouseInsideScreen = false;
+		
+		// Inside the screen
+		if(mousePos.y >= bottom_screen_side)
+		{
+			if(mousePos.y <= top_screen_side)
+			{
+				if(mousePos.x >= left_screen_side)
+				{
+					if(mousePos.x <= right_screen_side)
+					{	
+						mouseInsideScreen = true;		
+					} 
+				}
+			}
+		}
+		
+		if(mouseInsideScreen){
+			
+			// APPLY DIRECTION IN ZONES
+			if(mousePos.x >= (right_screen_side - NavigationMargin.x)){		Add_Right += 5.0f;	}
+			if(mousePos.x <= 0 + NavigationMargin.x){						Add_Right -= 5.0f;	}
+			if(mousePos.y >= (top_screen_side - NavigationMargin.y)){		Add_Up += 5.0f;		}
+			if(	mousePos.y <= 0 + NavigationMargin.y){						Add_Up -= 5.0f;		}
+			
+		}
+
+		if(ZoomConstraint.x < GetComponent<Camera>().orthographicSize)
+		{
+			if (Input.GetAxis("Mouse ScrollWheel") < 0) 	{				Add_In -= 2;		}
+		}
+		if(ZoomConstraint.y > GetComponent<Camera>().orthographicSize)
+		{
+			if (Input.GetAxis("Mouse ScrollWheel") > 0) {					Add_In += 2; 		}
+		}
+
+		
+		GetComponent<Camera>().orthographicSize += Add_In;
+		sizeOfCamera = GetComponent<Camera>().orthographicSize;
+	}
+
+	private void KeyboardNavigation(){
+		//////////////////////////////////////////////////////////////////////////////////////////
+		////// KEYBOARD NAVIGATION /////////////////////////////////////////////////////////////// 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		// APPLY DIRECTION
+		if(Input.GetKey(KeyCode.UpArrow)){									Add_Up += 10.0f;	}
+		if(Input.GetKey(KeyCode.DownArrow)){								Add_Down += 10.0f;	}
+		if(Input.GetKey(KeyCode.LeftArrow)){								Add_Left += 10.0f; 	}
+		if(Input.GetKey(KeyCode.RightArrow)){								Add_Right += 10.0f;	}
+		
+
+	}
+
+	private void ApplyNavigation(){
+		// FINALIZE DIRECTION
+		Vector3 direction = new Vector3(Add_Right-Add_Left, Add_Up-Add_Down, 0.0f );
+		
+		// SET CAMERA POSITION
+		transform.position = Vector3.Lerp(transform.position, transform.position + (direction * sizeOfCamera/2), Time.deltaTime); 
+	}
+
 }

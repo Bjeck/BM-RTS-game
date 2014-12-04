@@ -46,7 +46,7 @@ public class Building_UnitProduction : Building {
 	}
 
 	public void SpawnUnit(string name){
-		GameObject unit = (GameObject)Instantiate(Resources.Load(name,typeof(GameObject)));
+		GameObject unit = (GameObject)Network.Instantiate(Resources.Load(name,typeof(GameObject)), transform.position, Quaternion.identity, 0);
 		unit.GetComponent<Unit>().player1 = player1;
 		unit.transform.position = transform.position;
 
