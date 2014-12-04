@@ -3,10 +3,10 @@ using System.Collections;
 
 [RequireComponent (typeof (NetworkView))]
 
-public class SyncBuildingScript : MonoBehaviour {
+public class SyncUnitScript : MonoBehaviour {
 	
 	private Vector3 ReferencePosition;
-
+	
 	void OnSerializeNetworkView (BitStream stream, NetworkMessageInfo info){
 		
 		// If this script is the one sending something.
@@ -27,7 +27,7 @@ public class SyncBuildingScript : MonoBehaviour {
 			
 			// Assigns the value to this object's position. 
 			transform.position = ReferencePosition;
-
+			
 		}
 	}
 }
