@@ -21,12 +21,16 @@ public class CameraControl : MonoBehaviour {
 
 		if(PlayerFound){
 
+			// Resets the movement of camera, so it isnt effected if none of the function applies a difference.  
 			UpdateInfo();
 
+			// Update camera movement dependent on if the mouse is in the sides, or the scroolwheel is used.
 			MouseNavigation();
 
+			// Update camera movement dependent on if the keys are pressed.
 			KeyboardNavigation();
 
+			// Applies the changes to the camera. 
 			ApplyNavigation();
 
 		}

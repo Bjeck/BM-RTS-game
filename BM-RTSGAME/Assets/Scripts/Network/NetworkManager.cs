@@ -30,29 +30,34 @@ public class NetworkManager : MonoBehaviour {
 	/// </summary>
 	void OnGUI() {
 
+
+		print(Network.TestConnectionNAT ());
+
 		// If the network is neither a server or a client.
 		if (!Network.isClient && !Network.isServer) {
 			// If the user presses this button, the server function is called.
-			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
-				// The server function is called along with the type and game name.
-				GetComponent<NetworkscriptStartServer>().StartServer(GameType,GameName, GameDescription);
+			if (GUI.Button (new Rect (100, 100, 250, 100), "Start Server")) {
+					// The server function is called along with the type and game name.
+					GetComponent<NetworkscriptStartServer> ().StartServer (GameType, GameName, GameDescription);
 			}
-			
-			if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts")) {
-				GetComponent<NetworkscriptJoinServer> ().RefreshHostList(GameType);
+
+			if (GUI.Button (new Rect (100, 250, 250, 100), "Refresh Hosts")) {
+					GetComponent<NetworkscriptJoinServer> ().RefreshHostList (GameType);
 			}
-			
+
 			HostData[] tempHostList = GetComponent<NetworkscriptJoinServer> ().hostList;
-			
-			if (tempHostList != null){
-				for (int i = 0; i < tempHostList.Length; i++) {
-					// Spawns a button if there are any games in hostList.
-					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), tempHostList[i].gameName+"\n "+tempHostList[i].comment)){
-						GetComponent<NetworkscriptJoinServer>().JoinServer(tempHostList[i]);
+
+			if (tempHostList != null) {
+					for (int i = 0; i < tempHostList.Length; i++) {
+							// Spawns a button if there are any games in hostList.
+							if (GUI.Button (new Rect (400, 100 + (110 * i), 300, 100), tempHostList [i].gameName + "\n " + tempHostList [i].comment)) {
+									GetComponent<NetworkscriptJoinServer> ().JoinServer (tempHostList [i]);
+							}
 					}
-				}
 			}
-		}
+		} 
+
+			
 	}
 	
 	
