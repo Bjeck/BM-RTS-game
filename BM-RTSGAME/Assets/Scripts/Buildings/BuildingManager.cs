@@ -110,7 +110,7 @@ public class BuildingManager : MonoBehaviour {
 
 	}
 
-	
+	//Begins to place building (Instantiates the hover version of the building)
 	public void SpecifyBuildingToPlace(string namef){
 		if(namef != null){
 			isDragging = true;
@@ -123,6 +123,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 	}
 
+	//Placing the building on the ground.
 	void PlaceBuilding(){
 	//CHECKING IF BUILDING CAN BE PLACED
 		//print (resources.Count);
@@ -164,6 +165,7 @@ public class BuildingManager : MonoBehaviour {
 	}
 
 
+	//Separate function to check legal position. For resources.
 	bool IsLegalPosition(){
 
 		LayerMask layerMask = (1 << 8);
@@ -187,6 +189,7 @@ public class BuildingManager : MonoBehaviour {
 		return true;
 	}
 
+	//Cancels placement of the current building.
 	void CancelPlacement(){
 		isDragging = false;
 		Destroy (instance);
@@ -200,7 +203,7 @@ public class BuildingManager : MonoBehaviour {
 		StartCoroutine (scanLevel ());
 	}
 	
-	IEnumerator scanLevel(){
+	IEnumerator scanLevel(){ //Scans the level. This is called every time a new building is placed, so it get's added as an obstacle for units.
 	//	Debug.Log ("SCAN!");
 		float t = 0;
 		while(t<0.01f){
@@ -235,7 +238,6 @@ public class BuildingManager : MonoBehaviour {
 			}
 		}
 
-
 		if (currentlySelectedUnitBuildings.Count == 0) { //if there, for some reason, aren't any unit buildings selected, abort.
 			Debug.Log("This shouldn't happen");
 			return;		
@@ -257,39 +259,36 @@ public class BuildingManager : MonoBehaviour {
 				}
 				i++;
 			}
-
-
 		}
-
 		currentlySelectedUnitBuildings.Clear ();
 	}
 
 
+//------------------------- UPGRADING MANAGEMENT
 
 	public void UpgradeSomething(float time, string name){ //This is the same as the ExecuteOrder, but for upgrades instead.
 		if (mouseS.buildingsSelected.Count > 0) { //first, how many buildings are selected?
 			foreach(Building b in mouseS.buildingsSelected){
 				//Debug.Log("Is this an upgrade building?"+b.isUpgradeBuilding);
-				if(b.isUpgradeBuilding == true){
+				if(b.isUpgradeBuilding == true){ //if it is an upgrade building, add it to the current list.
 					currentlySelectedUpgradeBuildings.Add(b.gameObject.GetComponent<Building_Upgrade>());
 					//Debug.Log(currentlySelectedUpgradeBuildings.Count);
 				}
 			}
 		}
 
-		if (currentlySelectedUpgradeBuildings.Count == 0) {
+		if (currentlySelectedUpgradeBuildings.Count == 0) { //error.
 			Debug.Log("This shouldn't happen");
 			return;		
 		}
-		else if(currentlySelectedUpgradeBuildings.Count == 1){
+		else if(currentlySelectedUpgradeBuildings.Count == 1){ //if one is selected, set this to upgrade (if it isn't upgrading already).
 			if(!currentlySelectedUpgradeBuildings[0].isConstructing){
 				StartCoroutine(currentlySelectedUpgradeBuildings[0].ConstructUpgrade(time, name));
-
 			}
 		}
-		else if(currentlySelectedUpgradeBuildings.Count > 1){
+		else if(currentlySelectedUpgradeBuildings.Count > 1){ //If more than one. Find the first one that isn't doing anything, and set that to start upgrading.
 			int i = 0;
-			foreach(Building_Upgrade bu in currentlySelectedUpgradeBuildings){ 
+			foreach(Building_Upgrade bu in currentlySelectedUpgradeBuildings){
 				if(!currentlySelectedUpgradeBuildings[i].isConstructing){
 					StartCoroutine(currentlySelectedUpgradeBuildings[i].ConstructUpgrade(time, name));
 					currentlySelectedUpgradeBuildings.Clear ();
@@ -297,12 +296,8 @@ public class BuildingManager : MonoBehaviour {
 				}
 				i++;
 			}
-			
-			
 		}
-		
 		currentlySelectedUpgradeBuildings.Clear ();
-
 	}
 
 

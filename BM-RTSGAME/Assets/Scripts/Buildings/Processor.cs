@@ -8,7 +8,7 @@ public class Processor : Building_UnitProduction {
 	// Use this for initialization
 	void Start () {
 		base.Start ();
-
+	//	Debug.Log (isUnitBuilding+" "+isUpgradeBuilding);
 
 	}
 	
@@ -25,6 +25,7 @@ public class Processor : Building_UnitProduction {
 				bManScript.ExecuteOrder(buildTime2,"unit_3");
 			}
 		}
+
 		base.Update ();
 	}
 
@@ -32,6 +33,7 @@ public class Processor : Building_UnitProduction {
 		GUI.skin = guiScript.guiSkin;
 
 		if (isSelected){
+
 			float[] coord = guiScript.GetButtonCoordinates (0,0);
 
 			//Debug.Log("FROM BUILDING! "+guiScript.GetButtonCoordinates ()[0]+ " "+coord[0]);

@@ -31,7 +31,7 @@ public class NetworkManager : MonoBehaviour {
 	void OnGUI() {
 
 
-		print(Network.TestConnectionNAT ());
+		//print(Network.TestConnectionNAT ());
 
 		// If the network is neither a server or a client.
 		if (!Network.isClient && !Network.isServer) {

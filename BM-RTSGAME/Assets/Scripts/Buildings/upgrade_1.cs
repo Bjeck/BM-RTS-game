@@ -17,7 +17,6 @@ public class upgrade_1 : Building_Upgrade {
 
 	void OnGUI(){
 		GUI.skin = guiScript.guiSkin;
-		
 		if (isSelected){
 			float[] coord = guiScript.GetButtonCoordinates (0,0);
 			
