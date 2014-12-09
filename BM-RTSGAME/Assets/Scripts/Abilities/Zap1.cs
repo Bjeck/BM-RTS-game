@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Zap1 : DirectTarget {
@@ -91,6 +91,6 @@ public class Zap1 : DirectTarget {
 		//Debug.Log ("IS PLAYING PARTICLES");
 
 		StopTargeting ();
-		aMan.listOfAbilities.Clear ();
+		aMan.listOfCurrentlyCastableAbilities.Clear ();
 	}
 }

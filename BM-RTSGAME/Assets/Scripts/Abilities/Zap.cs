@@ -30,10 +30,7 @@ public class Zap : DirectTarget {
 			if (Input.GetMouseButtonDown (0)) {
 				//Debug.Log("MOUSE CLICK!");
 
-				if (caster.GetComponent<Unit> ().memory - cost < 0) {
-					Debug.Log("NOT ENOUGH memory to cast");
-					return;
-				}
+
 
 				if(dist > range){
 					//Debug.Log("OUT OF RANGE!");
@@ -83,6 +80,12 @@ public class Zap : DirectTarget {
 
 	public void zap(GameObject t){
 		base.Cast ();
+
+		if (caster.GetComponent<Unit> ().memory - cost < 0) { //check again if there's enough memory, because time passes. Just a safety check.
+			Debug.Log("NOT ENOUGH memory to cast");
+			return;
+		}
+
 		//Debug.Log ("YOU GOT ZAPPED!");
 		target = t;
 		t.GetComponent<Unit>().health -= damage;

@@ -3,7 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// SCRIPT THAT MANAGES ALL BUILDINGS
+/// </summary>
+
 public class BuildingManager : MonoBehaviour {
+	
+	private static BuildingManager _instance;
+	
+	public static BuildingManager instance{
+		get{
+			if (_instance == null){
+				_instance = GameObject.FindObjectOfType<BuildingManager>();
+			}
+			return _instance;
+		}
+	}
 
 	///////////////////////// PUBLIC ////////////////////////
 	public bool isDragging = false;
@@ -22,13 +37,15 @@ public class BuildingManager : MonoBehaviour {
 	private List<Building_Upgrade> currentlySelectedUpgradeBuildings = new List<Building_Upgrade>();
 
 	///////////////////////// OTHER ////////////////////////
-	GameObject instance;
+	GameObject buildingInstance;
 	public GameObject building;
 	GameObject Astar;
 	SpriteRenderer sprtR;
 	string name = null;
 	AstarPath astarpath;
 	Mouse mouseS;
+
+	UnitManager unitMana;
 
 	// Use this for initialization
 	void Start () {
@@ -40,6 +57,7 @@ public class BuildingManager : MonoBehaviour {
 		GameObject mouse = GameObject.Find ("Main Camera");
 		mouseS = mouse.GetComponent<Mouse> ();
 		player1 = mouseS.player1;
+		unitMana = gameObject.GetComponent<UnitManager> ();
 	}
 	
 	// Update is called once per frame
@@ -62,7 +80,7 @@ public class BuildingManager : MonoBehaviour {
 			mPos.z = -1;
 			mPos.x = Mathf.Ceil(mPos.x);
 			mPos.y = Mathf.Ceil(mPos.y);
-			instance.transform.position = mPos;
+			buildingInstance.transform.position = mPos;
 		}
 
 		if (Input.GetMouseButtonUp (0) && isDragging) {
@@ -101,10 +119,10 @@ public class BuildingManager : MonoBehaviour {
 
 		if (!IsLegalPosition () && isDragging) {
 			//Debug.Log("THIS ONE!");
-			sprtR = instance.GetComponent<SpriteRenderer> ();
+			sprtR = buildingInstance.GetComponent<SpriteRenderer> ();
 			sprtR.color = Color.red;
 		} 	else if(isDragging){
-			sprtR = instance.GetComponent<SpriteRenderer>();
+			sprtR = buildingInstance.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.gray;
 		}
 
@@ -114,12 +132,12 @@ public class BuildingManager : MonoBehaviour {
 	public void SpecifyBuildingToPlace(string namef){
 		if(namef != null){
 			isDragging = true;
-			instance = (GameObject)Instantiate(Resources.Load(namef,typeof(GameObject)));
-			sprtR = instance.GetComponent<SpriteRenderer>();
+			buildingInstance = (GameObject)Instantiate(Resources.Load(namef,typeof(GameObject)));
+			sprtR = buildingInstance.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.gray;
 			Vector3 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			mPos.z = -1;
-			instance.transform.position = mPos;
+			buildingInstance.transform.position = mPos;
 		}
 	}
 
@@ -142,7 +160,7 @@ public class BuildingManager : MonoBehaviour {
 			//Debug.Log("PLACE OBJECT!"+building.name);
 			sprtR = building.GetComponent<SpriteRenderer>();
 			sprtR.color = Color.white;
-			Destroy (instance);
+			Destroy (buildingInstance);
 			RaycastHit hit;
 
 			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit, 100f)){
@@ -192,7 +210,7 @@ public class BuildingManager : MonoBehaviour {
 	//Cancels placement of the current building.
 	void CancelPlacement(){
 		isDragging = false;
-		Destroy (instance);
+		Destroy (buildingInstance);
 	}
 
 
@@ -262,6 +280,8 @@ public class BuildingManager : MonoBehaviour {
 		}
 		currentlySelectedUnitBuildings.Clear ();
 	}
+
+
 
 
 //------------------------- UPGRADING MANAGEMENT

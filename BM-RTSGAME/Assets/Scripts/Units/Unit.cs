@@ -12,7 +12,8 @@ public class Unit : MonoBehaviour {
 	Vector3 targetKeeper;
 	LayerMask unitlayerMask = (1 << 12); //unit layermask
 	LayerMask buildinglayerMask = (1 << 10); //unit layermask
-	
+	UnitManager unitMana;
+
 	RaycastHit hit;
 	Collider[] unitsAroundMe;
 	public float distanceToEnemy = Mathf.Infinity;
@@ -20,6 +21,8 @@ public class Unit : MonoBehaviour {
 	public GameObject target = null;
 	public GameObject bulletObject;
 	public Projectile bulletScript;
+
+	public string identifier;
 
 
 	//BOOLEANS
@@ -48,9 +51,12 @@ public class Unit : MonoBehaviour {
 
 
 	// Use this for initialization
-	public void Start () {
+	public virtual void Start () {
 		mouseScript = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 		pathfinder = GetComponent<Pathfindinger> ();
+		unitMana = UnitManager.instance;
+		unitMana.unitsInGame.Add (this.gameObject);
+		unitMana.DoesUnitHaveAbility (this);
 
 	}
 	
@@ -217,6 +223,7 @@ public class Unit : MonoBehaviour {
 	public void Die(){ //The unit dies. We should probably add some explosion effects or something cool :D
 		Debug.Log ("IM DEAD!");
 		mouseScript.RemoveUnitSelection(this);
+		unitMana.unitsInGame.Remove (this.gameObject);
 		Destroy (this.gameObject);
 
 	}

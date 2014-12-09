@@ -50,6 +50,8 @@ public class Building_UnitProduction : Building {
 		unit.GetComponent<Unit>().player1 = player1;
 		unit.transform.position = transform.position;
 
+
+
 		StartCoroutine (waitAndMoveToWayPoint (unit));
 	}
 

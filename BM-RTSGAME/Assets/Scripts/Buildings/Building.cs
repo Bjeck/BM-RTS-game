@@ -27,8 +27,8 @@ public class Building : MonoBehaviour {
 	// Use this for initialization
 	public void Start () {
 		//Debug.Log ("BUILDING HERE!");
-		buildMan = GameObject.Find ("BuildingManager");
-		bManScript = buildMan.GetComponent<BuildingManager> ();
+		//buildMan = BuildingManager.instance.gameObject;
+		bManScript = BuildingManager.instance;
 		mouseScript = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 		player1 = bManScript.player1;
 		guiScript = GameObject.Find ("SpawnGUI").GetComponent<UserInterfaceGUI> ();

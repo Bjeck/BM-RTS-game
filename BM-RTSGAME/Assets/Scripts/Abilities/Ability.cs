@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// The Base Ability Class. This is not actually an ability in itself, only the superclass for other types of abilities.
+/// </summary>
+
+
 public class Ability : MonoBehaviour {
 
 	public GameObject caster;
@@ -19,14 +24,14 @@ public class Ability : MonoBehaviour {
 	// Use this for initialization
 	public void Start () {
 		//Debug.Log ("START FROM ABILITY");
-		caster = this.gameObject;
+		caster = this.transform.parent.gameObject;
 		//Debug.Log (caster);
 		mouseS = GameObject.Find("Main Camera").GetComponent<Mouse> ();
 		aMan = GameObject.Find("AbilityManager").GetComponent<AbilityManager> ();
 		guiScript = GameObject.Find ("SpawnGUI").GetComponent<UserInterfaceGUI> ();
 	}
 
-	// Update is called once per frame
+	// Update is used to see if the player wants to use an ability.
 	public void Update () {
 
 		if (Input.GetKeyDown (keyToUse) && caster.GetComponent<Unit>().isSelected) {
@@ -35,7 +40,7 @@ public class Ability : MonoBehaviour {
 		}
 	}
 
-
+	//Do the ability. What this does depends of the ability, but they has to pass this memory check.
 	public virtual bool Do(){
 		//Here we check cost and current energy available etc.
 		//Debug.Log(caster.GetComponent<Unit> ().memory);
@@ -44,7 +49,7 @@ public class Ability : MonoBehaviour {
 			return false;
 		}
 
-		if (aMan.listOfAbilities.Count > 0)
+		if (aMan.listOfCurrentlyCastableAbilities.Count > 0) //Right now this just sees if another ability is being cast, to avoid multicasting. Should probably be changed if we want shift-casting or queueing or something.
 			return false;
 
 		aMan.AddAbilityToList (this);

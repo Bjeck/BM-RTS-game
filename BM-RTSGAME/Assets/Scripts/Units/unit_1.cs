@@ -6,8 +6,8 @@ public class unit_1 : Unit {
 
 
 	// Use this for initialization
-	void Start () {
-		base.Start();
+	public void Start () {
+
 
 		health = 100;
 		attackSpeed = 0.6f;
@@ -16,6 +16,8 @@ public class unit_1 : Unit {
 		attackDamage = 10;
 		projectileSpeed = 30;
 		memory = 10;
+		identifier = "unit_1";
+		base.Start();
 	}
 	
 	// Update is called once per frame
