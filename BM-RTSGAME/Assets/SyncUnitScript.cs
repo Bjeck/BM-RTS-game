@@ -6,6 +6,7 @@ using System.Collections;
 public class SyncUnitScript : MonoBehaviour {
 	
 	private Vector3 EndPosition = new Vector3(0.0f,0.0f,0.0f); 
+	private Vector3 StartPosition = new Vector3(0.0f,0.0f,0.0f); 
 
 	private float syncDelay = 0.0f;
 	private float syncTime = 0.0f;
@@ -20,8 +21,6 @@ public class SyncUnitScript : MonoBehaviour {
 			
 			// Make a reference of the position right now.
 			syncPosition = transform.position;
-			
-			// Send it through the stream.
 			stream.Serialize (ref syncPosition);
 		
 			syncVelocity = rigidbody.velocity;
@@ -39,6 +38,7 @@ public class SyncUnitScript : MonoBehaviour {
 			syncDelay = Time.time - LastSyncTime;
 			LastSyncTime = Time.time;
 
+			StartPosition = transform.position;
 			EndPosition = syncPosition + syncVelocity * syncDelay;
 		}
 	}
@@ -52,7 +52,7 @@ public class SyncUnitScript : MonoBehaviour {
 	private void SyncMovement(){
 
 		syncTime += Time.deltaTime;
-		transform.position = Vector3.Lerp (transform.position, EndPosition, syncTime / syncDelay);
+		transform.position = Vector3.Lerp (StartPosition, EndPosition, syncTime / syncDelay);
 	
 	}
 
